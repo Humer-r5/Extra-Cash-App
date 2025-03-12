@@ -1,6 +1,55 @@
 import 'package:flutter/material.dart';
+import 'profile_page.dart'; // Import Profile Page
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+
+  // List of pages for navigation
+  final List<Widget> _pages = [
+    HomePageContent(),
+    Center(child: Text("Add Feature Coming Soon")),
+    Center(child: Text("Alerts Coming Soon")),
+    const ProfilePage(), // Profile Page
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _pages[_selectedIndex], // Change screen based on selected tab
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.black54,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.add), label: "Add"),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            label: "Alerts",
+          ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+        ],
+      ),
+    );
+  }
+}
+
+// Extracted HomePage Content
+class HomePageContent extends StatelessWidget {
   final List<Map<String, String>> services = [
     {"title": "Plumber", "image": "assets/plumber.png"},
     {"title": "Electrician", "image": "assets/electrician.png"},
@@ -9,12 +58,10 @@ class HomePage extends StatelessWidget {
     {"title": "AC Mechanic", "image": "assets/ac_mechanic.png"},
   ];
 
-  HomePage({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Background remains white
+      backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text("EXTRA CASH"),
@@ -41,7 +88,7 @@ class HomePage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   filled: true,
-                  fillColor: Colors.grey[200], // Light background for search
+                  fillColor: Colors.grey[500],
                 ),
               ),
             ),
@@ -57,7 +104,7 @@ class HomePage extends StatelessWidget {
                       image: "assets/bookings.jpg",
                     ),
                   ),
-                  const SizedBox(width: 16), // Added gap between the two
+                  const SizedBox(width: 16),
                   Expanded(
                     child: FeatureCard(
                       title: "Your Wallet",
@@ -71,9 +118,9 @@ class HomePage extends StatelessWidget {
             // Services List
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Align(
+              child: const Align(
                 alignment: Alignment.centerLeft,
-                child: const Text(
+                child: Text(
                   "Choose Service",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
@@ -93,12 +140,11 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const BottomNavBar(),
     );
   }
 }
 
-// FeatureCard (Your Bookings & Your Wallet) - Styled like ServiceCard
+// FeatureCard (Your Bookings & Your Wallet)
 class FeatureCard extends StatelessWidget {
   final String title, image;
 
@@ -110,12 +156,11 @@ class FeatureCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Stack(
         children: [
-          // Darkened Image
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: ColorFiltered(
               colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.4), // Dark Overlay
+                Colors.black.withOpacity(0.4),
                 BlendMode.darken,
               ),
               child: Image.asset(
@@ -126,7 +171,6 @@ class FeatureCard extends StatelessWidget {
               ),
             ),
           ),
-          // Title on Image
           Positioned.fill(
             child: Center(
               child: Text(
@@ -152,7 +196,7 @@ class FeatureCard extends StatelessWidget {
   }
 }
 
-// Service Card (Darkened Image + Title Overlay)
+// Service Card
 class ServiceCard extends StatelessWidget {
   final String title, image;
 
@@ -167,12 +211,11 @@ class ServiceCard extends StatelessWidget {
         children: [
           Stack(
             children: [
-              // Darkened Image
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: ColorFiltered(
                   colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.4), // Dark Overlay
+                    Colors.black.withOpacity(0.4),
                     BlendMode.darken,
                   ),
                   child: Image.asset(
@@ -183,7 +226,6 @@ class ServiceCard extends StatelessWidget {
                   ),
                 ),
               ),
-              // Title Overlay
               Positioned.fill(
                 child: Center(
                   child: Text(
@@ -218,28 +260,6 @@ class ServiceCard extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-// Bottom Navigation Bar (Black Icons)
-class BottomNavBar extends StatelessWidget {
-  const BottomNavBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      selectedItemColor: Colors.black, // Selected icon color
-      unselectedItemColor: Colors.black, // Unselected icon color
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-        BottomNavigationBarItem(icon: Icon(Icons.add), label: "Add"),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.notifications),
-          label: "Alerts",
-        ),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-      ],
     );
   }
 }
