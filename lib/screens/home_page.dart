@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'profile_page.dart'; // Import Profile Page
+import 'profile_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,12 +11,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
-  // List of pages for navigation
   final List<Widget> _pages = [
     HomePageContent(),
     Center(child: Text("Add Feature Coming Soon")),
     Center(child: Text("Alerts Coming Soon")),
-    const ProfilePage(), // Profile Page
+    const ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -28,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedIndex], // Change screen based on selected tab
+      body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.black,
@@ -48,8 +47,13 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// Extracted HomePage Content
-class HomePageContent extends StatelessWidget {
+// Home Page Content
+class HomePageContent extends StatefulWidget {
+  @override
+  _HomePageContentState createState() => _HomePageContentState();
+}
+
+class _HomePageContentState extends State<HomePageContent> {
   final List<Map<String, String>> services = [
     {"title": "Plumber", "image": "assets/plumber.png"},
     {"title": "Electrician", "image": "assets/electrician.png"},
@@ -57,6 +61,18 @@ class HomePageContent extends StatelessWidget {
     {"title": "Packers & Movers", "image": "assets/packers&movers.png"},
     {"title": "AC Mechanic", "image": "assets/ac_mechanic.png"},
   ];
+
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+  final ScrollController _scrollController = ScrollController();
+
+  void _scrollToService(int index) {
+    _scrollController.animateTo(
+      index * 200.0, // Assuming each card has a height of around 200
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,49 +91,109 @@ class HomePageContent extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Column(
           children: [
-            // Search Bar
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: TextField(
+                controller: _searchController,
+                onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value;
+                  });
+                },
                 decoration: InputDecoration(
                   hintText: "Search",
                   prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(50),
                   ),
                   filled: true,
-                  fillColor: Colors.grey[500],
+                  fillColor: Colors.grey[100],
                 ),
               ),
             ),
-            // "Your Bookings" and "Your Wallet"
+            // Your Bookings and Your Wallet Side by Side
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  // Your Bookings
                   Expanded(
-                    child: FeatureCard(
-                      title: "Your Bookings",
-                      image: "assets/bookings.jpg",
+                    child: Card(
+                      child: Stack(
+                        children: [
+                          Image.asset(
+                            "assets/bookings.jpg",
+                            fit: BoxFit.cover,
+                            height: 120, // Adjust height as per your image
+                            width: double.infinity,
+                          ),
+                          Positioned.fill(
+                            child: Center(
+                              child: Text(
+                                "Your Bookings",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  shadows: [
+                                    Shadow(
+                                      blurRadius: 6,
+                                      color: Colors.black,
+                                      offset: Offset(1, 2),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  SizedBox(width: 16), // Space between the two cards
+                  // Your Wallet
                   Expanded(
-                    child: FeatureCard(
-                      title: "Your Wallet",
-                      image: "assets/wallet.jpg",
+                    child: Card(
+                      child: Stack(
+                        children: [
+                          Image.asset(
+                            "assets/wallet.jpg",
+                            fit: BoxFit.cover,
+                            height: 120, // Adjust height as per your image
+                            width: double.infinity,
+                          ),
+                          Positioned.fill(
+                            child: Center(
+                              child: Text(
+                                "Your Wallet",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  shadows: [
+                                    Shadow(
+                                      blurRadius: 6,
+                                      color: Colors.black,
+                                      offset: Offset(1, 2),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 16),
-            // Services List
+            // Choose Service Section
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -131,10 +207,35 @@ class HomePageContent extends StatelessWidget {
               shrinkWrap: true,
               itemCount: services.length,
               itemBuilder: (context, index) {
-                return ServiceCard(
-                  title: services[index]["title"]!,
-                  image: services[index]["image"]!,
-                );
+                final serviceTitle = services[index]["title"]!;
+                if (_searchQuery.isEmpty ||
+                    serviceTitle.toLowerCase().contains(
+                      _searchQuery.toLowerCase(),
+                    )) {
+                  return GestureDetector(
+                    onTap: () {
+                      _scrollToService(index);
+                    },
+                    child: ServiceCard(
+                      title: serviceTitle,
+                      image: services[index]["image"]!,
+                      onExplore: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) => ServiceDetailPage(
+                                  title: serviceTitle,
+                                  image: services[index]["image"]!,
+                                ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                } else {
+                  return Container(); // Return an empty container if the service does not match the search query
+                }
               },
             ),
           ],
@@ -144,63 +245,17 @@ class HomePageContent extends StatelessWidget {
   }
 }
 
-// FeatureCard (Your Bookings & Your Wallet)
-class FeatureCard extends StatelessWidget {
-  final String title, image;
-
-  const FeatureCard({super.key, required this.title, required this.image});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Stack(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: ColorFiltered(
-              colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.4),
-                BlendMode.darken,
-              ),
-              child: Image.asset(
-                image,
-                width: double.infinity,
-                height: 130,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Positioned.fill(
-            child: Center(
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  shadows: [
-                    Shadow(
-                      blurRadius: 6,
-                      color: Colors.black,
-                      offset: Offset(1, 2),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 // Service Card
 class ServiceCard extends StatelessWidget {
   final String title, image;
+  final VoidCallback onExplore;
 
-  const ServiceCard({super.key, required this.title, required this.image});
+  const ServiceCard({
+    super.key,
+    required this.title,
+    required this.image,
+    required this.onExplore,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -251,7 +306,7 @@ class ServiceCard extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-              onPressed: () {},
+              onPressed: onExplore,
               child: const Text(
                 "EXPLORE",
                 style: TextStyle(color: Colors.white),
@@ -259,6 +314,100 @@ class ServiceCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// Service Detail Page (Shows details of selected service)
+class ServiceDetailPage extends StatelessWidget {
+  final String title, image;
+
+  const ServiceDetailPage({
+    super.key,
+    required this.title,
+    required this.image,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Image.asset(
+              image,
+              width: double.infinity,
+              height: 200,
+              fit: BoxFit.cover,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Get Expert $title Services",
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    "Professional $title services for all your needs. "
+                    "Our skilled technicians ensure quality service and customer satisfaction.",
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    "Active Technicians",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  TechnicianCard(name: "TECHY 1"),
+                  TechnicianCard(name: "TECHY 2"),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// Technician Card
+class TechnicianCard extends StatelessWidget {
+  final String name;
+
+  const TechnicianCard({super.key, required this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundImage: AssetImage("assets/profile.png"),
+        ),
+        title: Text(name),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text("example@gmail.com"),
+            Text("1901 Thornridge Cir, New York"),
+          ],
+        ),
+        trailing: ElevatedButton(onPressed: () {}, child: const Text("View")),
       ),
     );
   }

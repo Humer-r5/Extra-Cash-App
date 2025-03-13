@@ -58,7 +58,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                       const SizedBox(width: 16),
                       const Text(
-                        "TECHXPLORERS",
+                        "Your Profile",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
