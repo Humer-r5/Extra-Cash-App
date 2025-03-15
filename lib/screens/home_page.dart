@@ -4,6 +4,8 @@ import 'profile_page.dart';
 import '../widgets/technician_card.dart';
 import 'technician_details_screen.dart';
 import 'chat_screen.dart';
+import 'your_bookings_screen.dart';
+import 'your_wallet_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -86,67 +88,73 @@ class _HomePageContentState extends State<HomePageContent> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text(
-          "EXTRA CASH",
-          style: TextStyle(
-            color: Colors.black, // Ensuring black text
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        backgroundColor: Colors.white, // Matching UI with a white background
-        elevation: 0, // Removing AppBar shadow for a clean look
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Current Location",
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
-                    Row(
-                      children: [
-                        const Text(
-                          "Abuja, Nigeria",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                        const Icon(Icons.keyboard_arrow_down, size: 16),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  width: 10,
-                ), // Spacing between location & chat icon
-                IconButton(
-                  icon: Image.asset(
-                    "assets/msg_icon.png", // Custom chat icon
-                    width: 24,
-                    height: 24,
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ChatScreen(),
-                      ),
-                    ); // Add chat navigation logic here
-                  },
-                ),
-              ],
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // "EXTRA CASH" - Increased Font Size
+            Text(
+              "EXTRA CASH",
+              style: TextStyle(
+                fontSize: 18, // Increased font size
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-        ],
+
+            // Location - Centered in AppBar
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Current Location",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey,
+                    ), // Slightly larger
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        "Abuja, Nigeria",
+                        style: TextStyle(
+                          fontSize: 14, // Slightly increased
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      const Icon(
+                        Icons.keyboard_arrow_down,
+                        size: 16,
+                      ), // Adjusted icon
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            // Chat Icon - Increased Size
+            IconButton(
+              icon: Image.asset(
+                "assets/msg_icon.png",
+                width: 24, // Increased size
+                height: 24,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ChatScreen()),
+                );
+              },
+            ),
+          ],
+        ),
       ),
 
-     body: SingleChildScrollView(
+      body: SingleChildScrollView(
         controller: _scrollController,
         child: Column(
           children: [
@@ -162,26 +170,28 @@ class _HomePageContentState extends State<HomePageContent> {
                 decoration: InputDecoration(
                   hintText: "Search",
                   prefixIcon: const Icon(Icons.search),
-                  suffixIcon: _searchQuery.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(Icons.cancel, color: Colors.grey),
-                          onPressed: () {
-                            _searchController.clear();
-                            setState(() {
-                              _searchQuery = '';
-                            });
+                  suffixIcon:
+                      _searchQuery.isNotEmpty
+                          ? IconButton(
+                            icon: const Icon(Icons.cancel, color: Colors.grey),
+                            onPressed: () {
+                              _searchController.clear();
+                              setState(() {
+                                _searchQuery = '';
+                              });
 
-                            // Navigate to Home Page while keeping the Bottom Navigation Bar
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HomePage(),
-                              ),
-                              (route) => false, // Removes all previous routes from the stack
-                            );
-                          },
-                        )
-                      : null,
+                              // Navigate to Home Page while keeping the Bottom Navigation Bar
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HomePage(),
+                                ),
+                                (route) =>
+                                    false, // Removes all previous routes from the stack
+                              );
+                            },
+                          )
+                          : null,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -198,90 +208,122 @@ class _HomePageContentState extends State<HomePageContent> {
               child: Row(
                 children: [
                   // Your Bookings
+                  // Your Bookings - Updated to Navigate to YourBookingsScreen
                   Expanded(
-                    child: Card(
-                      clipBehavior: Clip.antiAlias,
-                      child: Stack(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: ColorFiltered(
-                              colorFilter: ColorFilter.mode(
-                                Colors.black.withOpacity(0.4),
-                                BlendMode.darken,
-                              ),
-                              child: Image.asset(
-                                "assets/bookings.jpg",
-                                fit: BoxFit.cover,
-                                height: 120,
-                                width: double.infinity,
-                              ),
-                            ),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => YourBookingsScreen(),
                           ),
-                          Positioned.fill(
-                            child: Center(
-                              child: Text(
-                                "Your Bookings",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  shadows: [
-                                    Shadow(
-                                      blurRadius: 6,
-                                      color: Colors.black,
-                                      offset: Offset(1, 2),
-                                    ),
-                                  ],
+                        );
+                      },
+                      child: Card(
+                        clipBehavior: Clip.antiAlias,
+                        child: Stack(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: ColorFiltered(
+                                colorFilter: ColorFilter.mode(
+                                  Colors.black.withOpacity(0.4),
+                                  BlendMode.darken,
+                                ),
+                                child: Image.asset(
+                                  "assets/bookings.jpg",
+                                  fit: BoxFit.cover,
+                                  height: 120,
+                                  width: double.infinity,
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                            Positioned.fill(
+                              child: Center(
+                                child: Text(
+                                  "Your Bookings",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    shadows: [
+                                      Shadow(
+                                        blurRadius: 6,
+                                        color: Colors.black,
+                                        offset: Offset(1, 2),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
+
                   SizedBox(width: 16),
                   Expanded(
-                    child: Card(
-                      clipBehavior: Clip.antiAlias,
-                      child: Stack(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: ColorFiltered(
-                              colorFilter: ColorFilter.mode(
-                                Colors.black.withOpacity(0.4),
-                                BlendMode.darken,
-                              ),
-                              child: Image.asset(
-                                "assets/wallet.jpg",
-                                fit: BoxFit.cover,
-                                height: 120,
-                                width: double.infinity,
-                              ),
-                            ),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => YourWalletScreen(),
                           ),
-                          Positioned.fill(
-                            child: Center(
-                              child: Text(
-                                "Your Wallet",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  shadows: [
-                                    Shadow(
-                                      blurRadius: 6,
-                                      color: Colors.black,
-                                      offset: Offset(1, 2),
-                                    ),
-                                  ],
+                        );
+                      },
+                      child: Card(
+                        clipBehavior: Clip.antiAlias,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Stack(
+                          children: [
+                            // Background Image with Dark Overlay
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: ColorFiltered(
+                                colorFilter: ColorFilter.mode(
+                                  Colors.black.withOpacity(
+                                    0.5,
+                                  ), // Darker overlay for contrast
+                                  BlendMode.darken,
+                                ),
+                                child: Image.asset(
+                                  "assets/wallet.jpg",
+                                  fit: BoxFit.cover,
+                                  height: 120,
+                                  width: double.infinity,
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                            // Text Positioned in Center
+                            Positioned.fill(
+                              child: Center(
+                                child: Text(
+                                  "Your Wallet",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 20, // Increased Font Size
+                                    fontWeight: FontWeight.w700, // Extra Bold
+                                    color: Colors.white,
+                                    letterSpacing:
+                                        0.8, // Slight letter spacing for clarity
+                                    shadows: [
+                                      Shadow(
+                                        blurRadius: 6,
+                                        color: Colors.black.withOpacity(0.6),
+                                        offset: Offset(1, 2),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -302,7 +344,12 @@ class _HomePageContentState extends State<HomePageContent> {
             ),
 
             // Check if any service matches the search query
-            if (services.every((service) => !service["title"]!.toLowerCase().contains(_searchQuery.toLowerCase())))
+            if (services.every(
+              (service) =>
+                  !service["title"]!.toLowerCase().contains(
+                    _searchQuery.toLowerCase(),
+                  ),
+            ))
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Text(
@@ -321,7 +368,10 @@ class _HomePageContentState extends State<HomePageContent> {
               itemCount: services.length,
               itemBuilder: (context, index) {
                 final serviceTitle = services[index]["title"]!;
-                if (_searchQuery.isEmpty || serviceTitle.toLowerCase().contains(_searchQuery.toLowerCase())) {
+                if (_searchQuery.isEmpty ||
+                    serviceTitle.toLowerCase().contains(
+                      _searchQuery.toLowerCase(),
+                    )) {
                   return GestureDetector(
                     onTap: () {
                       _scrollToService(index);
@@ -333,10 +383,11 @@ class _HomePageContentState extends State<HomePageContent> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ServiceDetailPage(
-                              title: serviceTitle,
-                              image: services[index]["image"]!,
-                            ),
+                            builder:
+                                (context) => ServiceDetailPage(
+                                  title: serviceTitle,
+                                  image: services[index]["image"]!,
+                                ),
                           ),
                         );
                       },
