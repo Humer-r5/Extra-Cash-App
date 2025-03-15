@@ -162,6 +162,29 @@ class _HomePageContentState extends State<HomePageContent> {
                 decoration: InputDecoration(
                   hintText: "Search",
                   prefixIcon: const Icon(Icons.search),
+                  suffixIcon:
+                      _searchQuery
+                              .isNotEmpty // Show "Cancel" button only when typing
+                          ? IconButton(
+                            icon: const Icon(Icons.cancel, color: Colors.grey),
+                            onPressed: () {
+                              _searchController.clear(); // Clear text field
+                              setState(() {
+                                _searchQuery = ''; // Reset search query
+                              });
+
+                              // Navigate to Home Page while keeping the Bottom Navigation Bar
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HomePage(),
+                                ),
+                                (route) =>
+                                    false, // Removes all previous routes from the stack
+                              );
+                            },
+                          )
+                          : null, // No cancel button when search is empty
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -170,6 +193,7 @@ class _HomePageContentState extends State<HomePageContent> {
                 ),
               ),
             ),
+
             // Your Bookings and Your Wallet Side by Side
             // Your Bookings and Your Wallet Side by Side
             Padding(
