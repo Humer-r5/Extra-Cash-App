@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'profile_page.dart';
+<<<<<<< HEAD
 import './login_page.dart';
+=======
+//import '../widgets/bottom_nav.dart';
+import '../widgets/technician_card.dart';
+import 'technician_details_screen.dart';
+import 'chat_screen.dart';
+>>>>>>> 1e5371a6e8193cd42c5791a6a2688808c6eeaad1
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -50,6 +57,8 @@ class _HomePageState extends State<HomePage> {
 
 // Home Page Content
 class HomePageContent extends StatefulWidget {
+  const HomePageContent({super.key});
+
   @override
   _HomePageContentState createState() => _HomePageContentState();
 }
@@ -81,16 +90,66 @@ class _HomePageContentState extends State<HomePageContent> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text("EXTRA CASH"),
-        actions: const [
+        title: const Text(
+          "EXTRA CASH",
+          style: TextStyle(
+            color: Colors.black, // Ensuring black text
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.white, // Matching UI with a white background
+        elevation: 0, // Removing AppBar shadow for a clean look
+        actions: [
           Padding(
-            padding: EdgeInsets.only(right: 16.0),
+            padding: const EdgeInsets.only(right: 16.0),
             child: Row(
-              children: [Icon(Icons.location_on), Text("Abuja, Nigeria")],
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Current Location",
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                    Row(
+                      children: [
+                        const Text(
+                          "Abuja, Nigeria",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const Icon(Icons.keyboard_arrow_down, size: 16),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  width: 10,
+                ), // Spacing between location & chat icon
+                IconButton(
+                  icon: Image.asset(
+                    "assets/msg_icon.png", // Custom chat icon
+                    width: 24,
+                    height: 24,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ChatScreen(),
+                      ),
+                    ); // Add chat navigation logic here
+                  },
+                ),
+              ],
             ),
           ),
         ],
       ),
+
       body: SingleChildScrollView(
         controller: _scrollController,
         child: Column(
@@ -116,6 +175,7 @@ class _HomePageContentState extends State<HomePageContent> {
               ),
             ),
             // Your Bookings and Your Wallet Side by Side
+            // Your Bookings and Your Wallet Side by Side
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Row(
@@ -123,13 +183,26 @@ class _HomePageContentState extends State<HomePageContent> {
                   // Your Bookings
                   Expanded(
                     child: Card(
+                      clipBehavior:
+                          Clip.antiAlias, // Ensures overlay follows card shape
                       child: Stack(
                         children: [
-                          Image.asset(
-                            "assets/bookings.jpg",
-                            fit: BoxFit.cover,
-                            height: 120, // Adjust height as per your image
-                            width: double.infinity,
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: ColorFiltered(
+                              colorFilter: ColorFilter.mode(
+                                Colors.black.withOpacity(
+                                  0.4,
+                                ), // Same dark overlay
+                                BlendMode.darken,
+                              ),
+                              child: Image.asset(
+                                "assets/bookings.jpg",
+                                fit: BoxFit.cover,
+                                height: 120, // Adjust height as per your image
+                                width: double.infinity,
+                              ),
+                            ),
                           ),
                           Positioned.fill(
                             child: Center(
@@ -158,13 +231,26 @@ class _HomePageContentState extends State<HomePageContent> {
                   // Your Wallet
                   Expanded(
                     child: Card(
+                      clipBehavior:
+                          Clip.antiAlias, // Ensures overlay follows card shape
                       child: Stack(
                         children: [
-                          Image.asset(
-                            "assets/wallet.jpg",
-                            fit: BoxFit.cover,
-                            height: 120, // Adjust height as per your image
-                            width: double.infinity,
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: ColorFiltered(
+                              colorFilter: ColorFilter.mode(
+                                Colors.black.withOpacity(
+                                  0.4,
+                                ), // Same dark overlay
+                                BlendMode.darken,
+                              ),
+                              child: Image.asset(
+                                "assets/wallet.jpg",
+                                fit: BoxFit.cover,
+                                height: 120, // Adjust height as per your image
+                                width: double.infinity,
+                              ),
+                            ),
                           ),
                           Positioned.fill(
                             child: Center(
@@ -192,11 +278,12 @@ class _HomePageContentState extends State<HomePageContent> {
                 ],
               ),
             ),
+
             // Choose Service Section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: const Align(
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 child: Text(
                   "Choose Service",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -320,7 +407,6 @@ class ServiceCard extends StatelessWidget {
   }
 }
 
-// Service Detail Page (Shows details of selected service)
 class ServiceDetailPage extends StatelessWidget {
   final String title, image;
 
@@ -374,41 +460,37 @@ class ServiceDetailPage extends StatelessWidget {
                     "Active Technicians",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  TechnicianCard(name: "TECHY 1"),
-                  TechnicianCard(name: "TECHY 2"),
+                  TechnicianCard(
+                    name: "TECHY 1",
+                    email: "techy1@example.com",
+                    location: "1901 Thornridge Cir, New York",
+                    onViewTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const TechnicianDetailsScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  TechnicianCard(
+                    name: "TECHY 2",
+                    email: "techy2@example.com",
+                    location: "1420 Maple St, California",
+                    onViewTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const TechnicianDetailsScreen(),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-// Technician Card
-class TechnicianCard extends StatelessWidget {
-  final String name;
-
-  const TechnicianCard({super.key, required this.name});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundImage: AssetImage("assets/profile.png"),
-        ),
-        title: Text(name),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text("example@gmail.com"),
-            Text("1901 Thornridge Cir, New York"),
-          ],
-        ),
-        trailing: ElevatedButton(onPressed: () {}, child: const Text("View")),
       ),
     );
   }

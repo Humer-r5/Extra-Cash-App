@@ -212,26 +212,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context); // ✅ Go back to the previous screen
-          },
-        ),
-        title: const Text("Register"),
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
-      body: const Center(
-        child: Text(
-          "Register Page",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-  }
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     appBar: AppBar(
+  //       leading: IconButton(
+  //         icon: const Icon(Icons.arrow_back, color: Colors.black),
+  //         onPressed: () {
+  //           Navigator.pop(context); // ✅ Go back to the previous screen
+  //         },
+  //       ),
+  //       title: const Text("Register"),
+  //       backgroundColor: Colors.white,
+  //       elevation: 0,
+  //     ),
+  //     body: const Center(
+  //       child: Text(
+  //         "Register Page",
+  //         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+  //       ),
+  //     ),
+  //   );
+  // }
 }
