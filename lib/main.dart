@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'screens/landing_page.dart'; // Import Splash Screen
+import 'screens/technician_register1.dart';
+import 'screens/technician_register2.dart';
 
 void main() {
   runApp(const MyApp());

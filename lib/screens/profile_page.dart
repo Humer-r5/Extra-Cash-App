@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'edit_profile.dart'; // Import EditProfilePage
+import 'technician_register1.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -112,7 +113,19 @@ class _ProfilePageState extends State<ProfilePage> {
                     }
                   },
                 ),
-                _buildMenuItem(Icons.build, "Become A Technician", context),
+                _buildMenuItem(
+                  Icons.build,
+                  "Become A Technician",
+                  context,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const InputDesignScreen(),
+                      ),
+                    );
+                  },
+                ),
                 _buildMenuItem(
                   Icons.logout,
                   "Logout",
