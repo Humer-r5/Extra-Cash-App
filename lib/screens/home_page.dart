@@ -93,12 +93,7 @@ class _HomePageContentState extends State<HomePageContent> {
           ),
         ],
       ),
-<<<<<<< HEAD
       body: SingleChildScrollView(
-=======
-
-     body: SingleChildScrollView(
->>>>>>> 2c5b4d8a3e0bedd011944ad1473034ddc9262f5f
         controller: _scrollController,
         child: Column(
           children: [
@@ -114,29 +109,6 @@ class _HomePageContentState extends State<HomePageContent> {
                 decoration: InputDecoration(
                   hintText: "Search",
                   prefixIcon: const Icon(Icons.search),
-<<<<<<< HEAD
-=======
-                  suffixIcon: _searchQuery.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(Icons.cancel, color: Colors.grey),
-                          onPressed: () {
-                            _searchController.clear();
-                            setState(() {
-                              _searchQuery = '';
-                            });
-
-                            // Navigate to Home Page while keeping the Bottom Navigation Bar
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HomePage(),
-                              ),
-                              (route) => false, // Removes all previous routes from the stack
-                            );
-                          },
-                        )
-                      : null,
->>>>>>> 2c5b4d8a3e0bedd011944ad1473034ddc9262f5f
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -153,7 +125,6 @@ class _HomePageContentState extends State<HomePageContent> {
                   // Your Bookings
                   Expanded(
                     child: Card(
-<<<<<<< HEAD
                       child: Stack(
                         children: [
                           Image.asset(
@@ -161,25 +132,6 @@ class _HomePageContentState extends State<HomePageContent> {
                             fit: BoxFit.cover,
                             height: 120, // Adjust height as per your image
                             width: double.infinity,
-=======
-                      clipBehavior: Clip.antiAlias,
-                      child: Stack(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: ColorFiltered(
-                              colorFilter: ColorFilter.mode(
-                                Colors.black.withOpacity(0.4),
-                                BlendMode.darken,
-                              ),
-                              child: Image.asset(
-                                "assets/bookings.jpg",
-                                fit: BoxFit.cover,
-                                height: 120,
-                                width: double.infinity,
-                              ),
-                            ),
->>>>>>> 2c5b4d8a3e0bedd011944ad1473034ddc9262f5f
                           ),
                           Positioned.fill(
                             child: Center(
@@ -204,10 +156,10 @@ class _HomePageContentState extends State<HomePageContent> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 16),
+                  SizedBox(width: 16), // Space between the two cards
+                  // Your Wallet
                   Expanded(
                     child: Card(
-<<<<<<< HEAD
                       child: Stack(
                         children: [
                           Image.asset(
@@ -215,25 +167,6 @@ class _HomePageContentState extends State<HomePageContent> {
                             fit: BoxFit.cover,
                             height: 120, // Adjust height as per your image
                             width: double.infinity,
-=======
-                      clipBehavior: Clip.antiAlias,
-                      child: Stack(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: ColorFiltered(
-                              colorFilter: ColorFilter.mode(
-                                Colors.black.withOpacity(0.4),
-                                BlendMode.darken,
-                              ),
-                              child: Image.asset(
-                                "assets/wallet.jpg",
-                                fit: BoxFit.cover,
-                                height: 120,
-                                width: double.infinity,
-                              ),
-                            ),
->>>>>>> 2c5b4d8a3e0bedd011944ad1473034ddc9262f5f
                           ),
                           Positioned.fill(
                             child: Center(
@@ -272,28 +205,16 @@ class _HomePageContentState extends State<HomePageContent> {
                 ),
               ),
             ),
-
-            // Check if any service matches the search query
-            if (services.every((service) => !service["title"]!.toLowerCase().contains(_searchQuery.toLowerCase())))
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: Text(
-                  "Service Unavailable",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.red,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-
             ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: services.length,
               itemBuilder: (context, index) {
                 final serviceTitle = services[index]["title"]!;
-                if (_searchQuery.isEmpty || serviceTitle.toLowerCase().contains(_searchQuery.toLowerCase())) {
+                if (_searchQuery.isEmpty ||
+                    serviceTitle.toLowerCase().contains(
+                      _searchQuery.toLowerCase(),
+                    )) {
                   return GestureDetector(
                     onTap: () {
                       _scrollToService(index);
@@ -305,17 +226,18 @@ class _HomePageContentState extends State<HomePageContent> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ServiceDetailPage(
-                              title: serviceTitle,
-                              image: services[index]["image"]!,
-                            ),
+                            builder:
+                                (context) => ServiceDetailPage(
+                                  title: serviceTitle,
+                                  image: services[index]["image"]!,
+                                ),
                           ),
                         );
                       },
                     ),
                   );
                 } else {
-                  return Container(); // Hide services that don't match
+                  return Container(); // Return an empty container if the service does not match the search query
                 }
               },
             ),
