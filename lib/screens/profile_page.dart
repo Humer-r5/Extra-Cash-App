@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'edit_profile.dart'; // Import EditProfilePage
+import 'register_page.dart';
+import 'home_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -76,11 +78,14 @@ class _ProfilePageState extends State<ProfilePage> {
                           color: Colors.white,
                         ),
                       ),
-                      const Spacer(),
+                      const Spacer(), // Pushes back arrow to the rightmost corner
                       IconButton(
-                        icon: const Icon(Icons.close, color: Colors.white),
+                        icon: const Icon(Icons.arrow_back, color: Colors.white),
                         onPressed: () {
-                          Navigator.pop(context); // Just closes the overlay
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => HomePage()),
+                          ); // Navigates back to the home page
                         },
                       ),
                     ],
@@ -118,18 +123,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   "Logout",
                   context,
                   iconColor: Colors.red,
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => RegisterScreen()),
+                    );
+                  },
                 ),
 
                 const SizedBox(height: 15), // More spacing at bottom
-                // Settings at the bottom
-                // ListTile(
-                //   leading: const Icon(Icons.settings, color: Colors.black),
-                //   title: const Text(
-                //     "Settings",
-                //     style: TextStyle(fontWeight: FontWeight.bold),
-                //   ),
-                //   onTap: () {},
-                // ),
               ],
             ),
           ),

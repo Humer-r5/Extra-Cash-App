@@ -47,19 +47,16 @@ class TechnicianDetailsScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    child: const Text("Book"),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context); // Go back to the previous screen
-                    },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey,
+                      backgroundColor:
+                          Colors.green, // Set button background to green
                     ),
-                    child: const Text("Cancel"),
+                    child: const Text(
+                      "Book",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ), // Ensure text is visible
+                    ),
                   ),
                 ),
               ],
