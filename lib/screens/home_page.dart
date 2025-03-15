@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'profile_page.dart';
+// import './login_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -49,6 +50,8 @@ class _HomePageState extends State<HomePage> {
 
 // Home Page Content
 class HomePageContent extends StatefulWidget {
+  const HomePageContent({super.key});
+
   @override
   _HomePageContentState createState() => _HomePageContentState();
 }
