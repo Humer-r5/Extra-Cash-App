@@ -11,6 +11,35 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   late TextEditingController _nameController;
 
+  String? selectedCity;
+  String? selectedState;
+  String? selectedCountry;
+
+  final List<String> cities = [
+    "New York",
+    "Los Angeles",
+    "Chicago",
+    "Houston",
+    "San Francisco",
+  ];
+  final List<String> states = [
+    "Lagos",
+    "Abuja",
+    "California",
+    "Texas",
+    "Florida",
+    "New York",
+    "Illinois",
+  ];
+  final List<String> countries = [
+    "Nigeria",
+    "USA",
+    "Canada",
+    "UK",
+    "Australia",
+    "India",
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -70,24 +99,47 @@ class _EditProfilePageState extends State<EditProfilePage> {
               _buildTextField("Email", Icons.email),
               _buildTextField("MPIN", Icons.visibility_off),
               _buildTextField("Phone Number", Icons.phone),
+
+              // City & State Dropdowns in Row
               Row(
                 children: [
-                  Expanded(child: _buildDropdown("City")),
+                  Expanded(
+                    child: _buildDropdown("City", cities, selectedCity, (
+                      value,
+                    ) {
+                      setState(() {
+                        selectedCity = value;
+                      });
+                    }),
+                  ),
                   const SizedBox(width: 10),
-                  Expanded(child: _buildDropdown("State")),
+                  Expanded(
+                    child: _buildDropdown("State", states, selectedState, (
+                      value,
+                    ) {
+                      setState(() {
+                        selectedState = value;
+                      });
+                    }),
+                  ),
                 ],
               ),
-              _buildDropdown("Country"),
+
+              // Country Dropdown
+              _buildDropdown("Country", countries, selectedCountry, (value) {
+                setState(() {
+                  selectedCountry = value;
+                });
+              }),
+
               _buildTextField("Address", Icons.location_on),
               const SizedBox(height: 20),
+
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(
-                      context,
-                      _nameController.text,
-                    ); // Pass updated name back
+                    Navigator.pop(context, _nameController.text);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
@@ -128,16 +180,25 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  Widget _buildDropdown(String label) {
+  Widget _buildDropdown(
+    String label,
+    List<String> items,
+    String? selectedValue,
+    ValueChanged<String?> onChanged,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: DropdownButtonFormField(
+      child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
         ),
-        items: const [],
-        onChanged: (value) {},
+        value: selectedValue,
+        items:
+            items.map((String value) {
+              return DropdownMenuItem<String>(value: value, child: Text(value));
+            }).toList(),
+        onChanged: onChanged,
       ),
     );
   }
