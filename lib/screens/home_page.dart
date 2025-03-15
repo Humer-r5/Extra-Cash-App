@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'profile_page.dart';
+<<<<<<< HEAD
+import './login_page.dart';
+=======
 //import '../widgets/bottom_nav.dart';
 import '../widgets/technician_card.dart';
 import 'technician_details_screen.dart';
 import 'chat_screen.dart';
+>>>>>>> 1e5371a6e8193cd42c5791a6a2688808c6eeaad1
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
