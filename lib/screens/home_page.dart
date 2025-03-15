@@ -146,7 +146,7 @@ class _HomePageContentState extends State<HomePageContent> {
         ],
       ),
 
-      body: SingleChildScrollView(
+     body: SingleChildScrollView(
         controller: _scrollController,
         child: Column(
           children: [
@@ -162,29 +162,26 @@ class _HomePageContentState extends State<HomePageContent> {
                 decoration: InputDecoration(
                   hintText: "Search",
                   prefixIcon: const Icon(Icons.search),
-                  suffixIcon:
-                      _searchQuery
-                              .isNotEmpty // Show "Cancel" button only when typing
-                          ? IconButton(
-                            icon: const Icon(Icons.cancel, color: Colors.grey),
-                            onPressed: () {
-                              _searchController.clear(); // Clear text field
-                              setState(() {
-                                _searchQuery = ''; // Reset search query
-                              });
+                  suffixIcon: _searchQuery.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(Icons.cancel, color: Colors.grey),
+                          onPressed: () {
+                            _searchController.clear();
+                            setState(() {
+                              _searchQuery = '';
+                            });
 
-                              // Navigate to Home Page while keeping the Bottom Navigation Bar
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => HomePage(),
-                                ),
-                                (route) =>
-                                    false, // Removes all previous routes from the stack
-                              );
-                            },
-                          )
-                          : null, // No cancel button when search is empty
+                            // Navigate to Home Page while keeping the Bottom Navigation Bar
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomePage(),
+                              ),
+                              (route) => false, // Removes all previous routes from the stack
+                            );
+                          },
+                        )
+                      : null,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -203,23 +200,20 @@ class _HomePageContentState extends State<HomePageContent> {
                   // Your Bookings
                   Expanded(
                     child: Card(
-                      clipBehavior:
-                          Clip.antiAlias, // Ensures overlay follows card shape
+                      clipBehavior: Clip.antiAlias,
                       child: Stack(
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: ColorFiltered(
                               colorFilter: ColorFilter.mode(
-                                Colors.black.withOpacity(
-                                  0.4,
-                                ), // Same dark overlay
+                                Colors.black.withOpacity(0.4),
                                 BlendMode.darken,
                               ),
                               child: Image.asset(
                                 "assets/bookings.jpg",
                                 fit: BoxFit.cover,
-                                height: 120, // Adjust height as per your image
+                                height: 120,
                                 width: double.infinity,
                               ),
                             ),
@@ -247,27 +241,23 @@ class _HomePageContentState extends State<HomePageContent> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 16), // Space between the two cards
-                  // Your Wallet
+                  SizedBox(width: 16),
                   Expanded(
                     child: Card(
-                      clipBehavior:
-                          Clip.antiAlias, // Ensures overlay follows card shape
+                      clipBehavior: Clip.antiAlias,
                       child: Stack(
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: ColorFiltered(
                               colorFilter: ColorFilter.mode(
-                                Colors.black.withOpacity(
-                                  0.4,
-                                ), // Same dark overlay
+                                Colors.black.withOpacity(0.4),
                                 BlendMode.darken,
                               ),
                               child: Image.asset(
                                 "assets/wallet.jpg",
                                 fit: BoxFit.cover,
-                                height: 120, // Adjust height as per your image
+                                height: 120,
                                 width: double.infinity,
                               ),
                             ),
@@ -310,16 +300,28 @@ class _HomePageContentState extends State<HomePageContent> {
                 ),
               ),
             ),
+
+            // Check if any service matches the search query
+            if (services.every((service) => !service["title"]!.toLowerCase().contains(_searchQuery.toLowerCase())))
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Text(
+                  "Service Unavailable",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+
             ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: services.length,
               itemBuilder: (context, index) {
                 final serviceTitle = services[index]["title"]!;
-                if (_searchQuery.isEmpty ||
-                    serviceTitle.toLowerCase().contains(
-                      _searchQuery.toLowerCase(),
-                    )) {
+                if (_searchQuery.isEmpty || serviceTitle.toLowerCase().contains(_searchQuery.toLowerCase())) {
                   return GestureDetector(
                     onTap: () {
                       _scrollToService(index);
@@ -331,18 +333,17 @@ class _HomePageContentState extends State<HomePageContent> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder:
-                                (context) => ServiceDetailPage(
-                                  title: serviceTitle,
-                                  image: services[index]["image"]!,
-                                ),
+                            builder: (context) => ServiceDetailPage(
+                              title: serviceTitle,
+                              image: services[index]["image"]!,
+                            ),
                           ),
                         );
                       },
                     ),
                   );
                 } else {
-                  return Container(); // Return an empty container if the service does not match the search query
+                  return Container(); // Hide services that don't match
                 }
               },
             ),
