@@ -124,10 +124,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   context,
                   iconColor: Colors.red,
                   onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => RegisterScreen()),
-                    );
+                    _showLogoutConfirmationDialog(context);
                   },
                 ),
 
@@ -137,6 +134,56 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ],
+    );
+  }
+
+  // Function to show logout confirmation dialog
+  void _showLogoutConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white, // Pure white background
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10), // Rounded corners
+          ),
+          title: const Text(
+            "Logout",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              color: Colors.black, // High contrast text
+            ),
+          ),
+          content: const Text(
+            "Are you sure, you want to log out?",
+            style: TextStyle(fontSize: 16, color: Colors.black87),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: const Text(
+                "Cancel",
+                style: TextStyle(fontSize: 16, color: Colors.black),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => RegisterScreen()),
+                );
+              },
+              child: const Text(
+                "Yes",
+                style: TextStyle(fontSize: 16, color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
