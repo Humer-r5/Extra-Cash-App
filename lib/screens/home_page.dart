@@ -146,7 +146,7 @@ class _HomePageContentState extends State<HomePageContent> {
         ],
       ),
 
-     body: SingleChildScrollView(
+      body: SingleChildScrollView(
         controller: _scrollController,
         child: Column(
           children: [
@@ -162,26 +162,28 @@ class _HomePageContentState extends State<HomePageContent> {
                 decoration: InputDecoration(
                   hintText: "Search",
                   prefixIcon: const Icon(Icons.search),
-                  suffixIcon: _searchQuery.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(Icons.cancel, color: Colors.grey),
-                          onPressed: () {
-                            _searchController.clear();
-                            setState(() {
-                              _searchQuery = '';
-                            });
+                  suffixIcon:
+                      _searchQuery.isNotEmpty
+                          ? IconButton(
+                            icon: const Icon(Icons.cancel, color: Colors.grey),
+                            onPressed: () {
+                              _searchController.clear();
+                              setState(() {
+                                _searchQuery = '';
+                              });
 
-                            // Navigate to Home Page while keeping the Bottom Navigation Bar
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HomePage(),
-                              ),
-                              (route) => false, // Removes all previous routes from the stack
-                            );
-                          },
-                        )
-                      : null,
+                              // Navigate to Home Page while keeping the Bottom Navigation Bar
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HomePage(),
+                                ),
+                                (route) =>
+                                    false, // Removes all previous routes from the stack
+                              );
+                            },
+                          )
+                          : null,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -302,7 +304,12 @@ class _HomePageContentState extends State<HomePageContent> {
             ),
 
             // Check if any service matches the search query
-            if (services.every((service) => !service["title"]!.toLowerCase().contains(_searchQuery.toLowerCase())))
+            if (services.every(
+              (service) =>
+                  !service["title"]!.toLowerCase().contains(
+                    _searchQuery.toLowerCase(),
+                  ),
+            ))
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Text(
@@ -321,7 +328,10 @@ class _HomePageContentState extends State<HomePageContent> {
               itemCount: services.length,
               itemBuilder: (context, index) {
                 final serviceTitle = services[index]["title"]!;
-                if (_searchQuery.isEmpty || serviceTitle.toLowerCase().contains(_searchQuery.toLowerCase())) {
+                if (_searchQuery.isEmpty ||
+                    serviceTitle.toLowerCase().contains(
+                      _searchQuery.toLowerCase(),
+                    )) {
                   return GestureDetector(
                     onTap: () {
                       _scrollToService(index);
@@ -333,10 +343,11 @@ class _HomePageContentState extends State<HomePageContent> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ServiceDetailPage(
-                              title: serviceTitle,
-                              image: services[index]["image"]!,
-                            ),
+                            builder:
+                                (context) => ServiceDetailPage(
+                                  title: serviceTitle,
+                                  image: services[index]["image"]!,
+                                ),
                           ),
                         );
                       },
