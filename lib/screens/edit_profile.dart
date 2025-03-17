@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class EditProfilePage extends StatefulWidget {
   final String currentName;
@@ -10,10 +12,11 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   late TextEditingController _nameController;
-
   String? selectedCity;
   String? selectedState;
   String? selectedCountry;
+  File? _imageFile; // Store the selected image
+  final ImagePicker _picker = ImagePicker();
 
   final List<String> cities = [
     "New York",
@@ -46,6 +49,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _nameController = TextEditingController(text: widget.currentName);
   }
 
+  Future<void> _pickImage() async {
+    final XFile? pickedFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+    ); // Open gallery
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,28 +79,35 @@ class _EditProfilePageState extends State<EditProfilePage> {
           child: Column(
             children: [
               Center(
-                child: Stack(
-                  children: [
-                    const CircleAvatar(
-                      radius: 50,
-                      backgroundImage: AssetImage("assets/profile_pic.jpg"),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.camera_alt,
-                          color: Colors.black,
+                child: GestureDetector(
+                  onTap: _pickImage, // Trigger image selection
+                  child: Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 50,
+                        backgroundImage:
+                            _imageFile != null
+                                ? FileImage(_imageFile!) // Show selected image
+                                : const AssetImage("assets/profile_pic.jpg")
+                                    as ImageProvider,
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.camera_alt,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
@@ -100,7 +121,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               _buildTextField("MPIN", Icons.visibility_off),
               _buildTextField("Phone Number", Icons.phone),
 
-              // City & State Dropdowns in Row
               Row(
                 children: [
                   Expanded(
@@ -125,7 +145,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ],
               ),
 
-              // Country Dropdown
               _buildDropdown("Country", countries, selectedCountry, (value) {
                 setState(() {
                   selectedCountry = value;
@@ -162,15 +181,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
     String label,
     IconData icon, {
     TextEditingController? controller,
-    bool readOnly = false,
-    String initialValue = "",
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
         controller: controller,
-        readOnly: readOnly,
-        initialValue: controller == null ? initialValue : null,
         decoration: InputDecoration(
           labelText: label,
           prefixIcon: Icon(icon),
