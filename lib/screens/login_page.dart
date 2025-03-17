@@ -120,6 +120,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     }
                     if (value.length != 4) {
                       return 'MPIN must be 4 digits';
+                    } else if (int.tryParse(value) == null) {
+                      // Ensures it's a valid integer
+                      return 'MPIN must be numeric';
                     }
                     return null;
                   },

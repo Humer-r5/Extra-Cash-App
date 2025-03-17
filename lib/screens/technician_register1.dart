@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:extra_cash_app/screens/home_page.dart';
+import 'package:extra_cash_app/screens/home_page.dart';
 import 'package:extra_cash_app/screens/technician_register2.dart';
 
 class InputDesignScreen extends StatefulWidget {
@@ -133,76 +133,76 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
     );
   }
 
-  Widget _buildSkills() {
-    // Skills tags row
-    return Container(
-      margin: const EdgeInsets.only(top: 37),
-      width: double.infinity,
-      constraints: const BoxConstraints(maxWidth: 350),
-      child: Row(
-        children: [
-          // Selected skill - Plumbing
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(6),
-            ),
-            padding: const EdgeInsets.fromLTRB(27, 11, 27, 11),
-            child: Text('Plumbing', style: AppTextStyles.selectedSkill),
-          ),
-          const SizedBox(width: 10),
-          // Unselected skill - Electricity
-          Container(
-            decoration: BoxDecoration(
-              color: AppColors.inputBackground,
-              borderRadius: BorderRadius.circular(6),
-            ),
-            padding: const EdgeInsets.fromLTRB(26, 11, 26, 11),
-            child: Text('Electricity', style: AppTextStyles.unselectedSkill),
-          ),
-          const SizedBox(width: 10),
-          Container(
-            decoration: BoxDecoration(
-              color: AppColors.inputBackground,
-              borderRadius: BorderRadius.circular(6),
-            ),
-            padding: const EdgeInsets.fromLTRB(26, 11, 26, 11),
-            child: Text('Carpenter', style: AppTextStyles.unselectedSkill),
-          ),
-          const SizedBox(width: 10),
-          Container(
-            decoration: BoxDecoration(
-              color: AppColors.inputBackground,
-              borderRadius: BorderRadius.circular(6),
-            ),
-            padding: const EdgeInsets.fromLTRB(26, 11, 26, 11),
-            child: Text(
-              'Packers & Movers',
-              style: AppTextStyles.unselectedSkill,
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              color: AppColors.inputBackground,
-              borderRadius: BorderRadius.circular(6),
-            ),
-            padding: const EdgeInsets.fromLTRB(26, 11, 26, 11),
-            child: Text('AC Mechanics', style: AppTextStyles.unselectedSkill),
-          ),
-          const SizedBox(width: 10),
-          // Add button
-          Container(
-            decoration: BoxDecoration(
-              color: AppColors.inputBackground,
-              borderRadius: BorderRadius.circular(6),
-            ),
-            padding: const EdgeInsets.fromLTRB(21, 8, 21, 22),
-            child: Text('+', style: AppTextStyles.unselectedSkill),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildSkills() {
+  //   // Skills tags row
+  //   return Container(
+  //     margin: const EdgeInsets.only(top: 37),
+  //     width: double.infinity,
+  //     constraints: const BoxConstraints(maxWidth: 350),
+  //     child: Row(
+  //       children: [
+  //         // Selected skill - Plumbing
+  //         Container(
+  //           decoration: BoxDecoration(
+  //             color: Colors.black,
+  //             borderRadius: BorderRadius.circular(6),
+  //           ),
+  //           padding: const EdgeInsets.fromLTRB(27, 11, 27, 11),
+  //           child: Text('Plumbing', style: AppTextStyles.selectedSkill),
+  //         ),
+  //         const SizedBox(width: 10),
+  //         // Unselected skill - Electricity
+  //         Container(
+  //           decoration: BoxDecoration(
+  //             color: AppColors.inputBackground,
+  //             borderRadius: BorderRadius.circular(6),
+  //           ),
+  //           padding: const EdgeInsets.fromLTRB(26, 11, 26, 11),
+  //           child: Text('Electricity', style: AppTextStyles.unselectedSkill),
+  //         ),
+  //         const SizedBox(width: 10),
+  //         Container(
+  //           decoration: BoxDecoration(
+  //             color: AppColors.inputBackground,
+  //             borderRadius: BorderRadius.circular(6),
+  //           ),
+  //           padding: const EdgeInsets.fromLTRB(26, 11, 26, 11),
+  //           child: Text('Carpenter', style: AppTextStyles.unselectedSkill),
+  //         ),
+  //         const SizedBox(width: 10),
+  //         Container(
+  //           decoration: BoxDecoration(
+  //             color: AppColors.inputBackground,
+  //             borderRadius: BorderRadius.circular(6),
+  //           ),
+  //           padding: const EdgeInsets.fromLTRB(26, 11, 26, 11),
+  //           child: Text(
+  //             'Packers & Movers',
+  //             style: AppTextStyles.unselectedSkill,
+  //           ),
+  //         ),
+  //         Container(
+  //           decoration: BoxDecoration(
+  //             color: AppColors.inputBackground,
+  //             borderRadius: BorderRadius.circular(6),
+  //           ),
+  //           padding: const EdgeInsets.fromLTRB(26, 11, 26, 11),
+  //           child: Text('AC Mechanics', style: AppTextStyles.unselectedSkill),
+  //         ),
+  //         const SizedBox(width: 10),
+  //         // Add button
+  //         Container(
+  //           decoration: BoxDecoration(
+  //             color: AppColors.inputBackground,
+  //             borderRadius: BorderRadius.circular(6),
+  //           ),
+  //           padding: const EdgeInsets.fromLTRB(21, 8, 21, 22),
+  //           child: Text('+', style: AppTextStyles.unselectedSkill),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildBackButton() {
     return Container(
@@ -268,12 +268,12 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
           MouseRegion(
             cursor: SystemMouseCursors.click, // Hand cursor on hover
             child: GestureDetector(
-              // onTap: () {
-              //   Navigator.pushReplacement(
-              //     context,
-              //     MaterialPageRoute(builder: (context) => const HomePage()),
-              //   );
-              // },
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomePage()),
+                );
+              },
               child: Container(
                 width: 194,
                 height: 38,

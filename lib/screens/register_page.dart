@@ -59,24 +59,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 // Email Input
                 TextFormField(
                   controller: emailController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: "Your Email address",
-                    prefixIcon: Icon(Icons.email),
-                    border: OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.email),
+                    border: const OutlineInputBorder(),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Please enter your email";
+                      return 'Please enter your email';
                     }
-                    // Email validation using regex
-                    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                      return "Enter a valid email address";
+                    if (!RegExp(r'^[^@]+@gmail\.com$').hasMatch(value)) {
+                      return 'Please enter valid Email';
                     }
                     return null;
                   },
+                  onChanged: (value) {
+                    // Prevent typing after "@gmail.com"
+                    if (value.contains('@gmail.com') &&
+                        value.substring(value.indexOf('@gmail.com')) !=
+                            '@gmail.com') {
+                      emailController.text = value.substring(
+                        0,
+                        value.indexOf('@gmail.com') + 10,
+                      );
+                      emailController.selection = TextSelection.fromPosition(
+                        TextPosition(offset: emailController.text.length),
+                      );
+                    }
+                  },
                 ),
                 const SizedBox(height: 10),
-
                 // Create MPIN with Toggle Visibility
                 TextFormField(
                   controller: mpinController,
@@ -98,9 +110,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       },
                     ),
                   ),
-                  validator:
-                      (value) =>
-                          value!.length == 4 ? null : "MPIN must be 4 digits",
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your MPIN';
+                    }
+                    if (value.length != 4) {
+                      return 'MPIN must be 4 digits';
+                    } else if (int.tryParse(value) == null) {
+                      // Ensures it's a valid integer
+                      return 'MPIN must be numeric';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 10),
 
