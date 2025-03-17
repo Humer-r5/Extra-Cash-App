@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'edit_profile.dart'; // Import EditProfilePage
 import 'register_page.dart';
 import 'home_page.dart';
+import 'technician_register1.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -117,7 +118,22 @@ class _ProfilePageState extends State<ProfilePage> {
                     }
                   },
                 ),
-                _buildMenuItem(Icons.build, "Become A Technician", context),
+                _buildMenuItem(
+                  Icons.build,
+                  "Become A Technician",
+                  context,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) =>
+                                const InputDesignScreen(), // Ensure this is imported correctly
+                      ),
+                    );
+                  },
+                ), // ✅ Fixed issue here
+
                 _buildMenuItem(
                   Icons.logout,
                   "Logout",
@@ -126,7 +142,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   onTap: () {
                     _showLogoutConfirmationDialog(context);
                   },
-                ),
+                ), // ✅ No errors now
 
                 const SizedBox(height: 15), // More spacing at bottom
               ],
