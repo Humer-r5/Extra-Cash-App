@@ -75,8 +75,7 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
   final TextEditingController _skillsController = TextEditingController();
   List<String> _selectedSkills = [];
 
-  bool _showBackButton = false;
-  
+  bool _showForwardButton = true;
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +93,11 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
                 child: SizedBox(
                   width: maxWidth,
                   child: Stack(
-                    children: [_buildStatusBar(), _buildFormContent(maxWidth)],
+                    children: [
+                      _buildStatusBar(),
+                      _buildFormContent(maxWidth),
+                      _buildBackButton(),
+                    ],
                   ),
                 ),
               );
@@ -204,7 +207,7 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
   //   );
   // }
 
-  Widget _buildBackButton() {
+  Widget _buildForwardButton() {
     return Container(
       width: 47,
       height: 47,
@@ -223,6 +226,34 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
               ),
             );
           },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBackButton() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 40,
+        left: 30,
+        bottom: 10,
+      ), // Add padding here
+
+      child: Container(
+        width: 37,
+        height: 37,
+        decoration: const BoxDecoration(
+          color: Colors.black,
+          shape: BoxShape.circle,
+        ),
+        child: Center(
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white, size: 16),
+
+            onPressed: () {
+             Navigator.pop(context);
+            },
+          ),
         ),
       ),
     );
@@ -252,8 +283,9 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
           _buildInputField('Write Your Bio....', _bioController),
           _buildSkillsInputField(),
           // _buildSkills(),
-          if (_showBackButton)
-            Positioned(bottom: 13, left: 33, child: _buildBackButton()),
+           const SizedBox(height: 13),
+          if (_showForwardButton)
+            Positioned(bottom: 13, left: 33, child: _buildForwardButton()),
           const SizedBox(height: 10),
 
           // OR Divider
@@ -410,8 +442,8 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
                                   _skillsController.text = _selectedSkills.join(
                                     ', ',
                                   );
-                              _showBackButton = true; // Show Back Button when skill is selected
-
+                                  _showForwardButton =
+                                      true; // Show Back Button when skill is selected
                                 });
                                 Navigator.pop(context);
                               },
@@ -503,7 +535,7 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
   //       onChanged: (value) {
   //         setState(() {
   //           _skillsController.text = value!;
-  //           _showBackButton = true; // Show Back Button when skill is selected
+  //           _showForwardButton = true; // Show Back Button when skill is selected
   //         });
   //       },
   //     ),
