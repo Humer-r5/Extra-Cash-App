@@ -333,7 +333,6 @@ class _HomePageContentState extends State<HomePageContent> {
               ),
             ),
 
-
             // Choose Service Section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -399,7 +398,6 @@ class _HomePageContentState extends State<HomePageContent> {
                   );
                 } else {
                   return Container(); // Hide services that don't match
-  
                 }
               },
             ),
@@ -563,7 +561,6 @@ class ServiceDetailPage extends StatelessWidget {
                       );
                     },
                   ),
-                  
                 ],
               ),
             ),
