@@ -200,6 +200,8 @@ class _HomePageContentState extends State<HomePageContent> {
                 ),
               ),
             ),
+
+            // Your Bookings and Your Wallet Side by Side
             // Your Bookings and Your Wallet Side by Side
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -328,11 +330,12 @@ class _HomePageContentState extends State<HomePageContent> {
                 ],
               ),
             ),
+
             // Choose Service Section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: const Align(
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 child: Text(
                   "Choose Service",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -369,10 +372,6 @@ class _HomePageContentState extends State<HomePageContent> {
                     serviceTitle.toLowerCase().contains(
                       _searchQuery.toLowerCase(),
                     )) {
-                if (_searchQuery.isEmpty ||
-                    serviceTitle.toLowerCase().contains(
-                      _searchQuery.toLowerCase(),
-                    )) {
                   return GestureDetector(
                     onTap: () {
                       _scrollToService(index);
@@ -389,18 +388,13 @@ class _HomePageContentState extends State<HomePageContent> {
                                   title: serviceTitle,
                                   image: services[index]["image"]!,
                                 ),
-                            builder:
-                                (context) => ServiceDetailPage(
-                                  title: serviceTitle,
-                                  image: services[index]["image"]!,
-                                ),
                           ),
                         );
                       },
                     ),
                   );
                 } else {
-                  return Container(); // Return an empty container if the service does not match the search query
+                  return Container(); // Hide services that don't match
                 }
               },
             ),
@@ -485,7 +479,6 @@ class ServiceCard extends StatelessWidget {
   }
 }
 
-// Service Detail Page (Shows details of selected service)
 class ServiceDetailPage extends StatelessWidget {
   final String title, image;
 
@@ -539,41 +532,37 @@ class ServiceDetailPage extends StatelessWidget {
                     "Active Technicians",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  TechnicianCard(name: "TECHY 1"),
-                  TechnicianCard(name: "TECHY 2"),
+                  TechnicianCard(
+                    name: "TECHY 1",
+                    email: "techy1@example.com",
+                    location: "1901 Thornridge Cir, New York",
+                    onViewTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const TechnicianDetailsScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  TechnicianCard(
+                    name: "TECHY 2",
+                    email: "techy2@example.com",
+                    location: "1420 Maple St, California",
+                    onViewTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const TechnicianDetailsScreen(),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-// Technician Card
-class TechnicianCard extends StatelessWidget {
-  final String name;
-
-  const TechnicianCard({super.key, required this.name});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundImage: AssetImage("assets/profile.png"),
-        ),
-        title: Text(name),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text("example@gmail.com"),
-            Text("1901 Thornridge Cir, New York"),
-          ],
-        ),
-        trailing: ElevatedButton(onPressed: () {}, child: const Text("View")),
       ),
     );
   }

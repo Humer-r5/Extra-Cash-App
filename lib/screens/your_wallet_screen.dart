@@ -21,7 +21,7 @@ class YourWalletScreen extends StatelessWidget {
             const Text(
               "Hello User",
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 18, // Slightly reduced font size
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
@@ -30,24 +30,24 @@ class YourWalletScreen extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 12), // Reduced padding
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               "Welcome Back!",
-              style: TextStyle(fontSize: 16, color: Colors.grey),
+              style: TextStyle(fontSize: 14, color: Colors.grey), // Reduced size
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
 
             // Wallet Information Cards (Earnings, Services, etc.)
             GridView.count(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               crossAxisCount: 2,
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              childAspectRatio: 1.8, // Adjusted for better proportions
+              mainAxisSpacing: 8, // Reduced spacing
+              crossAxisSpacing: 8, // Reduced spacing
+              childAspectRatio: 1.5, // Adjusted for smaller boxes
               children: [
                 WalletCard(title: "Total Earning", amount: "₹1259", icon: Icons.account_balance_wallet),
                 WalletCard(title: "Total Service", amount: "1589", icon: Icons.receipt),
@@ -73,16 +73,16 @@ class WalletCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)), // Reduced border radius
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(10), // Reduced padding
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               amount,
               style: const TextStyle(
-                fontSize: 18,
+                fontSize: 16, // Reduced size
                 fontWeight: FontWeight.bold,
                 color: Colors.blueAccent,
               ),
@@ -90,11 +90,11 @@ class WalletCard extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               title,
-              style: const TextStyle(fontSize: 12, color: Colors.grey),
+              style: const TextStyle(fontSize: 11, color: Colors.grey), // Smaller text
             ),
             Align(
               alignment: Alignment.centerRight,
-              child: Icon(icon, color: Colors.blueAccent, size: 22),
+              child: Icon(icon, color: Colors.blueAccent, size: 20), // Smaller icon
             ),
           ],
         ),

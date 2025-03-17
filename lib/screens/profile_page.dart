@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'edit_profile.dart'; // Import EditProfilePage
-<<<<<<< HEAD
-import 'technician_register1.dart';
-=======
 import 'register_page.dart';
 import 'home_page.dart';
->>>>>>> f83118d1ba12fcf5416a19ebf0f846f2b8fc9785
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -121,29 +117,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     }
                   },
                 ),
-                _buildMenuItem(
-                  Icons.build,
-                  "Become A Technician",
-                  context,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const InputDesignScreen(),
-                      ),
-                    );
-                  },
-                ),
+                _buildMenuItem(Icons.build, "Become A Technician", context),
                 _buildMenuItem(
                   Icons.logout,
                   "Logout",
                   context,
                   iconColor: Colors.red,
                   onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => RegisterScreen()),
-                    );
+                    _showLogoutConfirmationDialog(context);
                   },
                 ),
 
@@ -153,6 +134,56 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ],
+    );
+  }
+
+  // Function to show logout confirmation dialog
+  void _showLogoutConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white, // Pure white background
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10), // Rounded corners
+          ),
+          title: const Text(
+            "Logout",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              color: Colors.black, // High contrast text
+            ),
+          ),
+          content: const Text(
+            "Are you sure, you want to log out?",
+            style: TextStyle(fontSize: 16, color: Colors.black87),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: const Text(
+                "Cancel",
+                style: TextStyle(fontSize: 16, color: Colors.black),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => RegisterScreen()),
+                );
+              },
+              child: const Text(
+                "Yes",
+                style: TextStyle(fontSize: 16, color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -169,7 +200,7 @@ class _ProfilePageState extends State<ProfilePage> {
       child: ListTile(
         leading: Icon(icon, color: iconColor),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        onTap: onTap ?? () {},
+        onTap: onTap ?? () {}, // This ensures no error when onTap is null
       ),
     );
   }
