@@ -202,6 +202,8 @@ class _HomePageContentState extends State<HomePageContent> {
             ),
 
             // Your Bookings and Your Wallet Side by Side
+
+            // Your Bookings and Your Wallet Side by Side
             // Your Bookings and Your Wallet Side by Side
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -331,11 +333,13 @@ class _HomePageContentState extends State<HomePageContent> {
               ),
             ),
 
+
             // Choose Service Section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: const Align(
                 alignment: Alignment.center,
+                // alignment: Alignment.center,
                 child: Text(
                   "Choose Service",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -394,6 +398,7 @@ class _HomePageContentState extends State<HomePageContent> {
                     ),
                   );
                 } else {
+                  return Container(); // Hide services that don't match
                   return Container(); // Hide services that don't match
                 }
               },
@@ -531,6 +536,32 @@ class ServiceDetailPage extends StatelessWidget {
                   const Text(
                     "Active Technicians",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  TechnicianCard(
+                    name: "TECHY 1",
+                    email: "techy1@example.com",
+                    location: "1901 Thornridge Cir, New York",
+                    onViewTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const TechnicianDetailsScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  TechnicianCard(
+                    name: "TECHY 2",
+                    email: "techy2@example.com",
+                    location: "1420 Maple St, California",
+                    onViewTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const TechnicianDetailsScreen(),
+                        ),
+                      );
+                    },
                   ),
                   TechnicianCard(
                     name: "TECHY 1",

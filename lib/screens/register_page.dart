@@ -79,14 +79,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       return 'Please enter your email';
                     }
                     if (!RegExp(r'^[^@]+@gmail\.com$').hasMatch(value)) {
-                      return 'Please enter a valid Gmail address';
+                      return 'Please enter valid Email';
                     }
                     return null;
                   },
                   onChanged: (value) {
-                    if (value.contains('@gmail.com')) {
-                      final beforeAt = value.split('@gmail.com')[0];
-                      emailController.text = '$beforeAt@gmail.com';
+                    // Prevent typing after "@gmail.com"
+                    if (value.contains('@gmail.com') &&
+                        value.substring(value.indexOf('@gmail.com')) !=
+                            '@gmail.com') {
+                      emailController.text = value.substring(
+                        0,
+                        value.indexOf('@gmail.com') + 10,
+                      );
                       emailController.selection = TextSelection.fromPosition(
                         TextPosition(offset: emailController.text.length),
                       );
@@ -94,8 +99,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   },
                 ),
                 const SizedBox(height: 10),
-
-                // Create MPIN
+                // Create MPIN with Toggle Visibility
                 TextFormField(
                   controller: mpinController,
                   obscureText: !_isMpinVisible,
@@ -120,10 +124,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter MPIN';
+                      return 'Please enter your MPIN';
                     }
-                    if (value.length != 4 || int.tryParse(value) == null) {
-                      return 'MPIN must be 4 numeric digits';
+                    if (value.length != 4) {
+                      return 'MPIN must be 4 digits';
+                    } else if (int.tryParse(value) == null) {
+                      // Ensures it's a valid integer
+                      return 'MPIN must be numeric';
                     }
                     return null;
                   },

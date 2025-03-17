@@ -115,8 +115,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your MPIN';
                     }
-                    if (value.length != 4 || int.tryParse(value) == null) {
-                      return 'MPIN must be 4 numeric digits';
+                    if (value.length != 4) {
+                      return 'MPIN must be 4 digits';
+                    } else if (int.tryParse(value) == null) {
+                      // Ensures it's a valid integer
+                      return 'MPIN must be numeric';
                     }
                     return null;
                   },

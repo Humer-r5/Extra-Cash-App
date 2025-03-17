@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'edit_profile.dart'; // Import EditProfilePage
+import 'technician_register1.dart';
 import 'register_page.dart';
 import 'home_page.dart';
-import 'technician_register1.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
