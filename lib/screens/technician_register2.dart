@@ -19,6 +19,7 @@ class _InputDesignScreenState extends State<InputDesignScreen1> {
   final TextEditingController _documentController = TextEditingController();
 
   File? _selectedImage; // Store selected image
+  String? _selectedImageName;
 
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
@@ -27,6 +28,7 @@ class _InputDesignScreenState extends State<InputDesignScreen1> {
     if (image != null) {
       setState(() {
         _selectedImage = File(image.path); // Convert to File
+        _selectedImageName = image.name; // Use XFile's `.name` property for file name
       });
     }
   }
@@ -49,15 +51,14 @@ class _InputDesignScreenState extends State<InputDesignScreen1> {
             const SizedBox(width: 10),
             Expanded(
               child: Text(
-                _selectedImage != null
-                    ? "Document Selected"
-                    : "Attach the Document",
+               _selectedImageName ?? "Attach the Document",
                 style: const TextStyle(
                   color: Color(0xFFA0A0A0),
                   fontFamily: 'Montserrat',
                   fontSize: 17,
                   fontWeight: FontWeight.w700,
                 ),
+                overflow: TextOverflow.ellipsis, // Handle long file names
               ),
             ),
           ],
