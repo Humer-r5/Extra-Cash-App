@@ -19,14 +19,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _isConfirmMpinVisible = false;
 
   void handleSignUp() {
-    if (_formKey.currentState!.validate() && agreeToTerms) {
+    if (_formKey.currentState!.validate()) {
+      if (!agreeToTerms) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("You must agree to the Terms & Conditions."),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
       debugPrint("User Registered with Email: ${emailController.text}");
 
       // Navigate to Home Page after successful registration
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => HomePage(), // Navigate to HomePage
+          builder: (context) => const HomePage(), // Navigate to HomePage
         ),
       );
     }
@@ -59,30 +69,40 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 // Email Input
                 TextFormField(
                   controller: emailController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: "Your Email address",
-                    prefixIcon: Icon(Icons.email),
-                    border: OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.email),
+                    border: const OutlineInputBorder(),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Please enter your email";
+                      return 'Please enter your email';
                     }
-                    // Email validation using regex
-                    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                      return "Enter a valid email address";
+                    if (!RegExp(r'^[^@]+@gmail\.com$').hasMatch(value)) {
+                      return 'Please enter a valid Gmail address';
                     }
                     return null;
+                  },
+                  onChanged: (value) {
+                    if (value.contains('@gmail.com')) {
+                      final beforeAt = value.split('@gmail.com')[0];
+                      emailController.text = '$beforeAt@gmail.com';
+                      emailController.selection = TextSelection.fromPosition(
+                        TextPosition(offset: emailController.text.length),
+                      );
+                    }
                   },
                 ),
                 const SizedBox(height: 10),
 
-                // Create MPIN with Toggle Visibility
+                // Create MPIN
                 TextFormField(
                   controller: mpinController,
                   obscureText: !_isMpinVisible,
+                  keyboardType: TextInputType.number,
+                  maxLength: 4, // Restrict to 4 digits
                   decoration: InputDecoration(
-                    labelText: "Create your Mpin",
+                    labelText: "Create your MPIN",
                     prefixIcon: const Icon(Icons.vpn_key),
                     border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
@@ -98,18 +118,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       },
                     ),
                   ),
-                  validator:
-                      (value) =>
-                          value!.length == 4 ? null : "MPIN must be 4 digits",
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter MPIN';
+                    }
+                    if (value.length != 4 || int.tryParse(value) == null) {
+                      return 'MPIN must be 4 numeric digits';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 10),
 
-                // Confirm MPIN with Toggle Visibility
+                // Confirm MPIN
                 TextFormField(
                   controller: confirmMpinController,
                   obscureText: !_isConfirmMpinVisible,
+                  keyboardType: TextInputType.number,
+                  maxLength: 4, // Restrict to 4 digits
                   decoration: InputDecoration(
-                    labelText: "Confirm your Mpin",
+                    labelText: "Confirm your MPIN",
                     prefixIcon: const Icon(Icons.vpn_key),
                     border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
@@ -125,15 +153,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       },
                     ),
                   ),
-                  validator:
-                      (value) =>
-                          value != mpinController.text
-                              ? "MPIN does not match"
-                              : null,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please confirm your MPIN";
+                    }
+                    if (value != mpinController.text) {
+                      return "MPIN does not match";
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 10),
 
-                // Terms & Conditions
+                // Terms & Conditions Checkbox
                 Row(
                   children: [
                     Checkbox(
@@ -144,12 +176,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         });
                       },
                     ),
-                    const Text("I agree with Terms & Conditions"),
+                    const Expanded(
+                      child: Text(
+                        "I agree with Terms & Conditions",
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 10),
 
-                // Sign Up Button (Navigate to HomePage)
+                // Sign Up Button
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
@@ -176,7 +213,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     backgroundColor: Colors.red,
                     minimumSize: const Size(double.infinity, 50),
                   ),
-                  onPressed: () {},
+                  onPressed: () {}, // TODO: Implement Google Sign-In
                   child: const Text(
                     "Continue With Google",
                     style: TextStyle(color: Colors.white),
