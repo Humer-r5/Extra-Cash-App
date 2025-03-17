@@ -1,3 +1,4 @@
+import 'package:extra_cash_app/screens/home_page.dart';
 import 'package:flutter/material.dart';
 import 'screens/landing_page.dart'; // Import Splash Screen
 import 'screens/technician_register1.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const SplashScreen(), // Show Splash Screen First
+      home: const HomePage(), // Show Splash Screen First
     );
   }
 }

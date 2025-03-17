@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:extra_cash_app/screens/home_page.dart';
+// import 'package:extra_cash_app/screens/home_page.dart';
 import 'package:extra_cash_app/screens/technician_register2.dart';
 
 class InputDesignScreen extends StatefulWidget {
@@ -73,8 +73,10 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _skillsController = TextEditingController();
+  List<String> _selectedSkills = [];
 
   bool _showBackButton = false;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -92,12 +94,7 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
                 child: SizedBox(
                   width: maxWidth,
                   child: Stack(
-                    children: [
-                      _buildStatusBar(),
-
-                      _buildFormContent(maxWidth),
-                      
-                    ],
+                    children: [_buildStatusBar(), _buildFormContent(maxWidth)],
                   ),
                 ),
               );
@@ -162,6 +159,35 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
             ),
             padding: const EdgeInsets.fromLTRB(26, 11, 26, 11),
             child: Text('Electricity', style: AppTextStyles.unselectedSkill),
+          ),
+          const SizedBox(width: 10),
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.inputBackground,
+              borderRadius: BorderRadius.circular(6),
+            ),
+            padding: const EdgeInsets.fromLTRB(26, 11, 26, 11),
+            child: Text('Carpenter', style: AppTextStyles.unselectedSkill),
+          ),
+          const SizedBox(width: 10),
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.inputBackground,
+              borderRadius: BorderRadius.circular(6),
+            ),
+            padding: const EdgeInsets.fromLTRB(26, 11, 26, 11),
+            child: Text(
+              'Packers & Movers',
+              style: AppTextStyles.unselectedSkill,
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.inputBackground,
+              borderRadius: BorderRadius.circular(6),
+            ),
+            padding: const EdgeInsets.fromLTRB(26, 11, 26, 11),
+            child: Text('AC Mechanics', style: AppTextStyles.unselectedSkill),
           ),
           const SizedBox(width: 10),
           // Add button
@@ -242,12 +268,12 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
           MouseRegion(
             cursor: SystemMouseCursors.click, // Hand cursor on hover
             child: GestureDetector(
-              onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
-                );
-              },
+              // onTap: () {
+              //   Navigator.pushReplacement(
+              //     context,
+              //     MaterialPageRoute(builder: (context) => const HomePage()),
+              //   );
+              // },
               child: Container(
                 width: 194,
                 height: 38,
@@ -335,23 +361,71 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
     );
   }
 
- Widget _buildSkillsInputField() {
+  Widget _buildSkillsInputField() {
     return GestureDetector(
       onTap: () {
-      showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        isScrollControlled: true,
-        builder: (context) => Container(
-          padding: const EdgeInsets.all(16),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-          ),
-          child: _buildSkills(), // Display the skills here
-        ),
-      );
-    },
+        showDialog(
+          context: context,
+          barrierDismissible: true,
+          builder:
+              (context) => StatefulBuilder(
+                builder: (context, setDialogState) {
+                  return Dialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: SizedBox(
+                      width:
+                          MediaQuery.of(context).size.width *
+                          0.3, // 80% of screen width
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text(
+                              'Select Your Skills',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const Divider(),
+                            _buildSkillCheckbox('Plumbing', setDialogState),
+                            _buildSkillCheckbox('Electricity', setDialogState),
+                            _buildSkillCheckbox('Carpenter', setDialogState),
+                            _buildSkillCheckbox(
+                              'Packers & Movers',
+                              setDialogState,
+                            ),
+                            _buildSkillCheckbox('AC Mechanic', setDialogState),
+                            const SizedBox(height: 10),
+                            ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  _skillsController.text = _selectedSkills.join(
+                                    ', ',
+                                  );
+                              _showBackButton = true; // Show Back Button when skill is selected
+
+                                });
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Confirm'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+        );
+      },
       child: Container(
         width: double.infinity,
         margin: const EdgeInsets.only(bottom: 3),
@@ -361,24 +435,39 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
           borderRadius: BorderRadius.circular(6),
         ),
         alignment: Alignment.centerLeft,
-        child: const Padding(
-        padding: EdgeInsets.symmetric(vertical: 15),
-        child: Text(
-          'Add Your Skills',
-          style: TextStyle(
-            color: Color(0xFFA0A0A0),
-            fontFamily: 'Montserrat',
-            fontSize: 17,
-            fontWeight: FontWeight.w700,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 15),
+          child: Text(
+            _skillsController.text.isEmpty
+                ? 'Add Your Skills'
+                : _skillsController.text,
+            style: const TextStyle(
+              color: Color(0xFFA0A0A0),
+              fontFamily: 'Montserrat',
+              fontSize: 17,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
-      ),
       ),
     );
   }
 
-
-
+  Widget _buildSkillCheckbox(String skill, Function setDialogState) {
+    return CheckboxListTile(
+      title: Text(skill),
+      value: _selectedSkills.contains(skill),
+      onChanged: (isSelected) {
+        setDialogState(() {
+          if (isSelected == true) {
+            _selectedSkills.add(skill);
+          } else {
+            _selectedSkills.remove(skill);
+          }
+        });
+      },
+    );
+  }
 
   // Widget _buildSkillsInputField() {
   //   return Container(

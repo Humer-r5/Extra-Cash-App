@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:extra_cash_app/screens/home_page.dart';
+// import 'package:extra_cash_app/screens/home_page.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
@@ -172,12 +172,12 @@ class _InputDesignScreenState extends State<InputDesignScreen1> {
          MouseRegion(
   cursor: SystemMouseCursors.click, // Hand cursor on hover
   child: GestureDetector(
-    onTap: () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-      );
-    },
+    // onTap: () {
+    //   Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => const HomePage()),
+    //   );
+    // },
     child: Container(
       width: 194,
       height: 38,
