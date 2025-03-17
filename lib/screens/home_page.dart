@@ -399,7 +399,7 @@ class _HomePageContentState extends State<HomePageContent> {
                   );
                 } else {
                   return Container(); // Hide services that don't match
-                  return Container(); // Hide services that don't match
+                   
                 }
               },
             ),
