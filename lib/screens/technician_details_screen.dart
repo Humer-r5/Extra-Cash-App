@@ -1,13 +1,36 @@
 import 'package:flutter/material.dart';
-import 'customer_info_screen.dart';
+import 'customer_info_screen.dart'; // Import the CustomerInfoScreen
+import '../widgets/BottomNavBar .dart'; // Import the BottomNavBar widget
+import 'home_page.dart'; // Import the HomePage
+import 'profile_page.dart'; // Import the ProfilePage
 
 class TechnicianDetailsScreen extends StatelessWidget {
   const TechnicianDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    int _selectedIndex = 0; // Default index for the bottom nav bar
+
+    void _onItemTapped(int index) {
+      if (index == 0) {
+        // Navigate to HomePage
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      } else if (index == 3) {
+        // Navigate to ProfilePage
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const ProfilePage()),
+        );
+      }
+    }
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Technician Details")),
+      appBar: AppBar(
+        title: const Text("Technician Details"),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -48,14 +71,11 @@ class TechnicianDetailsScreen extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Colors.green, // Set button background to green
+                      backgroundColor: Colors.green,
                     ),
                     child: const Text(
                       "Book",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ), // Ensure text is visible
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
@@ -63,6 +83,10 @@ class TechnicianDetailsScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: _selectedIndex, // Pass the current index
+        onTap: _onItemTapped, // Pass the navigation logic
       ),
     );
   }
