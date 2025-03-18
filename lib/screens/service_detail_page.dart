@@ -1,10 +1,9 @@
-// service_detail_page.dart
 import 'package:flutter/material.dart';
 import '../widgets/technician_card.dart'; // Import the TechnicianCard widget
 import 'technician_details_screen.dart'; // Import the TechnicianDetailsScreen
-import 'home_page.dart';
-import '../widgets/BottomNavBar .dart';
-import 'profile_page.dart';
+import '../widgets/BottomNavBar .dart'; // Import the BottomNavBar widget
+import 'home_page.dart'; // Import the HomePage
+import 'profile_page.dart'; // Import the ProfilePage
 
 class ServiceDetailPage extends StatelessWidget {
   final String title, image;
@@ -17,6 +16,24 @@ class ServiceDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int _selectedIndex = 0; // Default index for the bottom nav bar
+
+    void _onItemTapped(int index) {
+      if (index == 0) {
+        // Navigate to HomePage
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      } else if (index == 3) {
+        // Navigate to ProfilePage
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const ProfilePage()),
+        );
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -92,22 +109,8 @@ class ServiceDetailPage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomNavBar(
-        currentIndex: 0, // Set the appropriate index for the selected tab
-        onTap: (index) {
-          // Handle navigation for the bottom nav bar
-          // Example: Use Navigator to push/pop screens as needed
-          if (index == 0) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const HomePage()),
-            );
-          } else if (index == 3) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const ProfilePage()),
-            );
-          }
-        },
+        currentIndex: _selectedIndex, // Pass the current index
+        onTap: _onItemTapped, // Pass the navigation logic
       ),
     );
   }
