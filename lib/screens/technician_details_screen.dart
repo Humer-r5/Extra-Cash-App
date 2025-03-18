@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'customer_info_screen.dart';
-
+import 'home_page.dart';
+import '../widgets/BottomNavBar .dart';
+import 'profile_page.dart';
 class TechnicianDetailsScreen extends StatelessWidget {
   const TechnicianDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Technician Details")),
+      appBar: AppBar(
+        title: const Text("Technician Details"),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -48,14 +52,11 @@ class TechnicianDetailsScreen extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Colors.green, // Set button background to green
+                      backgroundColor: Colors.green,
                     ),
                     child: const Text(
                       "Book",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ), // Ensure text is visible
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
@@ -63,6 +64,24 @@ class TechnicianDetailsScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: 0, // Set the appropriate index for the selected tab
+        onTap: (index) {
+          // Handle navigation for the bottom nav bar
+          // Example: Use Navigator to push/pop screens as needed
+          if (index == 0) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          } else if (index == 3) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const ProfilePage()),
+            );
+          }
+        },
       ),
     );
   }
