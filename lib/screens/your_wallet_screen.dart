@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'home_page.dart';
+import '../widgets/BottomNavBar .dart';
+import 'profile_page.dart';
 
 class YourWalletScreen extends StatelessWidget {
   @override
@@ -49,14 +52,48 @@ class YourWalletScreen extends StatelessWidget {
               crossAxisSpacing: 12,
               childAspectRatio: 1.8, // Adjusted for better proportions
               children: [
-                WalletCard(title: "Total Earning", amount: "₹1259", icon: Icons.account_balance_wallet),
-                WalletCard(title: "Total Service", amount: "1589", icon: Icons.receipt),
-                WalletCard(title: "Upcoming Services", amount: "15", icon: Icons.event),
-                WalletCard(title: "Today's Service", amount: "05", icon: Icons.today),
+                WalletCard(
+                  title: "Total Earning",
+                  amount: "₹1259",
+                  icon: Icons.account_balance_wallet,
+                ),
+                WalletCard(
+                  title: "Total Service",
+                  amount: "1589",
+                  icon: Icons.receipt,
+                ),
+                WalletCard(
+                  title: "Upcoming Services",
+                  amount: "15",
+                  icon: Icons.event,
+                ),
+                WalletCard(
+                  title: "Today's Service",
+                  amount: "05",
+                  icon: Icons.today,
+                ),
               ],
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: 0, // Set the appropriate index for the selected tab
+        onTap: (index) {
+          // Handle navigation for the bottom nav bar
+          // Example: Use Navigator to push/pop screens as needed
+          if (index == 0) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          } else if (index == 3) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const ProfilePage()),
+            );
+          }
+        },
       ),
     );
   }
@@ -68,7 +105,11 @@ class WalletCard extends StatelessWidget {
   final String amount;
   final IconData icon;
 
-  const WalletCard({required this.title, required this.amount, required this.icon});
+  const WalletCard({
+    required this.title,
+    required this.amount,
+    required this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {

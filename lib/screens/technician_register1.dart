@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:extra_cash_app/screens/home_page.dart';
-import 'package:extra_cash_app/screens/technician_register2.dart';
+// import 'package:extra_cash_app/screens/technician_register2.dart';
 
 class InputDesignScreen extends StatefulWidget {
   const InputDesignScreen({Key? key}) : super(key: key);
@@ -219,12 +219,12 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
         child: IconButton(
           icon: const Icon(Icons.arrow_forward, color: Colors.white, size: 26),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const InputDesignScreen1(),
-              ),
-            );
+            // Navigator.push(
+            //   context,
+            //   // MaterialPageRoute(
+            //   //   builder: (context) => const InputDesignScreen1(),
+            //   // ),
+            // );
           },
         ),
       ),
@@ -251,7 +251,7 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
             icon: const Icon(Icons.arrow_back, color: Colors.white, size: 16),
 
             onPressed: () {
-             Navigator.pop(context);
+              Navigator.pop(context);
             },
           ),
         ),
@@ -283,7 +283,7 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
           _buildInputField('Write Your Bio....', _bioController),
           _buildSkillsInputField(),
           // _buildSkills(),
-           const SizedBox(height: 13),
+          const SizedBox(height: 13),
           if (_showForwardButton)
             Positioned(bottom: 13, left: 33, child: _buildForwardButton()),
           const SizedBox(height: 10),

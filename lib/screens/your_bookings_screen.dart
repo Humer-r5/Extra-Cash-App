@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'home_page.dart';
+import '../widgets/BottomNavBar .dart';
+import 'profile_page.dart';
+
 
 class YourBookingsScreen extends StatelessWidget {
   @override
@@ -92,6 +96,24 @@ class YourBookingsScreen extends StatelessWidget {
               ],
             ),
           );
+        },
+      ),
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: 0, // Set the appropriate index for the selected tab
+        onTap: (index) {
+          // Handle navigation for the bottom nav bar
+          // Example: Use Navigator to push/pop screens as needed
+          if (index == 0) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          } else if (index == 3) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const ProfilePage()),
+            );
+          }
         },
       ),
     );
