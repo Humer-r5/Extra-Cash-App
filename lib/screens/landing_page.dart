@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'register_page.dart'; // Import the Register Screen
+import 'home_page.dart'; // Import the Register Screen
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -48,9 +48,7 @@ class SplashScreen extends StatelessWidget {
                 // Navigate to Register Screen
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => const RegisterScreen(),
-                  ),
+                  MaterialPageRoute(builder: (context) => const HomePage()),
                 );
               },
               child: const Text(

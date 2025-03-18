@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './home_page.dart';
 import './register_page.dart'; // Import Register Page
+import './forgot-mpin.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -156,7 +157,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 // Forgot MPIN
                 GestureDetector(
                   onTap: () {
-                    // TODO: Add Forgot MPIN logic here
+                    // Navigate to Forgot MPIN Screen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ForgotMpinScreen(),
+                      ),
+                    );
                   },
                   child: const Text(
                     "Forgot MPIN?",

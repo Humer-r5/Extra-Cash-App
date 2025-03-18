@@ -68,11 +68,12 @@
 //   }
 // }
 
-
-
 import 'package:flutter/material.dart';
 // import 'customer_info_screen.dart';
 import './login-continue-page.dart'; // Importing the login screen
+import 'home_page.dart';
+import '../widgets/BottomNavBar .dart';
+import 'profile_page.dart';
 
 class TechnicianDetailsScreen extends StatelessWidget {
   const TechnicianDetailsScreen({super.key});
@@ -115,9 +116,7 @@ class TechnicianDetailsScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
-                        ),
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -133,6 +132,24 @@ class TechnicianDetailsScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: 0, // Set the appropriate index for the selected tab
+        onTap: (index) {
+          // Handle navigation for the bottom nav bar
+          // Example: Use Navigator to push/pop screens as needed
+          if (index == 0) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          } else if (index == 3) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const ProfilePage()),
+            );
+          }
+        },
       ),
     );
   }

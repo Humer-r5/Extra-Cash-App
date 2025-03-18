@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:extra_cash_app/screens/home_page.dart';
-import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
 class InputDesignScreen1 extends StatefulWidget {
@@ -18,7 +17,8 @@ class _InputDesignScreenState extends State<InputDesignScreen1> {
   final TextEditingController _ninController = TextEditingController();
   final TextEditingController _documentController = TextEditingController();
 
-  File? _selectedImage; // Store selected image
+// Store selected image
+  String? _selectedImageName;
 
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
@@ -26,7 +26,8 @@ class _InputDesignScreenState extends State<InputDesignScreen1> {
 
     if (image != null) {
       setState(() {
-        _selectedImage = File(image.path); // Convert to File
+// Convert to File
+        _selectedImageName = image.name; // Use XFile's `.name` property for file name
       });
     }
   }
@@ -49,15 +50,14 @@ class _InputDesignScreenState extends State<InputDesignScreen1> {
             const SizedBox(width: 10),
             Expanded(
               child: Text(
-                _selectedImage != null
-                    ? "Document Selected"
-                    : "Attach the Document",
+               _selectedImageName ?? "Attach the Document",
                 style: const TextStyle(
                   color: Color(0xFFA0A0A0),
                   fontFamily: 'Montserrat',
                   fontSize: 17,
                   fontWeight: FontWeight.w700,
                 ),
+                overflow: TextOverflow.ellipsis, // Handle long file names
               ),
             ),
           ],
