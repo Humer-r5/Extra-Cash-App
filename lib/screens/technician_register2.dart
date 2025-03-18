@@ -17,7 +17,7 @@ class _InputDesignScreenState extends State<InputDesignScreen1> {
   final TextEditingController _ninController = TextEditingController();
   final TextEditingController _documentController = TextEditingController();
 
-// Store selected image
+  // Store selected image
   String? _selectedImageName;
 
   Future<void> _pickImage() async {
@@ -26,8 +26,9 @@ class _InputDesignScreenState extends State<InputDesignScreen1> {
 
     if (image != null) {
       setState(() {
-// Convert to File
-        _selectedImageName = image.name; // Use XFile's `.name` property for file name
+        // Convert to File
+        _selectedImageName =
+            image.name; // Use XFile's `.name` property for file name
       });
     }
   }
@@ -50,7 +51,7 @@ class _InputDesignScreenState extends State<InputDesignScreen1> {
             const SizedBox(width: 10),
             Expanded(
               child: Text(
-               _selectedImageName ?? "Attach the Document",
+                _selectedImageName ?? "Attach the Document",
                 style: const TextStyle(
                   color: Color(0xFFA0A0A0),
                   fontFamily: 'Montserrat',
@@ -98,51 +99,6 @@ class _InputDesignScreenState extends State<InputDesignScreen1> {
     );
   }
 
-  // Widget _buildStatusBar() {
-  //   return Container(
-  //     height: 53,
-  //     padding: const EdgeInsets.symmetric(horizontal: 16),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       // children: [
-  //       //   const Text(
-  //       //     '9:41',
-  //       //     style: TextStyle(
-  //       //       fontFamily: 'SF Pro',
-  //       //       fontSize: 17,
-  //       //       fontWeight: FontWeight.w600,
-  //       //       color: Colors.black,
-  //       //     ),
-  //       //   ),
-  //       //   const Row(
-  //       //     children: [
-  //       //       Icon(Icons.signal_cellular_4_bar),
-  //       //       Icon(Icons.wifi),
-  //       //       Icon(Icons.battery_full),
-  //       //     ],
-  //       //   ),
-  //       // ],
-  //     ),
-  //   );
-  // }
-
-  // Widget _buildBackButton() {
-  //   return Container(
-  //     width: 27,
-  //     height: 27,
-  //     decoration: const BoxDecoration(
-  //       color: Colors.black,
-  //       shape: BoxShape.circle,
-  //     ),
-  //     child: Center(
-  //       child: IconButton(
-  //         icon: const Icon(Icons.arrow_forward, color: Colors.white, size: 16),
-  //         onPressed: () => Navigator.pop(context),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Widget _buildBackButton() {
     return Padding(
       padding: const EdgeInsets.only(
@@ -163,7 +119,7 @@ class _InputDesignScreenState extends State<InputDesignScreen1> {
             icon: const Icon(Icons.arrow_back, color: Colors.white, size: 16),
 
             onPressed: () {
-             Navigator.pop(context);
+              Navigator.pop(context);
             },
           ),
         ),
