@@ -34,118 +34,121 @@ class _ProfilePageState extends State<ProfilePage> {
           top: 20, // Moved further up
           left: 10,
           right: 60,
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 10,
-                  offset: Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Profile Header
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(
-                      255,
-                      242,
-                      165,
-                      49,
-                    ), // Exact color from reference image
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(10),
+          child: Material( // ✅ Added Material widget here
+            type: MaterialType.transparency, // Keeps the background transparent
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Profile Header
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(
+                        255,
+                        242,
+                        165,
+                        49,
+                      ), // Exact color from reference image
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(10),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        const CircleAvatar(
+                          radius: 30,
+                          backgroundImage: AssetImage("assets/profile_pic.jpg"),
+                        ),
+                        const SizedBox(width: 16),
+                        Text(
+                          userName,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const Spacer(), // Pushes back arrow to the rightmost corner
+                        IconButton(
+                          icon: const Icon(Icons.arrow_back, color: Colors.white),
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => HomePage()),
+                            ); // Navigates back to the home page
+                          },
+                        ),
+                      ],
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      const CircleAvatar(
-                        radius: 30,
-                        backgroundImage: AssetImage("assets/profile_pic.jpg"),
-                      ),
-                      const SizedBox(width: 16),
-                      Text(
-                        userName,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+
+                  const SizedBox(
+                    height: 10,
+                  ), // Spacing between header and menu items
+                  // Profile Menu Items
+                  _buildMenuItem(Icons.dashboard, "Dashboard", context),
+                  _buildMenuItem(
+                    Icons.edit,
+                    "Edit Your Profile",
+                    context,
+                    onTap: () async {
+                      final updatedName = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) => EditProfilePage(currentName: userName),
                         ),
-                      ),
-                      const Spacer(), // Pushes back arrow to the rightmost corner
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => HomePage()),
-                          ); // Navigates back to the home page
-                        },
-                      ),
-                    ],
+                      );
+
+                      if (updatedName != null && updatedName.isNotEmpty) {
+                        setState(() {
+                          userName = updatedName; // Update the profile name
+                        });
+                      }
+                    },
                   ),
-                ),
+                  _buildMenuItem(
+                    Icons.build,
+                    "Become A Technician",
+                    context,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) =>
+                                  const InputDesignScreen(), // Ensure this is imported correctly
+                        ),
+                      );
+                    },
+                  ), // ✅ Fixed issue here
 
-                const SizedBox(
-                  height: 10,
-                ), // Spacing between header and menu items
-                // Profile Menu Items
-                _buildMenuItem(Icons.dashboard, "Dashboard", context),
-                _buildMenuItem(
-                  Icons.edit,
-                  "Edit Your Profile",
-                  context,
-                  onTap: () async {
-                    final updatedName = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder:
-                            (context) => EditProfilePage(currentName: userName),
-                      ),
-                    );
+                  _buildMenuItem(
+                    Icons.logout,
+                    "Logout",
+                    context,
+                    iconColor: Colors.red,
+                    onTap: () {
+                      _showLogoutConfirmationDialog(context);
+                    },
+                  ), // ✅ No errors now
 
-                    if (updatedName != null && updatedName.isNotEmpty) {
-                      setState(() {
-                        userName = updatedName; // Update the profile name
-                      });
-                    }
-                  },
-                ),
-                _buildMenuItem(
-                  Icons.build,
-                  "Become A Technician",
-                  context,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder:
-                            (context) =>
-                                const InputDesignScreen(), // Ensure this is imported correctly
-                      ),
-                    );
-                  },
-                ), // ✅ Fixed issue here
-
-                _buildMenuItem(
-                  Icons.logout,
-                  "Logout",
-                  context,
-                  iconColor: Colors.red,
-                  onTap: () {
-                    _showLogoutConfirmationDialog(context);
-                  },
-                ), // ✅ No errors now
-
-                const SizedBox(height: 15), // More spacing at bottom
-              ],
+                  const SizedBox(height: 15), // More spacing at bottom
+                ],
+              ),
             ),
           ),
         ),
