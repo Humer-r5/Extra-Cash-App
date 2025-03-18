@@ -17,16 +17,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool agreeToTerms = false;
   bool _isMpinVisible = false;
   bool _isConfirmMpinVisible = false;
+  bool _showTermsError = false;
 
   void handleSignUp() {
     if (_formKey.currentState!.validate()) {
       if (!agreeToTerms) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("You must agree to the Terms & Conditions."),
-            backgroundColor: Colors.red,
-          ),
-        );
+        setState(() {
+          _showTermsError = true; // Show red color
+        });
         return;
       }
 
@@ -174,19 +172,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 // Terms & Conditions Checkbox
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Checkbox(
                       value: agreeToTerms,
                       onChanged: (value) {
                         setState(() {
                           agreeToTerms = value!;
+                          _showTermsError = !agreeToTerms; // Update error state
                         });
                       },
                     ),
-                    const Expanded(
-                      child: Text(
-                        "I agree with Terms & Conditions",
-                        overflow: TextOverflow.ellipsis,
+                    // const Text("I agree with "),
+                    Text(
+                      "I agree with Terms & Conditions",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color:
+                            _showTermsError
+                                ? Colors.red
+                                : Colors.blue, // Dynamic color
                       ),
                     ),
                   ],
