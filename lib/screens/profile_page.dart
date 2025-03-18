@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'edit_profile.dart'; // Import EditProfilePage
-import 'technician_register1.dart';
+import 'become_technician.dart';
 import 'register_page.dart';
 import 'home_page.dart';
+import 'dashboard.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -34,7 +35,8 @@ class _ProfilePageState extends State<ProfilePage> {
           top: 20, // Moved further up
           left: 10,
           right: 60,
-          child: Material( // ✅ Added Material widget here
+          child: Material(
+            // ✅ Added Material widget here
             type: MaterialType.transparency, // Keeps the background transparent
             child: Container(
               padding: const EdgeInsets.all(16),
@@ -83,11 +85,16 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         const Spacer(), // Pushes back arrow to the rightmost corner
                         IconButton(
-                          icon: const Icon(Icons.arrow_back, color: Colors.white),
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: Colors.white,
+                          ),
                           onPressed: () {
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(builder: (context) => HomePage()),
+                              MaterialPageRoute(
+                                builder: (context) => HomePage(),
+                              ),
                             ); // Navigates back to the home page
                           },
                         ),
@@ -99,7 +106,20 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 10,
                   ), // Spacing between header and menu items
                   // Profile Menu Items
-                  _buildMenuItem(Icons.dashboard, "Dashboard", context),
+                  _buildMenuItem(
+                    Icons.dashboard,
+                    "Dashboard",
+                    context,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DashboardPage(),
+                        ),
+                      );
+                    },
+                  ),
+
                   _buildMenuItem(
                     Icons.edit,
                     "Edit Your Profile",
@@ -109,7 +129,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         context,
                         MaterialPageRoute(
                           builder:
-                              (context) => EditProfilePage(currentName: userName),
+                              (context) =>
+                                  EditProfilePage(currentName: userName),
                         ),
                       );
 
