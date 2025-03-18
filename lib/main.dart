@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/landing_page.dart'; // Import Splash Screen
+import 'screens/OtpVerificationScreen .dart'; // Import Splash Screen
 
 
 void main() {
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const SplashScreen(), // Show Splash Screen First
+      home:  OtpVerificationScreen(), // Show Splash Screen First
     );
   }
 }
