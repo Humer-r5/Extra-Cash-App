@@ -486,56 +486,94 @@ Widget _buildInputFieldMobile(
 }
 
 
-  Widget _buildGenderInputField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: double.infinity,
-          margin: const EdgeInsets.only(bottom: 3),
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          decoration: BoxDecoration(
-            color: const Color(0xFFE7E7E7),
-            borderRadius: BorderRadius.circular(6),
+ Widget _buildGenderInputField() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Container(
+        width: double.infinity,
+        margin: const EdgeInsets.only(bottom: 3),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(
+          color: const Color(0xFFE7E7E7),
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: DropdownButtonFormField<String>(
+          value: _genderController.text.isEmpty ? null : _genderController.text,
+          decoration: const InputDecoration(
+            border: InputBorder.none,
+            hintText: 'Select Your Gender',
+            hintStyle: TextStyle(
+              color: Color(0xFFA0A0A0),
+              fontFamily: 'Montserrat',
+              fontSize: 17,
+              fontWeight: FontWeight.w700,
+            ),
           ),
-          child: DropdownButtonFormField<String>(
-            value:
-                _genderController.text.isEmpty ? null : _genderController.text,
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              hintText: 'Select Your Gender',
-              hintStyle: TextStyle(
-                color: Color(0xFFA0A0A0),
-                fontFamily: 'Montserrat',
-                fontSize: 17,
-                fontWeight: FontWeight.w700,
+          style: const TextStyle(
+            color: Color(0xFFA0A0A0),
+            fontFamily: 'Montserrat',
+            fontSize: 17,
+            fontWeight: FontWeight.w900,
+          ),
+          items: const [
+            DropdownMenuItem(
+              value: 'Male',
+              child: Text(
+                'Male',
+                style: TextStyle(
+                  color: Color(0xFFA0A0A0),
+                  fontFamily: 'Montserrat',
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
-            items: const [
-              DropdownMenuItem(value: 'Male', child: Text('Male')),
-              DropdownMenuItem(value: 'Female', child: Text('Female')),
-              DropdownMenuItem(value: 'Others', child: Text('Others')),
-            ],
-            onChanged: (value) {
-              setState(() {
-                _genderController.text = value!;
-                _isGenderFieldTouched = true; // Mark the field as touched
-              });
-            },
+            DropdownMenuItem(
+              value: 'Female',
+              child: Text(
+                'Female',
+                style: TextStyle(
+                  color: Color(0xFFA0A0A0),
+                  fontFamily: 'Montserrat',
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            DropdownMenuItem(
+              value: 'Others',
+              child: Text(
+                'Others',
+                style: TextStyle(
+                  color: Color(0xFFA0A0A0),
+                  fontFamily: 'Montserrat',
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ],
+          onChanged: (value) {
+            setState(() {
+              _genderController.text = value!;
+              _isGenderFieldTouched = true; // Mark the field as touched
+            });
+          },
+        ),
+      ),
+      // Display error message below the input field
+      if (_genderController.text.isEmpty && _isGenderFieldTouched)
+        const Padding(
+          padding: EdgeInsets.only(top: 5, left: 10),
+          child: Text(
+            'This field is required',
+            style: TextStyle(color: Colors.red, fontSize: 12),
           ),
         ),
-        // Display error message below the input field
-        if (_genderController.text.isEmpty && _isGenderFieldTouched)
-          const Padding(
-            padding: EdgeInsets.only(top: 5, left: 10),
-            child: Text(
-              'This field is required',
-              style: TextStyle(color: Colors.red, fontSize: 12),
-            ),
-          ),
-      ],
-    );
-  }
+    ],
+  );
+}
 
   Widget _buildSkillsInputField() {
     return Column(
