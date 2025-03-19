@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
-import '../screens/OtpVerificationScreen.dart'; // Import the OTP Verification Page
+import '../screens/OtpVerificationScreen.dart'; // ✅ Import OTP Verification Page
 
 class ForgotMpinScreen extends StatefulWidget {
+  const ForgotMpinScreen({super.key});
+
   @override
   _ForgotMpinScreenState createState() => _ForgotMpinScreenState();
 }
 
 class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
-  final _formKey = GlobalKey<FormState>(); // Form key for validation
-  final _emailController = TextEditingController();
+  final _formKey = GlobalKey<FormState>(); // ✅ Form key for validation
+  final _emailController = TextEditingController(); // ✅ Controller for input email
 
   void getOtp() {
     if (_formKey.currentState!.validate()) {
-      // If valid, navigate to OTP Verification page
+      // ✅ Navigate to OTP Verification screen with entered email
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => OtpVerificationScreen()), // Redirecting to OTP page
+        MaterialPageRoute(
+          builder: (context) => OtpVerificationScreen(email: _emailController.text),
+        ),
       );
     }
   }
@@ -39,7 +43,7 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Form(
-            key: _formKey, // Assign form key
+            key: _formKey, // ✅ Assign form key
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -56,12 +60,12 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
                 ),
                 const SizedBox(height: 30),
 
-                // Email TextFormField with Validation
+                // ✅ Email TextFormField with Validation
                 TextFormField(
                   controller: _emailController,
                   decoration: InputDecoration(
                     labelText: "Your Email address",
-                    prefixIcon: Icon(Icons.email),
+                    prefixIcon: const Icon(Icons.email),
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Colors.white,
@@ -79,12 +83,12 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
                 ),
                 const SizedBox(height: 20),
 
-                // Get OTP Button
+                // ✅ Get OTP Button
                 ElevatedButton(
                   onPressed: getOtp,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
-                    minimumSize: Size(double.infinity, 50),
+                    minimumSize: const Size(double.infinity, 50),
                   ),
                   child: const Text(
                     'Get OTP',

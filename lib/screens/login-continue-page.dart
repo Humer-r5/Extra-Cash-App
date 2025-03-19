@@ -61,6 +61,8 @@ import 'package:flutter/material.dart';
 import './register_page.dart'; // Importing the registration screen
 
 class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

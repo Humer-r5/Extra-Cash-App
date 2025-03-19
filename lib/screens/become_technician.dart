@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class InputDesignScreen extends StatefulWidget {
-  const InputDesignScreen({Key? key}) : super(key: key);
+  const InputDesignScreen({super.key});
 
   @override
   _InputDesignScreenState createState() => _InputDesignScreenState();
@@ -26,7 +26,7 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _skillsController = TextEditingController();
-  List<String> _selectedSkills = [];
+  final List<String> _selectedSkills = [];
 
   // Controllers for the second screen
   final TextEditingController _dobController = TextEditingController();

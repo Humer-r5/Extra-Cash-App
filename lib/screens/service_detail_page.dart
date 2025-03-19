@@ -16,9 +16,9 @@ class ServiceDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int _selectedIndex = 0; // Default index for the bottom nav bar
+    int selectedIndex = 0; // Default index for the bottom nav bar
 
-    void _onItemTapped(int index) {
+    void onItemTapped(int index) {
       if (index == 0) {
         // Navigate to HomePage
         Navigator.pushReplacement(
@@ -109,8 +109,8 @@ class ServiceDetailPage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomNavBar(
-        currentIndex: _selectedIndex, // Pass the current index
-        onTap: _onItemTapped, // Pass the navigation logic
+        currentIndex: selectedIndex, // Pass the current index
+        onTap: onItemTapped, // Pass the navigation logic
       ),
     );
   }
