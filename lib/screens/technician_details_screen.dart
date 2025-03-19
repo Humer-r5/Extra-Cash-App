@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'customer_info_screen.dart';
-// import './login-continue-page.dart';
 import 'home_page.dart';
 import '../widgets/BottomNavBar .dart';
 import 'profile_page.dart';
-// import 'customer_info_screen.dart'; // Import the CustomerInfoScreen
-// import '../widgets/BottomNavBar .dart'; // Import the BottomNavBar widget
-// import 'home_page.dart'; // Import the HomePage
-// import 'profile_page.dart'; // Import the ProfilePage
 
 class TechnicianDetailsScreen extends StatelessWidget {
   const TechnicianDetailsScreen({super.key});
@@ -34,24 +29,12 @@ class TechnicianDetailsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text("Technician Details")),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Reviews",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            ListTile(
-              leading: const CircleAvatar(
-                backgroundImage: AssetImage("assets/profile.png"),
-              ),
-              title: const Text("Donna Bins"),
-              subtitle: const Text("Very prompt with delivery."),
-              trailing: const Text("4.5 ⭐"),
-            ),
-            const SizedBox(height: 20),
+            // Pricing and Schedule
             Card(
               child: ListTile(
                 title: const Text("\$50  (21% Off)"),
@@ -61,6 +44,8 @@ class TechnicianDetailsScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
+
+            // Booking Button
             Row(
               children: [
                 Expanded(
@@ -83,6 +68,21 @@ class TechnicianDetailsScreen extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+            const SizedBox(height: 20),
+
+            // Reviews (Moved to End)
+            const Text(
+              "Reviews",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            ListTile(
+              leading: const CircleAvatar(
+                backgroundImage: AssetImage("assets/profile.png"),
+              ),
+              title: const Text("Donna Bins"),
+              subtitle: const Text("Very prompt with delivery."),
+              trailing: const Text("4.5 ⭐"),
             ),
           ],
         ),
