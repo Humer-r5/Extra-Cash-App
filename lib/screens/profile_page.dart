@@ -4,7 +4,7 @@ import 'edit_profile.dart'; // Import EditProfilePage
 import 'become_technician.dart';
 import 'register_page.dart';
 import 'home_page.dart';
-import 'dashboard.dart';
+import 'user_dashboard.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
