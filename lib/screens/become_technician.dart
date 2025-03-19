@@ -38,6 +38,8 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
   // State to manage which screen is currently visible
   bool _isFirstScreen = true;
 bool _showSkillError = false; // Add this flag
+String _dobErrorMessage = ''; 
+
 
   // Store selected image
   String? _selectedImageName;
@@ -675,66 +677,83 @@ Widget _buildInputFieldMobile(
   }
 
   Widget _buildDobInputField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: double.infinity,
-          margin: const EdgeInsets.only(bottom: 3),
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          decoration: BoxDecoration(
-            color: const Color(0xFFE7E7E7),
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: TextFormField(
-            controller: _dobController,
-            readOnly: true, // Prevent manual text entry
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              hintText: 'Enter Your DOB',
-              hintStyle: TextStyle(
-                color: Color(0xFFA0A0A0),
-                fontFamily: 'Montserrat',
-                fontSize: 17,
-                fontWeight: FontWeight.w700,
-              ),
-              suffixIcon: Icon(
-                Icons.calendar_today,
-                color: Colors.black,
-              ), // Calendar icon
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Container(
+        width: double.infinity,
+        margin: const EdgeInsets.only(bottom: 3),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(
+          color: const Color(0xFFE7E7E7),
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: TextFormField(
+          controller: _dobController,
+          readOnly: true, // Prevent manual text entry
+          decoration: const InputDecoration(
+            border: InputBorder.none,
+            hintText: 'Enter Your DOB',
+            hintStyle: TextStyle(
+              color: Color(0xFFA0A0A0),
+              fontFamily: 'Montserrat',
+              fontSize: 17,
+              fontWeight: FontWeight.w700,
             ),
-            onTap: () async {
-              DateTime? pickedDate = await showDatePicker(
-                context: context,
-                initialDate: DateTime.now().subtract(
-                  const Duration(days: 365 * 18),
-                ),
-                firstDate: DateTime(1900),
-                lastDate: DateTime.now(),
-              );
-              if (pickedDate != null) {
-                String formattedDate =
-                    "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+            suffixIcon: Icon(
+              Icons.calendar_today,
+              color: Colors.black,
+            ),
+          ),
+          onTap: () async {
+            DateTime? pickedDate = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now().subtract(const Duration(days: 365 * 18)),
+              firstDate: DateTime(1900),
+              lastDate: DateTime.now(),
+            );
+
+            if (pickedDate != null) {
+              final now = DateTime.now();
+              final age = now.year - pickedDate.year -
+                  ((now.month < pickedDate.month ||
+                          (now.month == pickedDate.month && now.day < pickedDate.day))
+                      ? 1
+                      : 0);
+
+              if (age < 18) {
                 setState(() {
-                  _dobController.text = formattedDate;
-                  _isDobFieldTouched = true; // Mark the field as touched
+                  _dobController.text = ''; // Clear invalid DOB
+                  _dobErrorMessage = 'User should be 18+ years'; // Display error
+                });
+              } else {
+                setState(() {
+                  _dobController.text =
+                      "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+                  _dobErrorMessage = ''; // Clear error on valid input
+                  _isDobFieldTouched = true; // Mark as touched
                 });
               }
-            },
+            }
+          },
+        ),
+      ),
+
+      // Display error message if invalid DOB
+      if ((_dobController.text.isEmpty && _isDobFieldTouched) ||
+          _dobErrorMessage.isNotEmpty)
+        Padding(
+          padding: const EdgeInsets.only(top: 5, left: 10),
+          child: Text(
+            _dobErrorMessage.isNotEmpty
+                ? _dobErrorMessage
+                : 'This field is required',
+            style: const TextStyle(color: Colors.red, fontSize: 12),
           ),
         ),
-        // Display error message below the input field
-        if (_dobController.text.isEmpty && _isDobFieldTouched)
-          const Padding(
-            padding: EdgeInsets.only(top: 5, left: 10),
-            child: Text(
-              'This field is required',
-              style: TextStyle(color: Colors.red, fontSize: 12),
-            ),
-          ),
-      ],
-    );
-  }
+    ],
+  );
+}
 
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
