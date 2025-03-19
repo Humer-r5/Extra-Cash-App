@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'customer_info_screen.dart';
-import './login-continue-page.dart'; // Importing the login screen
+import 'customer_info_screen.dart';
+// import './login-continue-page.dart';
 import 'home_page.dart';
 import '../widgets/BottomNavBar .dart';
 import 'profile_page.dart';
@@ -68,7 +68,9 @@ class TechnicianDetailsScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                        MaterialPageRoute(
+                          builder: (context) => CustomerInfoScreen(),
+                        ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
