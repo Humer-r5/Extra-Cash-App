@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'edit_profile.dart'; // Import EditProfilePage
-import './become_technician.dart';
+import 'become_technician.dart';
 import 'register_page.dart';
 import 'home_page.dart';
 
