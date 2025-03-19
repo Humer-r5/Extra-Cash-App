@@ -4,6 +4,8 @@ import '../widgets/BottomNavBar .dart';
 import 'profile_page.dart';
 
 class YourWalletScreen extends StatelessWidget {
+  const YourWalletScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,7 +107,7 @@ class WalletCard extends StatelessWidget {
   final String amount;
   final IconData icon;
 
-  const WalletCard({
+  const WalletCard({super.key, 
     required this.title,
     required this.amount,
     required this.icon,

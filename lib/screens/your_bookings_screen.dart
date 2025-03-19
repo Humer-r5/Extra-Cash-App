@@ -5,6 +5,8 @@ import 'profile_page.dart';
 
 
 class YourBookingsScreen extends StatelessWidget {
+  const YourBookingsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

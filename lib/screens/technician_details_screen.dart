@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
-import 'customer_info_screen.dart'; // Import the CustomerInfoScreen
-import '../widgets/BottomNavBar .dart'; // Import the BottomNavBar widget
-import 'home_page.dart'; // Import the HomePage
-import 'profile_page.dart'; // Import the ProfilePage
+// import 'customer_info_screen.dart';
+import './login-continue-page.dart'; // Importing the login screen
+import 'home_page.dart';
+import '../widgets/BottomNavBar .dart';
+import 'profile_page.dart';
+// import 'customer_info_screen.dart'; // Import the CustomerInfoScreen
+// import '../widgets/BottomNavBar .dart'; // Import the BottomNavBar widget
+// import 'home_page.dart'; // Import the HomePage
+// import 'profile_page.dart'; // Import the ProfilePage
 
 class TechnicianDetailsScreen extends StatelessWidget {
   const TechnicianDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    int _selectedIndex = 0; // Default index for the bottom nav bar
+    int selectedIndex = 0; // Default index for the bottom nav bar
 
-    void _onItemTapped(int index) {
+    void onItemTapped(int index) {
       if (index == 0) {
         // Navigate to HomePage
         Navigator.pushReplacement(
@@ -28,9 +33,7 @@ class TechnicianDetailsScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Technician Details"),
-      ),
+      appBar: AppBar(title: const Text("Technician Details")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -65,9 +68,7 @@ class TechnicianDetailsScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => const CustomerInfoScreen(),
-                        ),
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -85,8 +86,8 @@ class TechnicianDetailsScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomNavBar(
-        currentIndex: _selectedIndex, // Pass the current index
-        onTap: _onItemTapped, // Pass the navigation logic
+        currentIndex: selectedIndex, // Pass the current index
+        onTap: onItemTapped, // Pass the navigation logic
       ),
     );
   }
