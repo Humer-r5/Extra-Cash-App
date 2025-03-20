@@ -1301,7 +1301,7 @@ class TechnicianHomePage extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed, // Ensures all items are visible
-        selectedItemColor: Colors.blue, // Color for the selected item
+        selectedItemColor: Colors.black, // Color for the selected item
         unselectedItemColor: Colors.grey, // Color for unselected items
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
