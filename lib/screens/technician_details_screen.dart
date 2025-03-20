@@ -3,6 +3,7 @@ import 'customer_info_screen.dart';
 import 'home_page.dart';
 import '../widgets/BottomNavBar .dart';
 import 'profile_page.dart';
+import 'notifications_screen.dart';
 
 class TechnicianDetailsScreen extends StatelessWidget {
   const TechnicianDetailsScreen({super.key});
@@ -17,6 +18,13 @@ class TechnicianDetailsScreen extends StatelessWidget {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      }
+      else if (index == 2) {
+        // Navigate to notification page
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const NotificationScreen()),
         );
       } else if (index == 3) {
         // Navigate to ProfilePage

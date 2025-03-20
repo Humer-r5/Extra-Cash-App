@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'home_page_content.dart'; // Import the HomePageContent
 import 'profile_page.dart'; // Import the ProfilePage
+import 'notifications_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     const HomePageContent(), // Use the HomePageContent widget
     const Center(child: Text("Add Feature Coming Soon")),
-    const Center(child: Text("Alerts Coming Soon")),
+    const NotificationScreen(),
     const ProfilePage(),
   ];
 

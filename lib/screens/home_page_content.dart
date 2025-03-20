@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'service_card.dart'; // Import the ServiceCard widget
 import 'service_detail_page.dart'; // Import the ServiceDetailPage widget
-import 'chat_screen.dart';
+import './chat_icon_screen.dart';
 import 'your_bookings_screen.dart';
 import 'your_wallet_screen.dart';
 import 'home_page.dart';
@@ -94,7 +94,7 @@ class _HomePageContentState extends State<HomePageContent> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ChatScreen()),
+                  MaterialPageRoute(builder: (context) => const ChatIconScreen()),
                 );
               },
             ),
