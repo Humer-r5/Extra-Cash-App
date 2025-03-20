@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'edit_profile.dart'; // Import EditProfilePage
-import "./become_technician.dart";
-import 'become_technician.dart';
 import 'register_page.dart';
 import 'home_page.dart';
 import 'user_dashboard.dart';
@@ -144,7 +142,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   _buildMenuItem(
                     Icons.build,
-                    "Become A Technician",
+                    "Switch to User",
                     context,
                     onTap: () {
                       Navigator.push(
@@ -152,7 +150,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         MaterialPageRoute(
                           builder:
                               (context) =>
-                                  const InputDesignScreen(), // Ensure this is imported correctly
+                                  const HomePage(), // Ensure this is imported correctly
                         ),
                       );
                     },
