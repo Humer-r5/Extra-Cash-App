@@ -6,11 +6,11 @@ class DashboardPage extends StatelessWidget {
   DashboardPage({super.key});
 
   // Randomized placeholder values for now
-  final int numberOfOrders = Random().nextInt(300); // Random orders count
+  final int numberOfBookings = Random().nextInt(300); // Random orders count
   final int rating = Random().nextInt(5) + 1; // Rating between 1 and 5
   final int experienceYears = Random().nextInt(10) + 1; // 1-10 years
-  final String totalEarnings =
-      "\$${(Random().nextDouble() * 2).toStringAsFixed(1)}M"; // Up to $2M
+  // final String totalEarnings =
+  //     "\$${(Random().nextDouble() * 2).toStringAsFixed(1)}M"; // Up to $2M
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +66,10 @@ class DashboardPage extends StatelessWidget {
                 mainAxisSpacing: 15,
                 childAspectRatio: 1.5,
                 children: [
-                  _buildInfoCard("No Of Orders", numberOfOrders.toString()),
+                  _buildInfoCard("My bookings", numberOfBookings.toString()),
                   _buildInfoCard("Overall Rating", "⭐" * rating),
-                  _buildInfoCard("Experience", "$experienceYears yr +"),
-                  _buildInfoCard("Total Earnings", totalEarnings),
+                  _buildInfoCard("Member Since", "$experienceYears yr +"),
+                  _buildInfoCard("Saved Technicians", ''),
                 ],
               ),
             ),
