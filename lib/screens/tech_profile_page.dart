@@ -57,11 +57,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(
-                        255,
-                        242,
-                        165,
-                        49,
+                      color: const Color(
+                        0xFFC9B47F,
                       ), // Exact color from reference image
                       borderRadius: const BorderRadius.vertical(
                         top: Radius.circular(10),
