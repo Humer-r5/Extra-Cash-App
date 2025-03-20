@@ -2,46 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-class EditProfilePage extends StatefulWidget {
+class TechEditProfilePage extends StatefulWidget {
   final String currentName;
-  const EditProfilePage({super.key, required this.currentName});
+  const TechEditProfilePage({super.key, required this.currentName});
 
   @override
   _EditProfilePageState createState() => _EditProfilePageState();
 }
 
-class _EditProfilePageState extends State<EditProfilePage> {
+class _EditProfilePageState extends State<TechEditProfilePage> {
   late TextEditingController _nameController;
   String? selectedCity;
   String? selectedState;
   String? selectedCountry;
-  File? _imageFile; // Store the selected image
+  File? _imageFile;
   final ImagePicker _picker = ImagePicker();
 
-  final List<String> cities = [
-    "New York",
-    "Los Angeles",
-    "Chicago",
-    "Houston",
-    "San Francisco",
+  final List<String> availableSkills = [
+    "Plumber",
+    "Electrician",
+    "Packers and Movers",
+    "Carpenter",
+    "AC Mechanic",
   ];
-  final List<String> states = [
-    "Lagos",
-    "Abuja",
-    "California",
-    "Texas",
-    "Florida",
-    "New York",
-    "Illinois",
-  ];
-  final List<String> countries = [
-    "Nigeria",
-    "USA",
-    "Canada",
-    "UK",
-    "Australia",
-    "India",
-  ];
+  List<String> selectedSkills = [];
 
   @override
   void initState() {
@@ -52,12 +36,59 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Future<void> _pickImage() async {
     final XFile? pickedFile = await _picker.pickImage(
       source: ImageSource.gallery,
-    ); // Open gallery
+    );
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
       });
     }
+  }
+
+  void _showSkillSelectionDialog() {
+    List<String> tempSelectedSkills = List.from(selectedSkills);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              title: const Text("Select Skills"),
+              content: SingleChildScrollView(
+                child: Column(
+                  children:
+                      availableSkills.map((skill) {
+                        return CheckboxListTile(
+                          title: Text(skill),
+                          value: tempSelectedSkills.contains(skill),
+                          onChanged: (bool? value) {
+                            setDialogState(() {
+                              if (value == true) {
+                                tempSelectedSkills.add(skill);
+                              } else {
+                                tempSelectedSkills.remove(skill);
+                              }
+                            });
+                          },
+                        );
+                      }).toList(),
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedSkills = tempSelectedSkills;
+                    });
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Done"),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -80,33 +111,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
             children: [
               Center(
                 child: GestureDetector(
-                  onTap: _pickImage, // Trigger image selection
-                  child: Stack(
-                    children: [
-                      CircleAvatar(
-                        radius: 50,
-                        backgroundImage:
-                            _imageFile != null
-                                ? FileImage(_imageFile!) // Show selected image
-                                : const AssetImage("assets/profile_pic.jpg")
-                                    as ImageProvider,
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.camera_alt,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ],
+                  onTap: _pickImage,
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundImage:
+                        _imageFile != null
+                            ? FileImage(_imageFile!)
+                            : const AssetImage("assets/profile_pic.jpg")
+                                as ImageProvider,
                   ),
                 ),
               ),
@@ -118,39 +130,36 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 controller: _nameController,
               ),
               _buildTextField("Email", Icons.email),
-              _buildTextField("MPIN", Icons.visibility_off),
-              _buildTextField("Phone Number", Icons.phone),
-              _buildTextField("Skills", Icons.edit),
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildDropdown("City", cities, selectedCity, (
-                      value,
-                    ) {
-                      setState(() {
-                        selectedCity = value;
-                      });
-                    }),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: _buildDropdown("State", states, selectedState, (
-                      value,
-                    ) {
-                      setState(() {
-                        selectedState = value;
-                      });
-                    }),
-                  ),
-                ],
+              _buildTextField("MPIN", Icons.lock),
+
+              // Skills Section
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Skills",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Wrap(
+                spacing: 8.0,
+                children:
+                    selectedSkills.map((skill) {
+                      return Chip(
+                        label: Text(skill),
+                        onDeleted: () {
+                          setState(() {
+                            selectedSkills.remove(skill);
+                          });
+                        },
+                      );
+                    }).toList(),
+              ),
+              TextButton(
+                onPressed: _showSkillSelectionDialog,
+                child: const Text("Edit Skills"),
               ),
 
-              _buildDropdown("Country", countries, selectedCountry, (value) {
-                setState(() {
-                  selectedCountry = value;
-                });
-              }),
-
+              _buildTextField("Phone Number", Icons.phone),
               _buildTextField("Address", Icons.location_on),
               const SizedBox(height: 20),
 
@@ -191,29 +200,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
           prefixIcon: Icon(icon),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
         ),
-      ),
-    );
-  }
-
-  Widget _buildDropdown(
-    String label,
-    List<String> items,
-    String? selectedValue,
-    ValueChanged<String?> onChanged,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
-        ),
-        value: selectedValue,
-        items:
-            items.map((String value) {
-              return DropdownMenuItem<String>(value: value, child: Text(value));
-            }).toList(),
-        onChanged: onChanged,
       ),
     );
   }

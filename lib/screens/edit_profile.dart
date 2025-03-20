@@ -118,7 +118,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 controller: _nameController,
               ),
               _buildTextField("Email", Icons.email),
-              _buildTextField("MPIN", Icons.visibility_off),
+              _buildTextField("MPIN", Icons.lock),
               _buildTextField("Phone Number", Icons.phone),
 
               Row(

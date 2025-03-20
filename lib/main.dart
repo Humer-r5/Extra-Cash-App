@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; // Import Splash Screen
+// import 'screens/forgot-mpin.dart'; // Import Splash Screen
+import 'screens/technician_home_page.dart';
 import 'screens/landing_page.dart'; // Import Splash Screen
 // import 'screens/forgot-mpin.dart';
 
