@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart'; // Import Splash Screen
-// import 'screens/forgot-mpin.dart'; // Import Splash Screen
-import 'screens/technician_home_page.dart';
+import 'package:flutter/material.dart';
+//import 'screens/tech_need_service.dart';
 import 'screens/landing_page.dart'; // Import Splash Screen
-// import 'screens/forgot-mpin.dart';
 
 
 void main() {
@@ -21,9 +19,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-     // home:  ForgotMpinScreen(), // Show Splash Screen First
-     
-     home:  SplashScreen(), // Show Splash Screen First
+
+      home: SplashScreen(), // Show Splash Screen First
     );
   }
 }
