@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
-import 'edit_profile.dart'; // Import EditProfilePage
+import 'tech_edit_profile.dart'; // Import EditProfilePage
 import 'register_page.dart';
 import 'home_page.dart';
-import 'user_dashboard.dart';
+import 'tech_dashboard.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class TechProfilePage extends StatefulWidget {
+  const TechProfilePage({super.key});
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<TechProfilePage> {
   String userName = "Your Profile"; // Default name
 
   @override
@@ -110,7 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DashboardPage(),
+                          builder: (context) => TechDashboardPage(),
                         ),
                       );
                     },
@@ -126,7 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         MaterialPageRoute(
                           builder:
                               (context) =>
-                                  EditProfilePage(currentName: userName),
+                                  TechEditProfilePage(currentName: userName),
                         ),
                       );
 
