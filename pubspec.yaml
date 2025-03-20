@@ -74,8 +74,13 @@ flutter:
       - assets/ac_mechanic.png
       - assets/wallet.jpg
       - assets/bookings.jpg
-      - assets/chat_icon.webp
       - assets/msg_icon.png
+      - assets/technician_ac_mechanic.png
+      - assets/technician_carpenter.png
+      - assets/technician_electrician.png
+      - assets/technician_packers&movers.png
+      - assets/technician_plumber.png
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

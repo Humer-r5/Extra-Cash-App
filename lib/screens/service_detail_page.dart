@@ -4,6 +4,7 @@ import 'technician_details_screen.dart'; // Import the TechnicianDetailsScreen
 import '../widgets/BottomNavBar .dart'; // Import the BottomNavBar widget
 import 'home_page.dart'; // Import the HomePage
 import 'profile_page.dart'; // Import the ProfilePage
+import 'notifications_screen.dart';
 
 class ServiceDetailPage extends StatelessWidget {
   final String title, image;
@@ -24,6 +25,13 @@ class ServiceDetailPage extends StatelessWidget {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      } 
+      else if (index == 2) {
+        // Navigate to notification page
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const NotificationScreen()),
         );
       } else if (index == 3) {
         // Navigate to ProfilePage

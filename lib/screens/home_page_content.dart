@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'service_card.dart'; // Import the ServiceCard widget
 import 'service_detail_page.dart'; // Import the ServiceDetailPage widget
-import 'chat_screen.dart';
+import './chat_icon_screen.dart';
 import 'your_bookings_screen.dart';
 import 'your_wallet_screen.dart';
 import 'home_page.dart';
@@ -60,10 +60,7 @@ class _HomePageContentState extends State<HomePageContent> {
                 children: [
                   const Text(
                     "Current Location",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey,
-                    ),
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                   Row(
                     mainAxisSize: MainAxisSize.min,
@@ -76,25 +73,18 @@ class _HomePageContentState extends State<HomePageContent> {
                           color: Colors.black,
                         ),
                       ),
-                      const Icon(
-                        Icons.keyboard_arrow_down,
-                        size: 16,
-                      ),
+                      const Icon(Icons.keyboard_arrow_down, size: 16),
                     ],
                   ),
                 ],
               ),
             ),
             IconButton(
-              icon: Image.asset(
-                "assets/msg_icon.png",
-                width: 24,
-                height: 24,
-              ),
+              icon: Image.asset("assets/msg_icon.png", width: 24, height: 24),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ChatScreen()),
+                  MaterialPageRoute(builder: (context) => const ChatIconScreen()),
                 );
               },
             ),
@@ -117,24 +107,25 @@ class _HomePageContentState extends State<HomePageContent> {
                 decoration: InputDecoration(
                   hintText: "Search",
                   prefixIcon: const Icon(Icons.search),
-                  suffixIcon: _searchQuery.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(Icons.cancel, color: Colors.grey),
-                          onPressed: () {
-                            _searchController.clear();
-                            setState(() {
-                              _searchQuery = '';
-                            });
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HomePage(),
-                              ),
-                              (route) => false,
-                            );
-                          },
-                        )
-                      : null,
+                  suffixIcon:
+                      _searchQuery.isNotEmpty
+                          ? IconButton(
+                            icon: const Icon(Icons.cancel, color: Colors.grey),
+                            onPressed: () {
+                              _searchController.clear();
+                              setState(() {
+                                _searchQuery = '';
+                              });
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HomePage(),
+                                ),
+                                (route) => false,
+                              );
+                            },
+                          )
+                          : null,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -310,10 +301,11 @@ class _HomePageContentState extends State<HomePageContent> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ServiceDetailPage(
-                              title: serviceTitle,
-                              image: services[index]["image"]!,
-                            ),
+                            builder:
+                                (context) => ServiceDetailPage(
+                                  title: serviceTitle,
+                                  image: services[index]["image"]!,
+                                ),
                           ),
                         );
                       },
