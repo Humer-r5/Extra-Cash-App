@@ -22,9 +22,9 @@ class MyApp extends StatelessWidget {
       ),
 
       //home:  ForgotMpinScreen(), // Show Splash Screen First
-      home: TechnicianHomePage(), // Show Splash Screen First
+      // home: TechnicianHomePage(), // Show Splash Screen First
       // home:  ForgotMpinScreen(), // Show Splash Screen First
-      // home: SplashScreen(), // Show Splash Screen First
+      home: SplashScreen(), // Show Splash Screen First
     );
   }
 }
