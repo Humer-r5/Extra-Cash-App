@@ -345,10 +345,12 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
               setState(() {
                 if (controller == _nameController) _isNameFieldTouched = true;
                 if (controller == _bioController) _isBioFieldTouched = true;
-                if (controller == _addressController)
+                if (controller == _addressController) {
                   _isAddressFieldTouched = true;
-                if (controller == _mobileController)
+                }
+                if (controller == _mobileController) {
                   _isMobileFieldTouched = true;
+                }
                 if (controller == _ninController) _isNinFieldTouched = true;
               });
             },
@@ -464,8 +466,9 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
             onChanged: (value) {
               // Mark the field as touched when the user starts typing
               setState(() {
-                if (controller == _mobileController)
+                if (controller == _mobileController) {
                   _isMobileFieldTouched = true;
+                }
               });
             },
             inputFormatters:
