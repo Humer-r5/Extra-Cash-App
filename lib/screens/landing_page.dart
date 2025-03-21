@@ -15,7 +15,7 @@ class SplashScreen extends StatelessWidget {
             // Circular Logo
             ClipOval(
               child: Image.asset(
-                'assets/ec_logo.png', // Replace with your actual logo image
+                'assets/extra_hustle_logo.png', // Replace with your actual logo image
                 width: 150,
                 height: 150,
                 fit: BoxFit.cover, // Ensures the image fills the circular shape
