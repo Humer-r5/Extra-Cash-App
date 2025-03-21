@@ -80,6 +80,34 @@ flutter:
       - assets/technician_electrician.png
       - assets/technician_packers&movers.png
       - assets/technician_plumber.png
+      - assets/ac_mechanic/ac-1.jpg
+      - assets/ac_mechanic/ac-2.jpg
+      - assets/ac_mechanic/ac-3.jpg
+      - assets/ac_mechanic/ac-4.jpg
+      - assets/ac_mechanic/ac-5.jpg
+      - assets/carpenter/carp-1.jpg
+      - assets/carpenter/carp-2.jpg
+      - assets/carpenter/carp-3.jpg
+      - assets/carpenter/carp-4.jpg
+      - assets/carpenter/carp-5.jpg
+      - assets/electrician/elec-1.jpg
+      - assets/electrician/elec-2.jpg
+      - assets/electrician/elec-3.jpg
+      - assets/electrician/elec-4.jpg
+      - assets/electrician/elec-5.jpg
+      - assets/packers_movers/pac-1.jpg
+      - assets/packers_movers/pac-2.jpg
+      - assets/packers_movers/pac-3.jpg
+      - assets/packers_movers/pac-4.jpg
+      - assets/packers_movers/pac-5.jpg
+      - assets/plumber/plumb-1.jpg
+      - assets/plumber/plumb-2.jpg
+      - assets/plumber/plumb-3.jpg
+      - assets/plumber/plumb-4.jpg
+      - assets/plumber/plumb-5.jpg
+      - assets/plumber/plumb-6.jpg
+
+
 
 
 

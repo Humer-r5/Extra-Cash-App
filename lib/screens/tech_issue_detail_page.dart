@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 class TechIssueDetailPage extends StatefulWidget {
   final Map<String, dynamic> issue;
-  final Function
-  onDecline; // Callback function to remove the issue from the list
+  final Function onDecline; // Callback function to remove the issue from the list
 
   const TechIssueDetailPage({
     super.key,
@@ -137,26 +136,7 @@ class _TechIssueDetailPageState extends State<TechIssueDetailPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  // ❌ Decline Button
-                  ElevatedButton(
-                    onPressed: () {
-                      widget.onDecline(); // Remove the issue from the list
-                      Navigator.pop(context); // Go back to previous page
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey[300],
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
-                      ),
-                    ),
-                    child: const Text(
-                      "Decline",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-
-                  // ✅ Accept Button
+                  // ✅ Accept Button (Now on the LEFT side)
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -173,6 +153,25 @@ class _TechIssueDetailPageState extends State<TechIssueDetailPage> {
                     child: const Text(
                       "Accept",
                       style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+
+                  // ❌ Decline Button (Now on the RIGHT side)
+                  ElevatedButton(
+                    onPressed: () {
+                      widget.onDecline(); // Remove the issue from the list
+                      Navigator.pop(context); // Go back to previous page
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[300],
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
+                    ),
+                    child: const Text(
+                      "Decline",
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                 ],

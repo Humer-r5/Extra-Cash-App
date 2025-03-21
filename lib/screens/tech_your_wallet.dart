@@ -56,7 +56,7 @@ class TechYourWallet extends StatelessWidget {
               children: [
                 WalletCard(
                   title: "Total Earning",
-                  amount: "₹1259",
+                  amount: "₦1259",
                   icon: Icons.account_balance_wallet,
                 ),
                 WalletCard(

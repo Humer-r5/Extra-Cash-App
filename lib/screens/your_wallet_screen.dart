@@ -57,7 +57,7 @@ class YourWalletScreen extends StatelessWidget {
               children: [
                 WalletCard(
                   title: "Total Earning",
-                  amount: "₹1259",
+                  amount: "₦1259",
                   icon: Icons.account_balance_wallet,
                 ),
                 WalletCard(
@@ -67,7 +67,7 @@ class YourWalletScreen extends StatelessWidget {
                 ),
                 WalletCard(
                   title: "Upcoming Services",
-                  amount: "15",
+                  amount: "02",
                   icon: Icons.event,
                 ),
                 WalletCard(

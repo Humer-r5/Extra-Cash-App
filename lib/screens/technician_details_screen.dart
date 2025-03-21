@@ -45,7 +45,7 @@ class TechnicianDetailsScreen extends StatelessWidget {
             // Pricing and Schedule
             Card(
               child: ListTile(
-                title: const Text("\$50  (21% Off)"),
+                title: const Text("\₦500 (21% Off)"),
                 subtitle: const Text(
                   "Location: 1901 Thornridge Cir\n02 Feb, 2022 - 8:30 AM",
                 ),
