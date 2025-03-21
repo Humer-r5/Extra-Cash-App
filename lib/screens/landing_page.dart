@@ -25,7 +25,7 @@ class SplashScreen extends StatelessWidget {
 
             // App Name
             const Text(
-              "EXTRA CASH",
+              "EXTRA HUSTLE",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),

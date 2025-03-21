@@ -138,7 +138,7 @@ class _ProfilePageState extends State<TechProfilePage> {
                     },
                   ),
                   _buildMenuItem(
-                    Icons.build,
+                    Icons.verified_user,
                     "Switch to User",
                     context,
                     onTap: () {
