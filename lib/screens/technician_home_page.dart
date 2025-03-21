@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'tech_need_service.dart'; // Import TechNeedService page
 import 'tech_profile_page.dart';
 import 'tech_notifications.dart';
+import 'tech_chat_icon.dart';
 
 class TechnicianHomePage extends StatefulWidget {
   const TechnicianHomePage({super.key});
@@ -130,7 +131,10 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
             IconButton(
               icon: Image.asset("assets/msg_icon.png", width: 24, height: 24),
               onPressed: () {
-                // Navigate to chat screen in the future
+                   Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) =>  TechChatIcon()),
+                      );// Navigate to chat screen in the future
               },
             ),
           ],
@@ -334,7 +338,7 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const TechNotificationScreen(),
+                builder: (context) => const TechNotifications(),
               ),
             );
           }

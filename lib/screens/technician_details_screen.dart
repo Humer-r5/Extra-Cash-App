@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'customer_info_screen.dart';
+import 'book_success_screen.dart'; // Import the success screen
 import 'home_page.dart';
 import '../widgets/BottomNavBar .dart';
 import 'profile_page.dart';
@@ -14,20 +14,16 @@ class TechnicianDetailsScreen extends StatelessWidget {
 
     void onItemTapped(int index) {
       if (index == 0) {
-        // Navigate to HomePage
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
         );
-      }
-      else if (index == 2) {
-        // Navigate to notification page
+      } else if (index == 2) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const NotificationScreen()),
         );
       } else if (index == 3) {
-        // Navigate to ProfilePage
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const ProfilePage()),
@@ -62,7 +58,7 @@ class TechnicianDetailsScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CustomerInfoScreen(),
+                          builder: (context) => const BookSuccessScreen(),
                         ),
                       );
                     },
@@ -79,7 +75,7 @@ class TechnicianDetailsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // Reviews (Moved to End)
+            // Reviews
             const Text(
               "Reviews",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -96,8 +92,8 @@ class TechnicianDetailsScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomNavBar(
-        currentIndex: selectedIndex, // Pass the current index
-        onTap: onItemTapped, // Pass the navigation logic
+        currentIndex: selectedIndex, 
+        onTap: onItemTapped, 
       ),
     );
   }
