@@ -47,6 +47,7 @@ class TechnicianHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white, // Updated background color to white
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
@@ -224,11 +225,11 @@ class TechnicianHomePage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                 child: Align(
                   alignment: Alignment.center,
                   child: Text(
-                    "TECHNICIANS REQUIRED",
+                    "Technicians Required",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
