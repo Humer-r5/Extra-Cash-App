@@ -55,7 +55,7 @@ class TechnicianHomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text(
-              "EXTRA CASH",
+              "EXTRA HUSTLE",
               style: TextStyle(
                 fontSize: 18,
                 color: Colors.black,
