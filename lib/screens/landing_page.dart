@@ -15,7 +15,7 @@ class SplashScreen extends StatelessWidget {
             // Circular Logo
             ClipOval(
               child: Image.asset(
-                'assets/ec_logo.png', // Replace with your actual logo image
+                'assets/extra_hustle_logo.png', // Replace with your actual logo image
                 width: 150,
                 height: 150,
                 fit: BoxFit.cover, // Ensures the image fills the circular shape
@@ -25,7 +25,7 @@ class SplashScreen extends StatelessWidget {
 
             // App Name
             const Text(
-              "EXTRA CASH",
+              "EXTRA HUSTLE",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),

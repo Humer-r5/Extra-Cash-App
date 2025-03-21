@@ -47,7 +47,7 @@ class _HomePageContentState extends State<HomePageContent> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "EXTRA CASH",
+              "EXTRA HUSTLE",
               style: TextStyle(
                 fontSize: 18,
                 color: Colors.black,
@@ -84,7 +84,9 @@ class _HomePageContentState extends State<HomePageContent> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ChatIconScreen()),
+                  MaterialPageRoute(
+                    builder: (context) => const ChatIconScreen(),
+                  ),
                 );
               },
             ),

@@ -96,7 +96,7 @@ class _EditProfilePageState extends State<TechEditProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Edit Profile"),
-        backgroundColor: const Color.fromARGB(253, 242, 165, 49),
+        backgroundColor: const Color(0xFFC9B47F),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
