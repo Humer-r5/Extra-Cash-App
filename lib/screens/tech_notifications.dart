@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'home_page.dart';
+import 'technician_home_page.dart';
 import 'notification_detail_screen.dart'; // Import the new screen
 
-class NotificationScreen extends StatelessWidget {
-  const NotificationScreen({super.key});
+class TechNotifications extends StatelessWidget {
+  const TechNotifications({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class NotificationScreen extends StatelessWidget {
           onPressed: () {
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => const HomePage()),
+              MaterialPageRoute(builder: (context) => const TechnicianHomePage()),
               (route) => false,
             );
           },

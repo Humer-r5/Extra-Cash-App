@@ -81,7 +81,7 @@ class YourBookingsScreen extends StatelessWidget {
                         children: const [
                           Text("Amount", style: TextStyle(color: Colors.grey, fontSize: 12)),
                           SizedBox(height: 4),
-                          Text("₹1258", style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+                          Text("₦1258", style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
                         ],
                       ),
                       // Date
@@ -90,7 +90,7 @@ class YourBookingsScreen extends StatelessWidget {
                         children: const [
                           Text("Date", style: TextStyle(color: Colors.grey, fontSize: 12)),
                           SizedBox(height: 4),
-                          Text("02 Dec, 2022", style: TextStyle(color: Colors.black, fontSize: 14)),
+                          Text("05 Mar, 2025", style: TextStyle(color: Colors.black, fontSize: 14)),
                         ],
                       ),
                     ],

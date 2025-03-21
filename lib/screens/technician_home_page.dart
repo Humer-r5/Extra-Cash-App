@@ -1,52 +1,93 @@
+import 'package:extra_cash_app/screens/tech_your_bookings.dart';
+import 'package:extra_cash_app/screens/tech_your_wallet.dart';
 import 'package:flutter/material.dart';
 import 'tech_need_service.dart'; // Import TechNeedService page
 import 'tech_profile_page.dart';
+import 'tech_notifications.dart';
+import 'tech_chat_icon.dart';
 
-class TechnicianHomePage extends StatelessWidget {
-  TechnicianHomePage({super.key});
+class TechnicianHomePage extends StatefulWidget {
+  const TechnicianHomePage({super.key});
 
+  @override
+  _TechnicianHomePageState createState() => _TechnicianHomePageState();
+}
+
+class _TechnicianHomePageState extends State<TechnicianHomePage> {
+  // List of services with `serviceType`
   final List<Map<String, dynamic>> serviceList = [
     {
       "imagePath": 'assets/technician_electrician.png',
       "text": 'NEED ELECTRICIAN',
-      "onTap": () {}, // Existing function remains
+      "serviceType": "electrician",
     },
     {
       "imagePath": 'assets/technician_ac_mechanic.png',
       "text": 'NEED AC MECHANIC',
-      "onTap": () {}, // Existing function remains
+      "serviceType": "ac_mechanic",
     },
     {
       "imagePath": 'assets/technician_packers&movers.png',
       "text": 'NEED PACKERS & MOVERS',
-      "onTap": () {}, // Existing function remains
+      "serviceType": "packers_movers",
     },
     {
       "imagePath": 'assets/technician_carpenter.png',
       "text": 'NEED CARPENTER',
-      "onTap": () {}, // Existing function remains
+      "serviceType": "carpenter",
     },
     {
       "imagePath": 'assets/technician_plumber.png',
-      "text": 'NEED PLUMBERS',
-      "onTap": () {}, // Existing function remains
+      "text": 'NEED PLUMBER',
+      "serviceType": "plumber",
     },
   ];
 
-  void navigateToTechNeedService(
-    BuildContext context,
-    VoidCallback existingFunction,
-  ) {
-    existingFunction(); // Execute existing function logic
+  // Search query controller
+  final TextEditingController _searchController = TextEditingController();
+
+  // Filtered list of services
+  List<Map<String, dynamic>> _filteredServiceList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _filteredServiceList = List.from(serviceList);
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  // Handle search input changes
+  void _onSearchChanged() {
+    final query = _searchController.text.toLowerCase().trim();
+    setState(() {
+      _filteredServiceList =
+          serviceList.where((service) {
+            final text = service["text"].toString().toLowerCase();
+            return text.contains(query);
+          }).toList();
+    });
+  }
+
+  // Navigate to TechNeedService with `serviceType`
+  void navigateToTechNeedService(BuildContext context, String serviceType) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const TechNeedService()),
+      MaterialPageRoute(
+        builder: (context) => TechNeedService(serviceType: serviceType),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white, // Updated background color to white
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
@@ -90,7 +131,10 @@ class TechnicianHomePage extends StatelessWidget {
             IconButton(
               icon: Image.asset("assets/msg_icon.png", width: 24, height: 24),
               onPressed: () {
-                // Navigate to chat screen in the future
+                   Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) =>  TechChatIcon()),
+                      );// Navigate to chat screen in the future
               },
             ),
           ],
@@ -104,9 +148,10 @@ class TechnicianHomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextField(
+                controller: _searchController,
                 decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.search),
-                  hintText: 'Search',
+                  hintText: 'Search for a technician',
                   filled: true,
                   fillColor: const Color.fromARGB(255, 241, 240, 240),
                   border: OutlineInputBorder(
@@ -121,7 +166,12 @@ class TechnicianHomePage extends StatelessWidget {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        // Navigate to Bookings Page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TechYourBookings(),
+                          ),
+                        );
                       },
                       child: Card(
                         clipBehavior: Clip.antiAlias,
@@ -170,7 +220,12 @@ class TechnicianHomePage extends StatelessWidget {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        // Navigate to Wallet Page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TechYourWallet(),
+                          ),
+                        ); // Navigate to Wallet Page
                       },
                       child: Card(
                         clipBehavior: Clip.antiAlias,
@@ -224,38 +279,46 @@ class TechnicianHomePage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                // padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                padding: EdgeInsets.only(bottom: 15),
                 child: Align(
                   alignment: Alignment.center,
                   child: Text(
-                    "TECHNICIANS REQUIRED",
+                    "Technicians Required",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
-              ListView.builder(
-                physics:
-                    const NeverScrollableScrollPhysics(), // Disable scrolling for this ListView
-                shrinkWrap: true, // Allow it to fit within the parent
-                itemCount: serviceList.length,
-                itemBuilder: (context, index) {
-                  final service = serviceList[index];
-                  return Column(
-                    children: [
-                      ServiceCard(
-                        imagePath: service["imagePath"],
-                        text: service["text"],
-                        onTap:
-                            () => navigateToTechNeedService(
-                              context,
-                              service["onTap"],
-                            ),
-                      ),
-                      const SizedBox(height: 10),
-                    ],
-                  );
-                },
-              ),
+              if (_filteredServiceList.isEmpty)
+                const Center(
+                  child: Text(
+                    "Service Unavailable",
+                    style: TextStyle(fontSize: 16, color: Colors.red),
+                  ),
+                )
+              else
+                ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: _filteredServiceList.length,
+                  itemBuilder: (context, index) {
+                    final service = _filteredServiceList[index];
+                    return Column(
+                      children: [
+                        ServiceCard(
+                          imagePath: service["imagePath"],
+                          text: service["text"],
+                          onTap:
+                              () => navigateToTechNeedService(
+                                context,
+                                service["serviceType"],
+                              ),
+                        ),
+                        const SizedBox(height: 10),
+                      ],
+                    );
+                  },
+                ),
             ],
           ),
         ),
@@ -264,23 +327,22 @@ class TechnicianHomePage extends StatelessWidget {
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.grey,
-        currentIndex: 0, // Update dynamically if needed
+        currentIndex: 0,
         onTap: (index) {
-          // if (index == 2) {
-          // When Profile is tapped
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const TechProfilePage()),
-          );
+          if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const TechProfilePage()),
+            );
+          } else if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const TechNotifications(),
+              ),
+            );
+          }
         },
-        //  else if (index == 1) {
-        //     // When Dashboard is tapped
-        //     Navigator.push(
-        //       context,
-        //       MaterialPageRoute(builder: (context) => TechDashboardPage()),
-        //     );
-        //   }
-        // },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
@@ -294,6 +356,7 @@ class TechnicianHomePage extends StatelessWidget {
   }
 }
 
+// ServiceCard Widget
 class ServiceCard extends StatelessWidget {
   final String imagePath;
   final String text;

@@ -1,3 +1,4 @@
+import 'package:extra_cash_app/screens/tech_chat_screen.dart';
 import 'package:flutter/material.dart';
 
 class TechIssueDetailPage extends StatefulWidget {
@@ -137,26 +138,7 @@ class _TechIssueDetailPageState extends State<TechIssueDetailPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  // ❌ Decline Button
-                  ElevatedButton(
-                    onPressed: () {
-                      widget.onDecline(); // Remove the issue from the list
-                      Navigator.pop(context); // Go back to previous page
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey[300],
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
-                      ),
-                    ),
-                    child: const Text(
-                      "Decline",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-
-                  // ✅ Accept Button
+                  // ✅ Accept Button (Now on the LEFT side)
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -175,6 +157,25 @@ class _TechIssueDetailPageState extends State<TechIssueDetailPage> {
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
+
+                  // ❌ Decline Button (Now on the RIGHT side)
+                  ElevatedButton(
+                    onPressed: () {
+                      widget.onDecline(); // Remove the issue from the list
+                      Navigator.pop(context); // Go back to previous page
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[300],
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
+                    ),
+                    child: const Text(
+                      "Decline",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
                 ],
               ),
 
@@ -184,7 +185,10 @@ class _TechIssueDetailPageState extends State<TechIssueDetailPage> {
                 padding: const EdgeInsets.only(top: 20),
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    // Navigate to chat screen (add the correct navigation)
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TechChatScreen()),
+                    ); // Navigate to chat screen (add the correct navigation)
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,

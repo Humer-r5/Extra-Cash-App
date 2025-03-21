@@ -35,69 +35,67 @@ class YourWalletScreen extends StatelessWidget {
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Welcome Back!",
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            const SizedBox(height: 16),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Welcome Back!",
+                style: TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+              const SizedBox(height: 16),
 
-            // Wallet Information Cards (Earnings, Services, etc.)
-            GridView.count(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              childAspectRatio: 1.8, // Adjusted for better proportions
-              children: [
-                WalletCard(
-                  title: "Total Earning",
-                  amount: "₹1259",
-                  icon: Icons.account_balance_wallet,
-                ),
-                WalletCard(
-                  title: "Total Service",
-                  amount: "1589",
-                  icon: Icons.receipt,
-                ),
-                WalletCard(
-                  title: "Upcoming Services",
-                  amount: "15",
-                  icon: Icons.event,
-                ),
-                WalletCard(
-                  title: "Today's Service",
-                  amount: "05",
-                  icon: Icons.today,
-                ),
-              ],
-            ),
-          ],
+              // Wallet Information Cards
+              GridView.count(
+                shrinkWrap: true, // Prevents unnecessary scrolling issues
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: 2,
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+                childAspectRatio: 1.6, // Adjusted for better proportions
+                children: const [
+                  WalletCard(
+                    title: "Total Earning",
+                    amount: "₦1259",
+                    icon: Icons.account_balance_wallet,
+                  ),
+                  WalletCard(
+                    title: "Total Service",
+                    amount: "1589",
+                    icon: Icons.receipt,
+                  ),
+                  WalletCard(
+                    title: "Upcoming Services",
+                    amount: "02",
+                    icon: Icons.event,
+                  ),
+                  WalletCard(
+                    title: "Today's Service",
+                    amount: "05",
+                    icon: Icons.today,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavBar(
         currentIndex: 0, // Set the appropriate index for the selected tab
         onTap: (index) {
-          // Handle navigation for the bottom nav bar
-          // Example: Use Navigator to push/pop screens as needed
           if (index == 0) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => const HomePage()),
             );
-          } 
-          else if (index == 2) {
-        // Navigate to notification page
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const NotificationScreen()),
-        );
-      } else if (index == 3) {
+          } else if (index == 2) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const NotificationScreen()),
+            );
+          } else if (index == 3) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => const ProfilePage()),
@@ -109,7 +107,7 @@ class YourWalletScreen extends StatelessWidget {
   }
 }
 
-// Custom Widget for Wallet Cards
+// Custom Wallet Card Widget
 class WalletCard extends StatelessWidget {
   final String title;
   final String amount;

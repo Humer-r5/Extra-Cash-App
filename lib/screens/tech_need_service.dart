@@ -2,59 +2,137 @@ import 'package:flutter/material.dart';
 import 'tech_issue_detail_page.dart';
 
 class TechNeedService extends StatefulWidget {
-  const TechNeedService({super.key});
+  final String serviceType;
+
+  const TechNeedService({super.key, required this.serviceType});
 
   @override
   _TechNeedServiceState createState() => _TechNeedServiceState();
 }
 
 class _TechNeedServiceState extends State<TechNeedService> {
-  List<Map<String, dynamic>> issues = [
-    {
-      "image": "assets/technician_plumber.png",
-      "title": "Water Leakage",
-      "name": "Rose Customer",
-      "email": "rose@gmail.com",
-      "address": "123 Main Street, NY"
-    },
-    {
-      "image": "assets/technician_electrician.png",
-      "title": "Electric Issue",
-      "name": "John Doe",
-      "email": "john.doe@gmail.com",
-      "address": "456 Park Avenue, CA"
-    },
-    {
-      "image": "assets/technician_plumber.png",
-      "title": "Plumbing Problem",
-      "name": "Emily Smith",
-      "email": "emily.smith@gmail.com",
-      "address": "789 Broadway, TX"
-    },
-    {
-      "image": "assets/technician_ac_mechanic.png",
-      "title": "AC Not Cooling",
-      "name": "Michael Brown",
-      "email": "michael.brown@gmail.com",
-      "address": "101 Lincoln Street, FL"
-    },
-    {
-      "image": "assets/technician_electrician.png",
-      "title": "Heater Malfunction",
-      "name": "Sophia Wilson",
-      "email": "sophia.wilson@gmail.com",
-      "address": "205 Ocean Drive, LA"
-    },
-    {
-      "image": "assets/technician_electrician.png",
-      "title": "Internet Not Working",
-      "name": "David Johnson",
-      "email": "david.johnson@gmail.com",
-      "address": "300 Mountain View, SF"
-    },
-  ];
+  late List<Map<String, dynamic>> issues;
 
-  // Function to remove an issue when declined
+  final Map<String, List<Map<String, dynamic>>> serviceIssues = {
+   "electrician": [
+      {
+        "image": "assets/electrician/elec-1.jpg",
+        "title": "Power Failure in Apartment",
+        "name": "John Edison",
+        "email": "john.edison@gmail.com",
+        "address": "456 Park Avenue, CA"
+      },
+      {
+        "image": "assets/electrician/elec-2.jpg",
+        "title": "Short Circuit in Office",
+        "name": "Emma Clarke",
+        "email": "emma.clarke@gmail.com",
+        "address": "789 Broadway, TX"
+      },
+      {
+        "image": "assets/electrician/elec-3.jpg",
+        "title": "Fuse Box Replacement",
+        "name": "James Bolton",
+        "email": "james.bolton@gmail.com",
+        "address": "123 Main Street, NY"
+      },
+      {
+        "image": "assets/electrician/elec-4.jpg",
+        "title": "Lighting Installation",
+        "name": "Sophia Miller",
+        "email": "sophia.miller@gmail.com",
+        "address": "205 Ocean Drive, LA"
+      },
+      {
+        "image": "assets/electrician/elec-5.jpg",
+        "title": "Faulty Wiring Issue",
+        "name": "David Johnson",
+        "email": "david.johnson@gmail.com",
+        "address": "300 Mountain View, SF"
+      },
+    ],
+    "plumber": [
+      {
+        "image": "assets/plumber/plumb-1.jpg",
+        "title": "Bathroom Leak Repair",
+        "name": "Olivia Carter",
+        "email": "olivia.carter@gmail.com",
+        "address": "111 Pine Street, FL"
+      },
+      {
+        "image": "assets/plumber/plumb-2.jpg",
+        "title": "Broken Pipe Fix",
+        "name": "William Green",
+        "email": "william.green@gmail.com",
+        "address": "500 Oak Lane, TX"
+      },
+      {
+        "image": "assets/plumber/plumb-3.jpg",
+        "title": "Kitchen Sink Clogged",
+        "name": "Lucy Adams",
+        "email": "lucy.adams@gmail.com",
+        "address": "222 Maple Road, NY"
+      },
+      {
+        "image": "assets/plumber/plumb-4.jpg",
+        "title": "Sewer Line Blockage",
+        "name": "Henry Ford",
+        "email": "henry.ford@gmail.com",
+        "address": "55 River Drive, LA"
+      },
+      {
+        "image": "assets/plumber/plumb-5.jpg",
+        "title": "Toilet Flush Not Working",
+        "name": "Amelia Roberts",
+        "email": "amelia.roberts@gmail.com",
+        "address": "789 Ocean Boulevard, SF"
+      },
+    ],
+    "ac_mechanic": [
+      {
+        "image": "assets/ac_mechanic/ac-1.jpg",
+        "title": "AC Not Cooling",
+        "name": "Ryan Scott",
+        "email": "ryan.scott@gmail.com",
+        "address": "12 Central Avenue, NY"
+      },
+      {
+        "image": "assets/ac_mechanic/ac-2.jpg",
+        "title": "Strange Noise from AC",
+        "name": "Chloe Turner",
+        "email": "chloe.turner@gmail.com",
+        "address": "45 Grand Street, TX"
+      },
+      {
+        "image": "assets/ac_mechanic/ac-3.jpg",
+        "title": "Refrigerant Leak Issue",
+        "name": "Jack Hamilton",
+        "email": "jack.hamilton@gmail.com",
+        "address": "987 Broadway Road, LA"
+      },
+      {
+        "image": "assets/ac_mechanic/ac-4.jpg",
+        "title": "Compressor Not Working",
+        "name": "Sophia White",
+        "email": "sophia.white@gmail.com",
+        "address": "321 Palm Drive, CA"
+      },
+      {
+        "image": "assets/ac_mechanic/ac-5.jpg",
+        "title": "Thermostat Malfunction",
+        "name": "Lucas Brown",
+        "email": "lucas.brown@gmail.com",
+        "address": "741 Skyline Road, SF"
+      },
+    ],
+  };
+
+  @override
+  void initState() {
+    super.initState();
+    issues = serviceIssues[widget.serviceType] ?? [];
+  }
+
   void removeIssue(Map<String, dynamic> issue) {
     setState(() {
       issues.remove(issue);
@@ -71,9 +149,9 @@ class _TechNeedServiceState extends State<TechNeedService> {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          "Reported Issues",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        title: Text(
+          "${widget.serviceType.toUpperCase()} Requests",
+          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.white,
         elevation: 0,
@@ -83,16 +161,16 @@ class _TechNeedServiceState extends State<TechNeedService> {
         child: issues.isEmpty
             ? const Center(
                 child: Text(
-                  "No reported issues available.",
+                  "No Hustles available for you.",
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
               )
             : GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // Two items per row
+                  crossAxisCount: 2, 
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
-                  childAspectRatio: 0.7, // Adjusted for better proportions
+                  childAspectRatio: 0.72, // Adjusted ratio for better fit
                 ),
                 itemCount: issues.length,
                 itemBuilder: (context, index) {
@@ -104,7 +182,7 @@ class _TechNeedServiceState extends State<TechNeedService> {
                         MaterialPageRoute(
                           builder: (context) => TechIssueDetailPage(
                             issue: issue,
-                            onDecline: () => removeIssue(issue), // Callback
+                            onDecline: () => removeIssue(issue),
                           ),
                         ),
                       );
@@ -117,9 +195,8 @@ class _TechNeedServiceState extends State<TechNeedService> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // 🖼 Image taking 65% of the card
                           Expanded(
-                            flex: 65, // 65% of the height
+                            flex: 65,
                             child: ClipRRect(
                               borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                               child: Image.asset(
@@ -129,66 +206,48 @@ class _TechNeedServiceState extends State<TechNeedService> {
                               ),
                             ),
                           ),
-                          // 📌 Remaining 35% for text details
                           Expanded(
-                            flex: 35, // 35% of the height
+                            flex: 35,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    issue["title"],
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
+                                  Flexible(
+                                    child: Text(
+                                      issue["title"],
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
                                   ),
                                   const SizedBox(height: 4),
-                                  Row(
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 16,
-                                        backgroundImage: AssetImage(issue["image"]),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              issue["name"],
-                                              style: const TextStyle(
-                                                  fontSize: 14, fontWeight: FontWeight.bold),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            Text(
-                                              issue["email"],
-                                              style: const TextStyle(
-                                                  fontSize: 12, color: Colors.grey),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                                  Flexible(
+                                    child: Text(
+                                      issue["name"],
+                                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                    ),
                                   ),
-                                  const SizedBox(height: 4),
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.location_on, size: 14, color: Colors.grey),
-                                      const SizedBox(width: 4),
-                                      Expanded(
-                                        child: Text(
-                                          issue["address"],
-                                          style: const TextStyle(fontSize: 12, color: Colors.grey),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ],
+                                  Flexible(
+                                    child: Text(
+                                      issue["email"],
+                                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      issue["address"],
+                                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                    ),
                                   ),
                                 ],
                               ),
