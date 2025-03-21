@@ -140,7 +140,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   _buildMenuItem(
                     Icons.build,
-                    "Become A Technician",
+                    "Switch to Technician",
                     context,
                     onTap: () {
                       Navigator.push(
