@@ -3,6 +3,7 @@ import 'package:extra_cash_app/screens/tech_your_wallet.dart';
 import 'package:flutter/material.dart';
 import 'tech_need_service.dart'; // Import TechNeedService page
 import 'tech_profile_page.dart';
+import 'tech_notifications.dart';
 
 class TechnicianHomePage extends StatefulWidget {
   const TechnicianHomePage({super.key});
@@ -287,7 +288,7 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
               if (_filteredServiceList.isEmpty)
                 const Center(
                   child: Text(
-                    "Technicians unavailable",
+                    "Service Unavailable",
                     style: TextStyle(fontSize: 16, color: Colors.red),
                   ),
                 )
@@ -328,6 +329,13 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const TechProfilePage()),
+            );
+          } else if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const TechNotificationScreen(),
+              ),
             );
           }
         },
