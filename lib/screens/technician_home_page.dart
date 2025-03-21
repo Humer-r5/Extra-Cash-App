@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'tech_need_service.dart'; // Import TechNeedService page
+import 'tech_profile_page.dart';
 
 class TechnicianHomePage extends StatelessWidget {
   TechnicianHomePage({super.key});
@@ -263,11 +264,28 @@ class TechnicianHomePage extends StatelessWidget {
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.grey,
+        currentIndex: 0, // Update dynamically if needed
+        onTap: (index) {
+          // if (index == 2) {
+          // When Profile is tapped
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const TechProfilePage()),
+          );
+        },
+        //  else if (index == 1) {
+        //     // When Dashboard is tapped
+        //     Navigator.push(
+        //       context,
+        //       MaterialPageRoute(builder: (context) => TechDashboardPage()),
+        //     );
+        //   }
+        // },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
-            label: 'Alert',
+            label: 'Alerts',
           ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],

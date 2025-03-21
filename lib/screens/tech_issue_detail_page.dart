@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
 
-class TechIssueDetailPage extends StatelessWidget {
+class TechIssueDetailPage extends StatefulWidget {
   final Map<String, dynamic> issue;
+  final Function
+  onDecline; // Callback function to remove the issue from the list
 
-  const TechIssueDetailPage({super.key, required this.issue});
+  const TechIssueDetailPage({
+    super.key,
+    required this.issue,
+    required this.onDecline,
+  });
+
+  @override
+  _TechIssueDetailPageState createState() => _TechIssueDetailPageState();
+}
+
+class _TechIssueDetailPageState extends State<TechIssueDetailPage> {
+  bool isAccepted = false; // Tracks whether the issue is accepted
 
   @override
   Widget build(BuildContext context) {
@@ -18,80 +31,94 @@ class TechIssueDetailPage extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: SingleChildScrollView( // Makes content scrollable
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Issue Image (Fixed to display properly)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  issue["image"],
-                  width: double.infinity,
-                  height: 250, // Ensures full visibility
-                  fit: BoxFit.cover,
-                ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // 🖼 Image Display
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.asset(
+                widget.issue["image"],
+                width: double.infinity,
+                height: 250,
+                fit: BoxFit.cover,
               ),
-              const SizedBox(height: 10),
+            ),
+            const SizedBox(height: 10),
 
-              // Issue Title
-              Text(
-                issue["title"],
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            // 📝 Issue Title
+            Text(
+              widget.issue["title"],
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+
+            const SizedBox(height: 20),
+
+            // 👤 Customer Details
+            Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
-              const SizedBox(height: 15),
-
-              // User Profile Card
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                    ),
-                  ],
-                ),
+              elevation: 3,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
                 child: Row(
                   children: [
                     CircleAvatar(
-                      radius: 30,
-                      backgroundImage: AssetImage(issue["image"]),
+                      radius: 24,
+                      backgroundImage: AssetImage(widget.issue["image"]),
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(issue["name"],
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 5),
+                          Text(
+                            widget.issue["name"],
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           Row(
                             children: [
-                              const Icon(Icons.email, size: 16, color: Colors.grey),
+                              const Icon(
+                                Icons.email,
+                                size: 16,
+                                color: Colors.grey,
+                              ),
                               const SizedBox(width: 5),
                               Expanded(
-                                child: Text(issue["email"],
-                                    style: const TextStyle(color: Colors.grey),
-                                    overflow: TextOverflow.ellipsis),
+                                child: Text(
+                                  widget.issue["email"],
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 5),
                           Row(
                             children: [
-                              const Icon(Icons.location_on, size: 16, color: Colors.grey),
+                              const Icon(
+                                Icons.location_on,
+                                size: 16,
+                                color: Colors.grey,
+                              ),
                               const SizedBox(width: 5),
                               Expanded(
-                                child: Text(issue["address"],
-                                    style: const TextStyle(color: Colors.grey),
-                                    overflow: TextOverflow.ellipsis),
+                                child: Text(
+                                  widget.issue["address"],
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ],
                           ),
@@ -101,43 +128,85 @@ class TechIssueDetailPage extends StatelessWidget {
                   ],
                 ),
               ),
+            ),
 
-              const SizedBox(height: 20),
+            const SizedBox(height: 20),
 
-              // Accept & Decline Buttons
+            // ✅ Accept & ❌ Decline Buttons (Only if not accepted)
+            if (!isAccepted)
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  // ❌ Decline Button
                   ElevatedButton(
                     onPressed: () {
-                      // Handle Accept Action
+                      widget.onDecline(); // Remove the issue from the list
+                      Navigator.pop(context); // Go back to previous page
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[300],
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
+                    ),
+                    child: const Text(
+                      "Decline",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+
+                  // ✅ Accept Button
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        isAccepted = true;
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 10),
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
                     ),
-                    child: const Text("Accept", style: TextStyle(color: Colors.white)),
-                  ),
-                  const SizedBox(width: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Handle Decline Action
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 10),
-                      side: const BorderSide(color: Colors.black),
+                    child: const Text(
+                      "Accept",
+                      style: TextStyle(color: Colors.white),
                     ),
-                    child: const Text("Decline", style: TextStyle(color: Colors.black)),
                   ),
                 ],
               ),
 
-              const SizedBox(height: 20), // Extra spacing to prevent bottom cut-off
-            ],
-          ),
+            // 💬 Chat Button (Only appears after accepting)
+            if (isAccepted)
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    // Navigate to chat screen (add the correct navigation)
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 40,
+                      vertical: 12,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  icon: const Icon(
+                    Icons.chat_bubble_outline,
+                    color: Colors.white,
+                  ),
+                  label: const Text(
+                    "Chat",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+          ],
         ),
       ),
     );
