@@ -35,7 +35,7 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
     },
     {
       "imagePath": 'assets/technician_plumber.png',
-      "text": 'NEED PLUMBERS',
+      "text": 'NEED PLUMBER',
       "onTap": () {}, // Existing function remains
     },
   ];
