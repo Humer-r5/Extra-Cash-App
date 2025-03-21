@@ -278,7 +278,7 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
               if (_filteredServiceList.isEmpty)
                 const Center(
                   child: Text(
-                    "Technicians unavailable",
+                    "Service Unavailable",
                     style: TextStyle(fontSize: 16, color: Colors.red),
                   ),
                 )
