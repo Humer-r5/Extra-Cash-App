@@ -1,3 +1,5 @@
+import 'package:extra_cash_app/screens/tech_your_bookings.dart';
+import 'package:extra_cash_app/screens/tech_your_wallet.dart';
 import 'package:flutter/material.dart';
 import 'tech_need_service.dart'; // Import TechNeedService page
 import 'tech_profile_page.dart';
@@ -11,32 +13,32 @@ class TechnicianHomePage extends StatefulWidget {
 }
 
 class _TechnicianHomePageState extends State<TechnicianHomePage> {
-  // List of services
+  // List of services with `serviceType`
   final List<Map<String, dynamic>> serviceList = [
     {
       "imagePath": 'assets/technician_electrician.png',
       "text": 'NEED ELECTRICIAN',
-      "onTap": () {}, // Existing function remains
+      "serviceType": "electrician",
     },
     {
       "imagePath": 'assets/technician_ac_mechanic.png',
       "text": 'NEED AC MECHANIC',
-      "onTap": () {}, // Existing function remains
+      "serviceType": "ac_mechanic",
     },
     {
       "imagePath": 'assets/technician_packers&movers.png',
       "text": 'NEED PACKERS & MOVERS',
-      "onTap": () {}, // Existing function remains
+      "serviceType": "packers_movers",
     },
     {
       "imagePath": 'assets/technician_carpenter.png',
       "text": 'NEED CARPENTER',
-      "onTap": () {}, // Existing function remains
+      "serviceType": "carpenter",
     },
     {
       "imagePath": 'assets/technician_plumber.png',
       "text": 'NEED PLUMBER',
-      "onTap": () {}, // Existing function remains
+      "serviceType": "plumber",
     },
   ];
 
@@ -49,9 +51,7 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
   @override
   void initState() {
     super.initState();
-    _filteredServiceList = List.from(
-      serviceList,
-    ); // Initialize with all services
+    _filteredServiceList = List.from(serviceList);
     _searchController.addListener(_onSearchChanged);
   }
 
@@ -73,14 +73,13 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
     });
   }
 
-  void navigateToTechNeedService(
-    BuildContext context,
-    VoidCallback existingFunction,
-  ) {
-    existingFunction(); // Execute existing function logic
+  // Navigate to TechNeedService with `serviceType`
+  void navigateToTechNeedService(BuildContext context, String serviceType) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const TechNeedService()),
+      MaterialPageRoute(
+        builder: (context) => TechNeedService(serviceType: serviceType),
+      ),
     );
   }
 
@@ -163,7 +162,12 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        // Navigate to Bookings Page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TechYourBookings(),
+                          ),
+                        );
                       },
                       child: Card(
                         clipBehavior: Clip.antiAlias,
@@ -212,7 +216,12 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        // Navigate to Wallet Page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TechYourWallet(),
+                          ),
+                        ); // Navigate to Wallet Page
                       },
                       child: Card(
                         clipBehavior: Clip.antiAlias,
@@ -298,7 +307,7 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
                           onTap:
                               () => navigateToTechNeedService(
                                 context,
-                                service["onTap"],
+                                service["serviceType"],
                               ),
                         ),
                         const SizedBox(height: 10),
@@ -343,6 +352,7 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
   }
 }
 
+// ServiceCard Widget
 class ServiceCard extends StatelessWidget {
   final String imagePath;
   final String text;
