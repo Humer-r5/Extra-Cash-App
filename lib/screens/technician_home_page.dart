@@ -18,7 +18,7 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
       "onTap": () {}, // Existing function remains
     },
     {
-      "imagePath": 'assets/technician_ac_mechanic.png',
+      "imagePath": 'assets/technician_ac_mechanic.jpg',
       "text": 'NEED AC MECHANIC',
       "onTap": () {}, // Existing function remains
     },
