@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 //import 'screens/tech_need_service.dart';
 import 'screens/landing_page.dart'; // Import Splash Screen
 
-
 void main() {
   runApp(const MyApp());
 }
