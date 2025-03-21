@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'tech_edit_profile.dart'; // Import EditProfilePage
 import 'register_page.dart';
-import 'home_page.dart';
+import 'technician_home_page.dart';
 import 'tech_dashboard.dart';
 
 class TechProfilePage extends StatefulWidget {
@@ -89,7 +89,7 @@ class _ProfilePageState extends State<TechProfilePage> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => HomePage(),
+                                builder: (context) => TechnicianHomePage(),
                               ),
                             ); // Navigates back to the home page
                           },
@@ -147,7 +147,7 @@ class _ProfilePageState extends State<TechProfilePage> {
                         MaterialPageRoute(
                           builder:
                               (context) =>
-                                  const HomePage(), // Ensure this is imported correctly
+                                  const TechnicianHomePage(), // Ensure this is imported correctly
                         ),
                       );
                     },

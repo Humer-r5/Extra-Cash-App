@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'tech_need_service.dart'; // Import TechNeedService page
 import 'tech_profile_page.dart';
-import 'notifications_screen.dart';
+import 'tech_notifications.dart';
 
 class TechnicianHomePage extends StatefulWidget {
   const TechnicianHomePage({super.key});
@@ -325,7 +325,7 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const NotificationScreen(),
+                builder: (context) => const TechNotificationScreen(),
               ),
             );
           }
