@@ -66,6 +66,7 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
+      - assets/extra_hustle_logo.png
       - assets/plumber.png
       - assets/electrician.png
       - assets/carpenter.png

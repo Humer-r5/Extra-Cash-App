@@ -1,8 +1,10 @@
+import 'package:extra_cash_app/screens/tech_chat_screen.dart';
 import 'package:flutter/material.dart';
 
 class TechIssueDetailPage extends StatefulWidget {
   final Map<String, dynamic> issue;
-  final Function onDecline; // Callback function to remove the issue from the list
+  final Function
+  onDecline; // Callback function to remove the issue from the list
 
   const TechIssueDetailPage({
     super.key,
@@ -183,7 +185,10 @@ class _TechIssueDetailPageState extends State<TechIssueDetailPage> {
                 padding: const EdgeInsets.only(top: 20),
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    // Navigate to chat screen (add the correct navigation)
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TechChatScreen()),
+                    ); // Navigate to chat screen (add the correct navigation)
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
