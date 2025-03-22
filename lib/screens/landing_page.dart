@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'home_page.dart'; // Import the Register Screen
+import 'User/home_page.dart'; // Import the Register Screen
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});

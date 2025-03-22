@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../widgets/technician_card.dart'; // Import the TechnicianCard widget
+import '../../widgets/technician_card.dart'; // Import the TechnicianCard widget
 import 'technician_details_screen.dart'; // Import the TechnicianDetailsScreen
-import '../widgets/BottomNavBar .dart'; // Import the BottomNavBar widget
+import '../../widgets/bottom_navbar.dart'; // Fixed extra space issue
 import 'home_page.dart'; // Import the HomePage
 import 'profile_page.dart'; // Import the ProfilePage
-import 'notifications_screen.dart';
+import 'notifications_screen.dart'; // Import the NotificationsScreen
 
 class ServiceDetailPage extends StatelessWidget {
   final String title, image;
@@ -26,8 +26,7 @@ class ServiceDetailPage extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
         );
-      } 
-      else if (index == 2) {
+      } else if (index == 2) {
         // Navigate to notification page
         Navigator.pushReplacement(
           context,
