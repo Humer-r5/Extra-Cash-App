@@ -4,6 +4,7 @@ import 'tech_edit_profile.dart'; // Import EditProfilePage
 import 'register_page.dart';
 import 'technician_home_page.dart';
 import 'tech_dashboard.dart';
+import 'home_page.dart';
 
 class TechProfilePage extends StatefulWidget {
   const TechProfilePage({super.key});
@@ -147,7 +148,7 @@ class _ProfilePageState extends State<TechProfilePage> {
                         MaterialPageRoute(
                           builder:
                               (context) =>
-                                  const TechnicianHomePage(), // Ensure this is imported correctly
+                                  const HomePage(), // Ensure this is imported correctly
                         ),
                       );
                     },

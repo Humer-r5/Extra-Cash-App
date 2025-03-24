@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home_page.dart';
+import 'notification_detail_screen.dart'; // Import the new screen
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});
@@ -9,69 +10,48 @@ class NotificationScreen extends StatelessWidget {
     List<Map<String, dynamic>> notifications = [
       {
         "name": "Sylvan Strosin",
-        "message": "It is a long established fact that...",
+        "message":
+            "It is a long-established fact that a reader will be distracted by the readable content of a page when looking at its layout...",
         "time": "2:30 PM",
         "image": "assets/user1.jpg",
-        "unreadCount": 0,
       },
       {
         "name": "Cleveland Schiller",
-        "message": "It is a long established fact that...",
+        "message":
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
         "time": "5:15 PM",
         "image": "assets/user2.jpg",
-        "unreadCount": 0,
       },
       {
         "name": "Bella Donnelly",
-        "message": "It is a long established fact",
+        "message":
+            "It is a long-established fact that a reader will be distracted...",
         "time": "2:00 PM",
         "image": "assets/user3.jpg",
-        "unreadCount": 3,
       },
       {
         "name": "Marquise Morissette",
-        "message": "It is a long established fact...",
+        "message":
+            "Contrary to popular belief, Lorem Ipsum is not simply random text...",
         "time": "6:45 PM",
         "image": "assets/user4.jpg",
-        "unreadCount": 0,
-      },
-      {
-        "name": "Cooper McCullough",
-        "message": "It is a long established",
-        "time": "12:25 PM",
-        "image": "assets/user5.jpg",
-        "unreadCount": 4,
-      },
-      {
-        "name": "Fabian Torp",
-        "message": "It is a long established fact that...",
-        "time": "10:00 PM",
-        "image": "assets/user6.jpg",
-        "unreadCount": 0,
-      },
-      {
-        "name": "Lloyd Rodriguez",
-        "message": "It is a long established fact that...",
-        "time": "4:40 PM",
-        "image": "assets/user7.jpg",
-        "unreadCount": 0,
       },
     ];
 
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => const HomePage()),
-              (route) => false, // Removes all previous routes from the stack
+              (route) => false,
             );
           },
         ),
         title: const Text(
-          "Notifications", // Added Title for Notifications
+          "Notifications",
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.white,
@@ -101,32 +81,22 @@ class NotificationScreen extends StatelessWidget {
                   style: const TextStyle(fontSize: 14, color: Colors.grey),
                   overflow: TextOverflow.ellipsis,
                 ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      item["time"],
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
-                    if (item["unreadCount"] > 0)
-                      Container(
-                        margin: const EdgeInsets.only(left: 10),
-                        padding: const EdgeInsets.all(6),
-                        decoration: const BoxDecoration(
-                          color: Colors.purple,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Text(
-                          item["unreadCount"].toString(),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                  ],
+                trailing: Text(
+                  item["time"],
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
                 ),
+                onTap: () {
+                  // Navigate to the detail screen with respective data
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NotificationDetailScreen(
+                        name: item["name"],
+                        message: item["message"],
+                      ),
+                    ),
+                  );
+                },
               ),
               const Divider(),
             ],
