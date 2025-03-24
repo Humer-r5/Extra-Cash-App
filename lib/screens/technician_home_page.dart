@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'tech_need_service.dart'; // Import TechNeedService page
 import 'tech_profile_page.dart';
 import 'tech_notifications.dart';
-<<<<<<< HEAD
+
 import 'tech_your_bookings.dart';
 import 'tech_your_wallet.dart';
-=======
+
 import 'tech_chat_icon.dart';
->>>>>>> 3015b6f3fd68a61f645b6a4bfdd72544537f32af
 
 class TechnicianHomePage extends StatefulWidget {
   final List<String> selectedSkills; // Add this property
@@ -159,10 +158,10 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
             IconButton(
               icon: Image.asset("assets/msg_icon.png", width: 24, height: 24),
               onPressed: () {
-                   Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) =>  TechChatIcon()),
-                      );// Navigate to chat screen in the future
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TechChatIcon()),
+                ); // Navigate to chat screen in the future
               },
             ),
           ],
