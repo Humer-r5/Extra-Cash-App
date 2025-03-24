@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home_page.dart';
-import '../widgets/BottomNavBar .dart';
+import '../widgets/bottom_navbar.dart';
 import 'profile_page.dart';
 import 'notifications_screen.dart';
 
