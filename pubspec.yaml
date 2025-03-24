@@ -78,8 +78,8 @@ flutter:
       - assets/wallet.jpg
       - assets/bookings.jpg
       - assets/msg_icon.png
-      - assets/technician_ac_mechanic.png
-      - assets/technician_carpenter.png
+      - assets/technician_ac_mechanic.jpg
+      - assets/technician_carpenter.jpeg
       - assets/technician_electrician.png
       - assets/technician_packers&movers.png
       - assets/technician_plumber.png
