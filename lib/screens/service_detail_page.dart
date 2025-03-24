@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../widgets/technician_card.dart'; // Import the TechnicianCard widget
+import '../widgets/technician_card.dart'; // Import the TechnicianCard widget
 import 'technician_details_screen.dart'; // Import the TechnicianDetailsScreen
-import '../../widgets/bottom_navbar.dart'; // Fixed extra space issue
+import '../widgets/bottom_navbar.dart'; // Fixed extra space issue
 import 'home_page.dart'; // Import the HomePage
 import 'profile_page.dart'; // Import the ProfilePage
 import 'notifications_screen.dart'; // Import the NotificationsScreen

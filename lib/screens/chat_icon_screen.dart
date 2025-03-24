@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './dynamic_chat_screen.dart';
+import 'dynamic_chat_screen.dart';
 
 class ChatIconScreen extends StatefulWidget {
   const ChatIconScreen({super.key});

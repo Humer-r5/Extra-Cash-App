@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './tech_dynamic_chat.dart';
+import 'tech_dynamic_chat.dart';
 
 class TechChatIcon extends StatefulWidget {
   const TechChatIcon({super.key});

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import './technician_home_page.dart';
+import 'technician_home_page.dart';
 
 class InputDesignScreen extends StatefulWidget {
   const InputDesignScreen({super.key});

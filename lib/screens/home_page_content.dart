@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'service_card.dart'; // Import the ServiceCard widget
 import 'service_detail_page.dart'; // Import the ServiceDetailPage widget
-import './chat_icon_screen.dart';
+import 'chat_icon_screen.dart';
 import 'your_bookings_screen.dart';
 import 'your_wallet_screen.dart';
 import 'home_page.dart';
