@@ -65,12 +65,12 @@ class TechnicianDetailsScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    // onPressed: () {
-                    //   Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(builder: (context) => LoginScreen()),
-                    //   );
-                    // },
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                     ),
