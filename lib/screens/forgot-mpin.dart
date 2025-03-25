@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../screens/OtpVerificationScreen.dart'; // ✅ Import OTP Verification Page
+import '../screens/OtpVerificationScreen.dart'; // Import the OTP Verification Page
 
 class ForgotMpinScreen extends StatefulWidget {
   const ForgotMpinScreen({super.key});
@@ -9,19 +9,50 @@ class ForgotMpinScreen extends StatefulWidget {
 }
 
 class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
-  final _formKey = GlobalKey<FormState>(); // ✅ Form key for validation
-  final _emailController = TextEditingController(); // ✅ Controller for input email
+  final List<String> supportedDomains = [
+    '@gmail.com',
+    '@yahoo.com',
+    '@yahoo.co.uk',
+    '@yahoo.in',
+    '@outlook.com',
+    '@hotmail.com',
+    '@live.com',
+    '@icloud.com',
+    '@aol.com',
+    '@protonmail.com',
+    '@proton.me',
+    '@office365.com',
+    '@exchange.com',
+    '@yourcompany.com',
+    '@zoho.com',
+    '@fastmail.com',
+    '@fastmail.fm',
+    '@yandex.com',
+    '@yandex.ru',
+  ];
+
+  final _formKey = GlobalKey<FormState>(); // Form key for validation
+  final _emailController = TextEditingController();
 
   void getOtp() {
     if (_formKey.currentState!.validate()) {
-      // ✅ Navigate to OTP Verification screen with entered email
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => OtpVerificationScreen(email: _emailController.text),
+          builder:
+              (context) => OtpVerificationScreen(
+                email: _emailController.text,
+              ), // Pass email
         ),
       );
     }
+  }
+
+  @override
+  void dispose() {
+    _emailController
+        .dispose(); // Dispose of the controller to prevent memory leaks
+    super.dispose();
   }
 
   @override
@@ -43,7 +74,7 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Form(
-            key: _formKey, // ✅ Assign form key
+            key: _formKey, // Assign form key
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -60,35 +91,47 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
                 ),
                 const SizedBox(height: 30),
 
-                // ✅ Email TextFormField with Validation
+                // Email TextFormField with Validation
                 TextFormField(
                   controller: _emailController,
                   decoration: InputDecoration(
                     labelText: "Your Email address",
                     prefixIcon: const Icon(Icons.email),
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Colors.white,
+                    border: const OutlineInputBorder(),
                   ),
-                  keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email';
                     }
-                    if (!RegExp(r'^[^@]+@gmail\.com$').hasMatch(value)) {
-                      return 'Please enter a valid Gmail address';
+
+                    // Regular expression to check proper email format
+                    final emailRegex = RegExp(
+                      r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
+                    );
+
+                    if (!emailRegex.hasMatch(value)) {
+                      return 'Please enter a valid email address';
                     }
+
+                    // Extract the domain from the email
+                    String domain = value.substring(value.indexOf('@'));
+
+                    // Check if the domain is in the supported list
+                    if (!supportedDomains.contains(domain)) {
+                      return 'Email domain not supported';
+                    }
+
                     return null;
                   },
                 ),
                 const SizedBox(height: 20),
 
-                // ✅ Get OTP Button
+                // Get OTP Button
                 ElevatedButton(
                   onPressed: getOtp,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
-                    minimumSize: const Size(double.infinity, 50),
+                    minimumSize: Size(double.infinity, 50),
                   ),
                   child: const Text(
                     'Get OTP',
