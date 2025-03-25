@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'tech_need_service.dart'; // Import TechNeedService page
 import 'tech_profile_page.dart';
 import 'tech_notifications.dart';
-
 import 'tech_your_bookings.dart';
 import 'tech_your_wallet.dart';
-
 import 'tech_chat_icon.dart';
 
 class TechnicianHomePage extends StatefulWidget {

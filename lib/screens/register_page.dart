@@ -12,6 +12,28 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final List<String> supportedDomains = [
+    '@gmail.com',
+    '@yahoo.com',
+    '@yahoo.co.uk',
+    '@yahoo.in',
+    '@outlook.com',
+    '@hotmail.com',
+    '@live.com',
+    '@icloud.com',
+    '@aol.com',
+    '@protonmail.com',
+    '@proton.me',
+    '@office365.com',
+    '@exchange.com',
+    '@yourcompany.com',
+    '@zoho.com',
+    '@fastmail.com',
+    '@fastmail.fm',
+    '@yandex.com',
+    '@yandex.ru',
+  ];
+
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController mpinController = TextEditingController();
@@ -84,10 +106,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email';
                     }
-                    if (!RegExp(r'^[^@]+@gmail\.com$').hasMatch(value)) {
-                      return 'Please enter valid Email';
+
+                    // Check if the email ends with any of the supported domains
+                    bool isValidDomain = supportedDomains.any(
+                      (domain) => value.endsWith(domain),
+                    );
+                    if (!isValidDomain) {
+                      return 'Please enter a valid email from a supported domain';
                     }
+
+                    // Optional: Add additional regex validation for proper email format
+                    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+                    if (!emailRegex.hasMatch(value)) {
+                      return 'Please enter a valid email format';
+                    }
+
                     return null;
+                  },
+                  onChanged: (value) {
+                    // Prevent typing after the domain part (e.g., "@gmail.com")
+                    for (var domain in supportedDomains) {
+                      if (value.contains(domain) &&
+                          value.substring(value.indexOf(domain)) != domain) {
+                        emailController.text = value.substring(
+                          0,
+                          value.indexOf(domain) + domain.length,
+                        );
+                        emailController.selection = TextSelection.fromPosition(
+                          TextPosition(offset: emailController.text.length),
+                        );
+                        break;
+                      }
+                    }
                   },
                 ),
                 const SizedBox(height: 10),

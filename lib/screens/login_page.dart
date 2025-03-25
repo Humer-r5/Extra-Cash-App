@@ -11,6 +11,28 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final List<String> supportedDomains = [
+    '@gmail.com',
+    '@yahoo.com',
+    '@yahoo.co.uk',
+    '@yahoo.in',
+    '@outlook.com',
+    '@hotmail.com',
+    '@live.com',
+    '@icloud.com',
+    '@aol.com',
+    '@protonmail.com',
+    '@proton.me',
+    '@office365.com',
+    '@exchange.com',
+    '@yourcompany.com',
+    '@zoho.com',
+    '@fastmail.com',
+    '@fastmail.fm',
+    '@yandex.com',
+    '@yandex.ru',
+  ];
+
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController mpinController = TextEditingController();
@@ -72,23 +94,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email';
                     }
-                    if (!RegExp(r'^[^@]+@gmail\.com$').hasMatch(value)) {
-                      return 'Please enter a valid Gmail address';
+                    // Check if the email matches any of the supported domains
+                    final isValid = supportedDomains.any(
+                      (domain) => value.endsWith(domain),
+                    );
+                    if (!isValid) {
+                      return 'Please enter a valid email address';
                     }
                     return null;
                   },
-                  onChanged: (value) {
-                    if (value.contains('@gmail.com')) {
-                      final beforeAt = value.split('@gmail.com')[0];
-                      emailController.text = '$beforeAt@gmail.com';
-                      emailController.selection = TextSelection.fromPosition(
-                        TextPosition(offset: emailController.text.length),
-                      );
-                    }
-                  },
                 ),
                 const SizedBox(height: 10),
-
                 // MPIN Input with Toggle Visibility
                 TextFormField(
                   controller: mpinController,
@@ -120,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       return 'MPIN must be 4 digits';
                     } else if (int.tryParse(value) == null) {
                       // Ensures it's a valid integer
-                      return 'MPIN must be numeric';
+                      return 'MPIN must be numeric';
                     }
                     return null;
                   },

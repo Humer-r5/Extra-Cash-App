@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'edit_profile.dart'; // Import EditProfilePage
 import 'become_technician.dart';
-import 'register_page.dart';
+import 'guest_home_page.dart';
 import 'home_page.dart';
 import 'user_dashboard.dart';
 
@@ -162,7 +162,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     onTap: () {
                       _showLogoutConfirmationDialog(context);
                     },
-                  ), // ✅ No errors now
+                  ), //
 
                   const SizedBox(height: 15), // More spacing at bottom
                 ],
@@ -210,7 +210,7 @@ class _ProfilePageState extends State<ProfilePage> {
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => RegisterScreen()),
+                  MaterialPageRoute(builder: (context) => GuestHomePage()),
                 );
               },
               child: const Text(

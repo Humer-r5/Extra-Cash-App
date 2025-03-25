@@ -41,7 +41,9 @@ class SplashScreen extends StatelessWidget {
                 // Navigate to HomePage with guestMode enabled
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
+                  MaterialPageRoute(
+                    builder: (context) => const GuestHomePage(),
+                  ),
                 );
               },
               child: const Text(
