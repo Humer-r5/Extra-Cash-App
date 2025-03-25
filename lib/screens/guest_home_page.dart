@@ -4,14 +4,14 @@ import '../widgets/technician_card.dart';
 // import 'guest_book.dart';
 import 'technician_details_screen.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class GuestHomePage extends StatefulWidget {
+  const GuestHomePage({super.key});
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<GuestHomePage> {
   int _selectedIndex = 0;
   late final List<Widget> _pages;
 
@@ -308,7 +308,7 @@ class _HomePageContentState extends State<HomePageContent> {
                               Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const HomePage(),
+                                  builder: (context) => const GuestHomePage(),
                                 ),
                                 (route) => false,
                               );
