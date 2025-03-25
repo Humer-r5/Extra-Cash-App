@@ -1,12 +1,70 @@
 import 'package:flutter/material.dart';
-import 'customer_info_screen.dart';
 import 'home_page.dart';
 import '../widgets/bottom_navbar.dart';
 import 'profile_page.dart';
 import 'notifications_screen.dart';
+import 'register_page.dart';
 
-class TechnicianDetailsScreen extends StatelessWidget {
-  const TechnicianDetailsScreen({super.key});
+class GuestBookScreen extends StatelessWidget {
+  const GuestBookScreen({super.key});
+
+  void _showLoginRegisterPopup(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                "Login or Register",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              const Text("Please login or register to book a service"),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context); // Close the popup
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterScreen(),
+                          ),
+                        );
+                      },
+                      child: const Text("Register"),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context); // Close the popup
+                        // Add your login navigation here
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                      ),
+                      child: const Text(
+                        "Login",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +77,7 @@ class TechnicianDetailsScreen extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
         );
-      }
-      else if (index == 2) {
+      } else if (index == 2) {
         // Navigate to notification page
         Navigator.pushReplacement(
           context,
@@ -59,12 +116,7 @@ class TechnicianDetailsScreen extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CustomerInfoScreen(),
-                        ),
-                      );
+                      _showLoginRegisterPopup(context);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,

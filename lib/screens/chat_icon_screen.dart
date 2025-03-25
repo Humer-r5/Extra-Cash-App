@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './dynamic_chat_screen.dart';
+import 'dynamic_chat_screen.dart';
 
 class ChatIconScreen extends StatefulWidget {
   const ChatIconScreen({super.key});
@@ -21,10 +21,9 @@ class _ChatIconScreenState extends State<ChatIconScreen> {
   void _filterMessages() {
     setState(() {
       String query = searchController.text.toLowerCase();
-      filteredMessages =
-          messages.where((msg) {
-            return msg["name"].toLowerCase().contains(query);
-          }).toList();
+      filteredMessages = messages.where((msg) {
+        return msg["name"].toLowerCase().contains(query);
+      }).toList();
     });
   }
 
@@ -65,38 +64,44 @@ class _ChatIconScreenState extends State<ChatIconScreen> {
 
           // Messages List
           Expanded(
-            child:
-                filteredMessages.isEmpty
-                    ? const Center(
-                      child: Text(
-                        "No user found",
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
-                      ),
-                    )
-                    : ListView.builder(
-                      itemCount: filteredMessages.length,
-                      itemBuilder: (context, index) {
-                        var user = filteredMessages[index];
-                        return MessageTile(
-                          profileImage: user["profileImage"],
-                          name: user["name"],
-                          message: user["message"],
-                          time: user["time"],
-                          unreadCount: user["unreadCount"],
-                          onTap: () {
-                            // Navigate to Chat Screen with user data
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder:
-                                    (context) =>
-                                        ChatScreen(userName: user["name"]),
-                              ),
-                            );
-                          },
-                        );
-                      },
+            child: filteredMessages.isEmpty
+                ? const Center(
+                    child: Text(
+                      "No user found",
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
+                  )
+                : ListView.builder(
+                    itemCount: filteredMessages.length,
+                    itemBuilder: (context, index) {
+                      var user = filteredMessages[index];
+                      List<Map<String, dynamic>> chatMessages =
+                          getChatMessages(user["name"]);
+                      String lastMessage =
+                          chatMessages.isNotEmpty ? chatMessages.last["text"] : "No messages yet";
+
+                      return MessageTile(
+                        profileImage: user["profileImage"],
+                        name: user["name"],
+                        message: lastMessage, // Last message dynamically
+                        time: user["time"],
+                        unreadCount: user["unreadCount"],
+                        onTap: () {
+                          setState(() {
+                            user["unreadCount"] = 0; // Reset unread count
+                          });
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ChatScreen(userName: user["name"]),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
           ),
         ],
       ),

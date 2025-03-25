@@ -1,13 +1,17 @@
-import 'package:extra_cash_app/screens/tech_your_bookings.dart';
-import 'package:extra_cash_app/screens/tech_your_wallet.dart';
 import 'package:flutter/material.dart';
 import 'tech_need_service.dart'; // Import TechNeedService page
 import 'tech_profile_page.dart';
 import 'tech_notifications.dart';
+import 'tech_your_bookings.dart';
+import 'tech_your_wallet.dart';
 import 'tech_chat_icon.dart';
 
 class TechnicianHomePage extends StatefulWidget {
-  const TechnicianHomePage({super.key});
+  final List<String> selectedSkills; // Add this property
+  const TechnicianHomePage({
+    super.key,
+    this.selectedSkills = const [], // Default to an empty list
+  });
 
   @override
   _TechnicianHomePageState createState() => _TechnicianHomePageState();
@@ -22,7 +26,7 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
       "serviceType": "electrician",
     },
     {
-      "imagePath": 'assets/technician_ac_mechanic.png',
+      "imagePath": 'assets/technician_ac_mechanic.jpg',
       "text": 'NEED AC MECHANIC',
       "serviceType": "ac_mechanic",
     },
@@ -32,7 +36,7 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
       "serviceType": "packers_movers",
     },
     {
-      "imagePath": 'assets/technician_carpenter.png',
+      "imagePath": 'assets/technician_carpenter.jpeg',
       "text": 'NEED CARPENTER',
       "serviceType": "carpenter",
     },
@@ -43,16 +47,15 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
     },
   ];
 
+  late List<Map<String, dynamic>> _filteredServiceList;
+
   // Search query controller
   final TextEditingController _searchController = TextEditingController();
-
-  // Filtered list of services
-  List<Map<String, dynamic>> _filteredServiceList = [];
 
   @override
   void initState() {
     super.initState();
-    _filteredServiceList = List.from(serviceList);
+    _filteredServiceList = _getReorderedServiceList(widget.selectedSkills);
     _searchController.addListener(_onSearchChanged);
   }
 
@@ -62,12 +65,34 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
     super.dispose();
   }
 
+  // Reorder the service list based on selected skills
+  List<Map<String, dynamic>> _getReorderedServiceList(
+    List<String> selectedSkills,
+  ) {
+    final prioritizedServices = <Map<String, dynamic>>[];
+    final remainingServices = <Map<String, dynamic>>[];
+
+    for (final service in serviceList) {
+      if (selectedSkills.any(
+        (skill) => service["text"].toString().toLowerCase().contains(
+          skill.toLowerCase(),
+        ),
+      )) {
+        prioritizedServices.add(service); // Add to prioritized list
+      } else {
+        remainingServices.add(service); // Add to remaining list
+      }
+    }
+
+    return [...prioritizedServices, ...remainingServices]; // Combine lists
+  }
+
   // Handle search input changes
   void _onSearchChanged() {
     final query = _searchController.text.toLowerCase().trim();
     setState(() {
       _filteredServiceList =
-          serviceList.where((service) {
+          _getReorderedServiceList(widget.selectedSkills).where((service) {
             final text = service["text"].toString().toLowerCase();
             return text.contains(query);
           }).toList();
@@ -87,7 +112,7 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Updated background color to white
+      backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
@@ -131,10 +156,10 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
             IconButton(
               icon: Image.asset("assets/msg_icon.png", width: 24, height: 24),
               onPressed: () {
-                   Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) =>  TechChatIcon()),
-                      );// Navigate to chat screen in the future
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TechChatIcon()),
+                ); // Navigate to chat screen in the future
               },
             ),
           ],
@@ -149,15 +174,27 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
             children: [
               TextField(
                 controller: _searchController,
+                onChanged: (value) {
+                  _onSearchChanged(); // Trigger search logic on text change
+                },
                 decoration: InputDecoration(
+                  hintText: "Search",
                   prefixIcon: const Icon(Icons.search),
-                  hintText: 'Search for a technician',
-                  filled: true,
-                  fillColor: const Color.fromARGB(255, 241, 240, 240),
+                  suffixIcon:
+                      _searchController.text.isNotEmpty
+                          ? IconButton(
+                            icon: const Icon(Icons.cancel, color: Colors.grey),
+                            onPressed: () {
+                              _searchController.clear(); // Clear the search bar
+                              _onSearchChanged(); // Reset the filtered list
+                            },
+                          )
+                          : null,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25.0),
-                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(50),
                   ),
+                  filled: true,
+                  fillColor: Colors.grey[100],
                 ),
               ),
               const SizedBox(height: 20),
@@ -225,7 +262,7 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
                           MaterialPageRoute(
                             builder: (context) => TechYourWallet(),
                           ),
-                        ); // Navigate to Wallet Page
+                        );
                       },
                       child: Card(
                         clipBehavior: Clip.antiAlias,
@@ -279,7 +316,6 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
               ),
               const SizedBox(height: 20),
               const Padding(
-                // padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                 padding: EdgeInsets.only(bottom: 15),
                 child: Align(
                   alignment: Alignment.center,

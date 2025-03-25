@@ -1,15 +1,39 @@
 import 'package:flutter/material.dart';
 import 'login_page.dart'; // Import Login Screen
-import 'home_page.dart'; // Import Home Page (Make sure the file exists)
+import 'home_page.dart'; // Import Home Page (Full Access)
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  final bool fromGuestMode; // Detect if user came from Guest Mode
+
+  const RegisterScreen({super.key, this.fromGuestMode = false});
 
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final List<String> supportedDomains = [
+    '@gmail.com',
+    '@yahoo.com',
+    '@yahoo.co.uk',
+    '@yahoo.in',
+    '@outlook.com',
+    '@hotmail.com',
+    '@live.com',
+    '@icloud.com',
+    '@aol.com',
+    '@protonmail.com',
+    '@proton.me',
+    '@office365.com',
+    '@exchange.com',
+    '@yourcompany.com',
+    '@zoho.com',
+    '@fastmail.com',
+    '@fastmail.fm',
+    '@yandex.com',
+    '@yandex.ru',
+  ];
+
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController mpinController = TextEditingController();
@@ -23,20 +47,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (_formKey.currentState!.validate()) {
       if (!agreeToTerms) {
         setState(() {
-          _showTermsError = true; // Show red color
+          _showTermsError = true;
         });
         return;
       }
 
       debugPrint("User Registered with Email: ${emailController.text}");
 
-      // Navigate to Home Page after successful registration
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const HomePage(), // Navigate to HomePage
-        ),
-      );
+      // If user came from guest mode, take them back to the previous screen
+      if (widget.fromGuestMode) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      } else {
+        // Regular Sign Up Flow
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      }
     }
   }
 
@@ -76,33 +106,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email';
                     }
-                    if (!RegExp(r'^[^@]+@gmail\.com$').hasMatch(value)) {
-                      return 'Please enter valid Email';
+
+                    // Check if the email ends with any of the supported domains
+                    bool isValidDomain = supportedDomains.any(
+                      (domain) => value.endsWith(domain),
+                    );
+                    if (!isValidDomain) {
+                      return 'Please enter a valid email from a supported domain';
                     }
+
+                    // Optional: Add additional regex validation for proper email format
+                    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+                    if (!emailRegex.hasMatch(value)) {
+                      return 'Please enter a valid email format';
+                    }
+
                     return null;
                   },
                   onChanged: (value) {
-                    // Prevent typing after "@gmail.com"
-                    if (value.contains('@gmail.com') &&
-                        value.substring(value.indexOf('@gmail.com')) !=
-                            '@gmail.com') {
-                      emailController.text = value.substring(
-                        0,
-                        value.indexOf('@gmail.com') + 10,
-                      );
-                      emailController.selection = TextSelection.fromPosition(
-                        TextPosition(offset: emailController.text.length),
-                      );
+                    // Prevent typing after the domain part (e.g., "@gmail.com")
+                    for (var domain in supportedDomains) {
+                      if (value.contains(domain) &&
+                          value.substring(value.indexOf(domain)) != domain) {
+                        emailController.text = value.substring(
+                          0,
+                          value.indexOf(domain) + domain.length,
+                        );
+                        emailController.selection = TextSelection.fromPosition(
+                          TextPosition(offset: emailController.text.length),
+                        );
+                        break;
+                      }
                     }
                   },
                 ),
                 const SizedBox(height: 10),
-                // Create MPIN with Toggle Visibility
+
+                // Create MPIN
                 TextFormField(
                   controller: mpinController,
                   obscureText: !_isMpinVisible,
                   keyboardType: TextInputType.number,
-                  maxLength: 4, // Restrict to 4 digits
+                  maxLength: 4,
                   decoration: InputDecoration(
                     labelText: "Create your MPIN",
                     prefixIcon: const Icon(Icons.vpn_key),
@@ -124,10 +169,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your MPIN';
                     }
-                    if (value.length != 4) {
-                      return 'MPIN must be 4 digits';
-                    } else if (int.tryParse(value) == null) {
-                      // Ensures it's a valid integer
+                    if (value.length != 4) return 'MPIN must be 4 digits';
+                    if (int.tryParse(value) == null) {
                       return 'MPIN must be numeric';
                     }
                     return null;
@@ -140,7 +183,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: confirmMpinController,
                   obscureText: !_isConfirmMpinVisible,
                   keyboardType: TextInputType.number,
-                  maxLength: 4, // Restrict to 4 digits
+                  maxLength: 4,
                   decoration: InputDecoration(
                     labelText: "Confirm your MPIN",
                     prefixIcon: const Icon(Icons.vpn_key),
@@ -179,19 +222,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onChanged: (value) {
                         setState(() {
                           agreeToTerms = value!;
-                          _showTermsError = !agreeToTerms; // Update error state
+                          _showTermsError = !agreeToTerms;
                         });
                       },
                     ),
-                    // const Text("I agree with "),
                     Text(
                       "I agree with Terms & Conditions",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color:
-                            _showTermsError
-                                ? Colors.red
-                                : Colors.blue, // Dynamic color
+                        color: _showTermsError ? Colors.red : Colors.blue,
                       ),
                     ),
                   ],
@@ -236,7 +275,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 // Already Registered? Log In
                 GestureDetector(
                   onTap: () {
-                    // Navigate to Login Screen
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -253,6 +291,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                 ),
+
+                const SizedBox(height: 20),
+
+                // Back to Guest Mode
+                widget.fromGuestMode
+                    ? TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        "Continue as Guest",
+                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                      ),
+                    )
+                    : Container(),
               ],
             ),
           ),
