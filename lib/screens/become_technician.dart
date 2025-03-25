@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import './technician_home_page.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+
 
 class InputDesignScreen extends StatefulWidget {
   const InputDesignScreen({super.key});
@@ -446,12 +448,12 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
         Container(
           width: double.infinity,
           margin: const EdgeInsets.only(bottom: 3),
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 1),
           decoration: BoxDecoration(
             color: const Color(0xFFE7E7E7),
             borderRadius: BorderRadius.circular(6),
           ),
-          child: TextFormField(
+          child: IntlPhoneField(
             controller: controller,
             decoration: InputDecoration(
               border: InputBorder.none,
@@ -463,13 +465,15 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            onChanged: (value) {
+            initialCountryCode: 'NG', // You can set a default country
+            onChanged: (phone) {
               // Mark the field as touched when the user starts typing
               setState(() {
                 if (controller == _mobileController) {
                   _isMobileFieldTouched = true;
                 }
               });
+              // print(phone.completeNumber); // Full phone number with country code
             },
             inputFormatters:
                 controller == _mobileController
@@ -634,7 +638,7 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
                                 const Divider(),
                                 _buildSkillCheckbox('Plumbing', setDialogState),
                                 _buildSkillCheckbox(
-                                  'Electricity',
+                                  'Electrician',
                                   setDialogState,
                                 ),
                                 _buildSkillCheckbox(
@@ -788,11 +792,11 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
                         ? 1
                         : 0);
 
-                if (age < 18) {
+                if (age < 15) {
                   setState(() {
                     _dobController.text = ''; // Clear invalid DOB
                     _dobErrorMessage =
-                        'User should be 18+ years'; // Display error
+                        'User should be 15+ years'; // Display error
                   });
                 } else {
                   setState(() {
