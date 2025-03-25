@@ -6,6 +6,8 @@ import 'package:path_provider/path_provider.dart';
 // import 'package:torch_controller/torch_controller.dart';
 
 class CameraApp extends StatefulWidget {
+  const CameraApp({super.key});
+
   @override
   _CameraAppState createState() => _CameraAppState();
 }

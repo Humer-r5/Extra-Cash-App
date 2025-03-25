@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'home_page.dart'; // Import the Register Screen
+import 'guest_home_page.dart'; // Import HomePage
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -12,41 +12,34 @@ class SplashScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Circular Logo
             ClipOval(
               child: Image.asset(
-                'assets/extra_hustle_logo.png', // Replace with your actual logo image
+                'assets/extra_hustle_logo.png',
                 width: 150,
                 height: 150,
-                fit: BoxFit.cover, // Ensures the image fills the circular shape
+                fit: BoxFit.cover,
               ),
             ),
             const SizedBox(height: 30),
-
-            // App Name
             const Text(
               "EXTRA HUSTLE",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
-
-            // Tagline
             const Text(
               "Quick & Reliable Services at Your Doorstep.",
               style: TextStyle(fontSize: 14, color: Colors.grey),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 30),
-
-            // Get Started Button
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
                 minimumSize: const Size(220, 50),
               ),
               onPressed: () {
-                // Navigate to Register Screen
-                Navigator.push(
+                // Navigate to HomePage with guestMode enabled
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const HomePage()),
                 );
