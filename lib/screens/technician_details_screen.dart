@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-// import 'customer_info_screen.dart';
-import './login-continue-page.dart'; // Importing the login screen
+import 'customer_info_screen.dart';
 import 'home_page.dart';
 import '../widgets/bottom_navbar.dart';
 import 'profile_page.dart';
-// import 'customer_info_screen.dart'; // Import the CustomerInfoScreen
-// import '../widgets/BottomNavBar .dart'; // Import the BottomNavBar widget
-// import 'home_page.dart'; // Import the HomePage
-// import 'profile_page.dart'; // Import the ProfilePage
+import 'notifications_screen.dart';
 
 class TechnicianDetailsScreen extends StatelessWidget {
   const TechnicianDetailsScreen({super.key});
@@ -23,6 +19,12 @@ class TechnicianDetailsScreen extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
         );
+      } else if (index == 2) {
+        // Navigate to notification page
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const NotificationScreen()),
+        );
       } else if (index == 3) {
         // Navigate to ProfilePage
         Navigator.pushReplacement(
@@ -34,33 +36,23 @@ class TechnicianDetailsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text("Technician Details")),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Reviews",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            ListTile(
-              leading: const CircleAvatar(
-                backgroundImage: AssetImage("assets/profile.png"),
-              ),
-              title: const Text("Donna Bins"),
-              subtitle: const Text("Very prompt with delivery."),
-              trailing: const Text("4.5 ⭐"),
-            ),
-            const SizedBox(height: 20),
+            // Pricing and Schedule
             Card(
               child: ListTile(
-                title: const Text("\$50  (21% Off)"),
+                title: const Text("₦500 (21% Off)"),
                 subtitle: const Text(
                   "Location: 1901 Thornridge Cir\n02 Feb, 2022 - 8:30 AM",
                 ),
               ),
             ),
             const SizedBox(height: 20),
+
+            // Booking Button
             Row(
               children: [
                 Expanded(
@@ -68,7 +60,9 @@ class TechnicianDetailsScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                        MaterialPageRoute(
+                          builder: (context) => CustomerInfoScreen(),
+                        ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -81,6 +75,21 @@ class TechnicianDetailsScreen extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+            const SizedBox(height: 20),
+
+            // Reviews (Moved to End)
+            const Text(
+              "Reviews",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            ListTile(
+              leading: const CircleAvatar(
+                backgroundImage: AssetImage("assets/profile.png"),
+              ),
+              title: const Text("Donna Bins"),
+              subtitle: const Text("Very prompt with delivery."),
+              trailing: const Text("4.5 ⭐"),
             ),
           ],
         ),
