@@ -4,8 +4,12 @@ import 'tech_profile_page.dart';
 import 'tech_notifications.dart';
 import 'tech_your_bookings.dart';
 import 'tech_your_wallet.dart';
+<<<<<<< HEAD
 import './tech_chat_icon.dart';
 // import "./tech_notifications.dart";
+=======
+import 'tech_chat_icon.dart';
+>>>>>>> 1acd49a783f82ee8fb51f589a8fb1c98625fbc7f
 
 class TechnicianHomePage extends StatefulWidget {
   final List<String> selectedSkills; // Add this property
@@ -157,8 +161,11 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
             IconButton(
               icon: Image.asset("assets/msg_icon.png", width: 24, height: 24),
               onPressed: () {
+<<<<<<< HEAD
                 // Navigate to chat screen in the future
 
+=======
+>>>>>>> 1acd49a783f82ee8fb51f589a8fb1c98625fbc7f
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => TechChatIcon()),

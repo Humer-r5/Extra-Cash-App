@@ -166,11 +166,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   validator: (value) {
-                    if (value == null || value.isEmpty)
+                    if (value == null || value.isEmpty) {
                       return 'Please enter your MPIN';
+                    }
                     if (value.length != 4) return 'MPIN must be 4 digits';
-                    if (int.tryParse(value) == null)
+                    if (int.tryParse(value) == null) {
                       return 'MPIN must be numeric';
+                    }
                     return null;
                   },
                 ),
@@ -200,10 +202,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   validator: (value) {
-                    if (value == null || value.isEmpty)
+                    if (value == null || value.isEmpty) {
                       return "Please confirm your MPIN";
-                    if (value != mpinController.text)
+                    }
+                    if (value != mpinController.text) {
                       return "MPIN does not match";
+                    }
                     return null;
                   },
                 ),
