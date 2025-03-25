@@ -1,7 +1,8 @@
 import 'package:extra_cash_app/screens/register_page.dart';
 import 'package:flutter/material.dart';
 import '../widgets/technician_card.dart';
-import 'guest_book.dart';
+// import 'guest_book.dart';
+import 'technician_details_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -260,15 +261,19 @@ class _HomePageContentState extends State<HomePageContent> {
                   ],
                 ),
                 const SizedBox(width: 10),
-                IconButton(
-                  icon: Image.asset(
-                    "assets/msg_icon.png",
-                    width: 24,
-                    height: 24,
-                  ),
+                ElevatedButton(
                   onPressed: () {
-                    _showAuthDialog(context, "Chat");
+                    _showAuthDialog(context, "Login/Register");
                   },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black, // Black button color
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: Text("Login/Register"),
                 ),
               ],
             ),
@@ -622,7 +627,8 @@ class ServiceDetailPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const GuestBookScreen(),
+                            builder:
+                                (context) => const TechnicianDetailsScreen(),
                           ),
                         );
                       }
@@ -639,7 +645,8 @@ class ServiceDetailPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const GuestBookScreen(),
+                            builder:
+                                (context) => const TechnicianDetailsScreen(),
                           ),
                         );
                       }
