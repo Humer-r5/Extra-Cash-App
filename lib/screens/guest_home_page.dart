@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../widgets/technician_card.dart';
 // import 'guest_book.dart';
 import 'technician_details_screen.dart';
+import '../data/technician_dummy_data.dart';
+import 'service_card.dart';
 
 class GuestHomePage extends StatefulWidget {
   const GuestHomePage({super.key});
@@ -491,79 +493,6 @@ class _HomePageContentState extends State<HomePageContent> {
     );
   }
 }
-
-class ServiceCard extends StatelessWidget {
-  final String title, image;
-  final VoidCallback onExplore;
-
-  const ServiceCard({
-    super.key,
-    required this.title,
-    required this.image,
-    required this.onExplore,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(16),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Column(
-        children: [
-          Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: ColorFiltered(
-                  colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.4),
-                    BlendMode.darken,
-                  ),
-                  child: Image.asset(
-                    image,
-                    width: double.infinity,
-                    height: 150,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Positioned.fill(
-                child: Center(
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 22,
-                      color: Colors.white,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 6,
-                          color: Colors.black,
-                          offset: Offset(1, 2),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-              onPressed: onExplore,
-              child: const Text(
-                "EXPLORE",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class ServiceDetailPage extends StatelessWidget {
   final String title, image;
   final Function(BuildContext, String)? showAuthDialog;
@@ -577,6 +506,10 @@ class ServiceDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Fetch technicians dynamically based on service title
+    final List<Map<String, dynamic>> technicians =
+        techniciansData[title.trim()] ?? [];
+
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -603,7 +536,7 @@ class ServiceDetailPage extends StatelessWidget {
                 children: [
                   Text(
                     "Get Expert $title Services",
-                    style: const TextStyle(fontSize: 22),
+                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -614,44 +547,54 @@ class ServiceDetailPage extends StatelessWidget {
                   const SizedBox(height: 16),
                   const Text(
                     "Active Technicians",
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  TechnicianCard(
-                    name: "TECHY 1",
-                    email: "techy1@example.com",
-                    location: "1901 Thornridge Cir, New York",
-                    onViewTap: () {
-                      if (showAuthDialog != null) {
-                        showAuthDialog!(context, "Booking");
-                      } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) => const TechnicianDetailsScreen(),
-                          ),
+                  const SizedBox(height: 8),
+
+                  // Dynamically Render Technicians
+                  if (technicians.isNotEmpty)
+                    Column(
+                      children: technicians.map((tech) {
+                        return TechnicianCard(
+                          name: tech["name"] ?? "Unknown",
+                          email: tech["email"] ?? "No Email Available",
+                          location: tech["location"] ?? "No Location Available",
+                          bio: tech["bio"] ?? "No Bio Available",
+                          onViewTap: () {
+                            if (showAuthDialog != null) {
+                              // Show authentication prompt for guests
+                              showAuthDialog!(context, "Booking");
+                            } else {
+                              // Navigate to Technician Details for logged-in users
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => TechnicianDetailsScreen(
+                                    name: tech["name"] ?? "Unknown",
+                                    email: tech["email"] ?? "No Email Available",
+                                    location: tech["location"] ?? "No Location Available",
+                                    bio: tech["bio"] ?? "No Bio Available",
+                                    price: tech["price"] ?? 0.0, // Correct price from data
+                                    appointmentDate: tech["appointmentDate"] ?? "N/A",
+                                    appointmentTime: tech["appointmentTime"] ?? "N/A",
+                                  ),
+                                ),
+                              );
+                            }
+                          },
                         );
-                      }
-                    },
-                  ),
-                  TechnicianCard(
-                    name: "TECHY 2",
-                    email: "techy2@example.com",
-                    location: "1420 Maple St, California",
-                    onViewTap: () {
-                      if (showAuthDialog != null) {
-                        showAuthDialog!(context, "Booking");
-                      } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) => const TechnicianDetailsScreen(),
-                          ),
-                        );
-                      }
-                    },
-                  ),
+                      }).toList(),
+                    )
+                  else
+                    const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          "No technicians available for this service.",
+                          style: TextStyle(color: Colors.red, fontSize: 16),
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),

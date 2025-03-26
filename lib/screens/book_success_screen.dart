@@ -1,56 +1,66 @@
-import 'package:extra_cash_app/screens/customer_info_screen.dart';
 import 'package:flutter/material.dart';
+import 'technician_info_screen.dart';
 import 'dart:async';
 
 class BookSuccessScreen extends StatefulWidget {
-  const BookSuccessScreen({super.key});
+  final String name, email, location;
+
+  const BookSuccessScreen({
+    super.key,
+    required this.name,
+    required this.email,
+    required this.location,
+  });
 
   @override
-  _SuccessScreenState createState() => _SuccessScreenState();
+  _BookSuccessScreenState createState() => _BookSuccessScreenState();
 }
 
-class _SuccessScreenState extends State<BookSuccessScreen> {
-  double scale = 0.0; // Scale for animation
-  double opacity = 0.0; // Opacity for success text
-  bool showBlueCheck = true; // Control checkmark switching
+class _BookSuccessScreenState extends State<BookSuccessScreen> {
+  double scale = 0.0;
+  double opacity = 0.0;
+  bool showBlueCheck = true;
 
   @override
   void initState() {
     super.initState();
 
-    // Step 1: Expand first (blue checkmark)
-    Future.delayed(Duration(milliseconds: 200), () {
+    Future.delayed(const Duration(milliseconds: 200), () {
       setState(() {
         scale = 1.0;
       });
     });
 
-    // Step 2: Shrink blue checkmark, switch to green
-    Future.delayed(Duration(milliseconds: 1200), () {
+    Future.delayed(const Duration(milliseconds: 1200), () {
       setState(() {
-        scale = 0.0; // Shrink animation
+        scale = 0.0;
       });
     });
 
-    Future.delayed(Duration(milliseconds: 1500), () {
+    Future.delayed(const Duration(milliseconds: 1500), () {
       setState(() {
-        showBlueCheck = false; // Switch to green checkmark
-        scale = 1.0; // Expand again
+        showBlueCheck = false;
+        scale = 1.0;
       });
     });
 
-    // Step 3: Fade-in text
-    Future.delayed(Duration(milliseconds: 2000), () {
+    Future.delayed(const Duration(milliseconds: 2000), () {
       setState(() {
         opacity = 1.0;
       });
     });
 
-    // Step 4: Navigate to login screen
-    Future.delayed(Duration(milliseconds: 3000), () {
+    // ✅ Navigate to Technician Info screen with dynamic data
+    Future.delayed(const Duration(milliseconds: 3000), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const CustomerInfoScreen()),
+        MaterialPageRoute(
+          builder: (context) => TechnicianInfoScreen(
+            name: widget.name,
+            email: widget.email,
+            location: widget.location,
+          ),
+        ),
       );
     });
   }
@@ -58,11 +68,11 @@ class _SuccessScreenState extends State<BookSuccessScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Animated Checkmark (Blue → Green)
             TweenAnimationBuilder(
               tween: Tween<double>(begin: 0, end: scale),
               duration: const Duration(milliseconds: 500),
@@ -72,17 +82,13 @@ class _SuccessScreenState extends State<BookSuccessScreen> {
               },
               child: _buildCheckmark(showBlueCheck ? Colors.blue : Colors.green),
             ),
-
-            // Success Text (Fade-in)
+            const SizedBox(height: 20),
             AnimatedOpacity(
               opacity: opacity,
               duration: const Duration(milliseconds: 600),
-              child: const Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: Text(
-                  "Booking confirmed",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.green),
-                ),
+              child: const Text(
+                "Booking Confirmed!",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.green),
               ),
             ),
           ],

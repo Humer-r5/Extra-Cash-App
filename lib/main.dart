@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'screens/tech_need_service.dart';
-import 'package:extra_cash_app/screens/landing_page.dart';
+import './screens/landing_page.dart';
 
 void main() {
   runApp(const MyApp());

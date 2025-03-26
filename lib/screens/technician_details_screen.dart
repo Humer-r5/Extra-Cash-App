@@ -1,85 +1,126 @@
 import 'package:flutter/material.dart';
-import 'customer_info_screen.dart';
+import 'book_success_screen.dart';
 import 'home_page.dart';
 import '../widgets/bottom_navbar.dart';
 import 'profile_page.dart';
 import 'notifications_screen.dart';
 
-class TechnicianDetailsScreen extends StatelessWidget {
-  const TechnicianDetailsScreen({super.key});
+class TechnicianDetailsScreen extends StatefulWidget {
+  final String name, email, location, bio;
+  final double price;
+  final String appointmentDate, appointmentTime;
+
+  const TechnicianDetailsScreen({
+    super.key,
+    required this.name,
+    required this.email,
+    required this.location,
+    required this.bio,
+    required this.price,
+    required this.appointmentDate,
+    required this.appointmentTime,
+  });
+
+  @override
+  State<TechnicianDetailsScreen> createState() => _TechnicianDetailsScreenState();
+}
+
+class _TechnicianDetailsScreenState extends State<TechnicianDetailsScreen> {
+  int selectedIndex = 0;
+  bool isPressed = false; // Track button state
+
+  void onItemTapped(int index) {
+    Widget nextScreen = const HomePage();
+    if (index == 2) {
+      nextScreen = const NotificationScreen();
+    } else if (index == 3) {
+      nextScreen = const ProfilePage();
+    }
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => nextScreen),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    int selectedIndex = 0; // Default index for the bottom nav bar
-
-    void onItemTapped(int index) {
-      if (index == 0) {
-        // Navigate to HomePage
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
-      }
-      else if (index == 2) {
-        // Navigate to notification page
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const NotificationScreen()),
-        );
-      } else if (index == 3) {
-        // Navigate to ProfilePage
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const ProfilePage()),
-        );
-      }
-    }
-
     return Scaffold(
-      appBar: AppBar(title: const Text("Technician Details")),
+      appBar: AppBar(title: Text(widget.name)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Pricing and Schedule
+            // ✅ Bio Section (Now at the top)
+            Text(
+              "About ${widget.name}",
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 5),
+            Text(widget.bio, style: const TextStyle(fontSize: 16)),
+            const SizedBox(height: 20),
+
+            // ✅ Pricing and Schedule (Card contains pricing + Book button)
             Card(
-              child: ListTile(
-                title: const Text("₦500 (21% Off)"),
-                subtitle: const Text(
-                  "Location: 1901 Thornridge Cir\n02 Feb, 2022 - 8:30 AM",
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "₦${widget.price} (21% Off)",
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      "📍 Location: ${widget.location}\n📅 ${widget.appointmentDate} - 🕒 ${widget.appointmentTime}",
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 10),
+
+                    // ✅ Book Button inside the card
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            isPressed = true; // Change color on press
+                          });
+
+                          // Navigate to booking success screen
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BookSuccessScreen(
+                                name: widget.name,
+                                email: widget.email,
+                                location: widget.location,
+                              ),
+                            ),
+                          ).then((_) {
+                            setState(() {
+                              isPressed = false; // Reset button color after returning
+                            });
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: isPressed ? const Color.fromRGBO(255, 201, 180, 127) : Colors.black, // Color change on press
+                          padding: const EdgeInsets.symmetric(vertical: 12), // Smaller button
+                        ),
+                        child: const Text(
+                          "Book Now",
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
             const SizedBox(height: 20),
 
-            // Booking Button
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CustomerInfoScreen(),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                    ),
-                    child: const Text(
-                      "Book",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-
-            // Reviews (Moved to End)
+            // ✅ Reviews Section
             const Text(
               "Reviews",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -96,8 +137,8 @@ class TechnicianDetailsScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomNavBar(
-        currentIndex: selectedIndex, // Pass the current index
-        onTap: onItemTapped, // Pass the navigation logic
+        currentIndex: selectedIndex,
+        onTap: onItemTapped,
       ),
     );
   }
