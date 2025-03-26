@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
-// import 'home_page.dart';
-// import '../widgets/BottomNavBar .dart';
-// import 'profile_page.dart';
-// import 'notifications_screen.dart';
+import 'home_page.dart';
+import '../widgets/bottom_navbar.dart';
+import 'profile_page.dart';
+import 'notifications_screen.dart';
+import 'camera_page.dart';
 
 class TechYourWallet extends StatelessWidget {
   const TechYourWallet({super.key});
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -25,7 +28,7 @@ class TechYourWallet extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             const Text(
-              "Hello Technician",
+              "Hello User",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -35,85 +38,90 @@ class TechYourWallet extends StatelessWidget {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "Welcome Back!",
-                style: TextStyle(fontSize: 16, color: Colors.grey),
-              ),
-              const SizedBox(height: 16),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Welcome Back!",
+              style: TextStyle(fontSize: 16, color: Colors.grey),
+            ),
+            const SizedBox(height: 16),
 
-              // Wallet Information Cards
-              GridView.count(
-                shrinkWrap: true, // Prevents unnecessary scrolling issues
-                physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: 2,
+            // Expanded to prevent overflow issues
+            Expanded(
+              child: GridView.count(
+                shrinkWrap: true,
+                crossAxisCount: screenWidth < 600 ? 2 : 3, // Adaptive layout
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
-                childAspectRatio: 1.6, // Adjusted for better proportions
-                children: const [
-                  WalletCard(
+                childAspectRatio: screenWidth < 600 ? 1.8 : 2.2, // Adjusted for responsiveness
+                children: [
+                  const WalletCard(
                     title: "Total Earning",
-                    amount: "₦1259",
+                    amount: "₹1259",
                     icon: Icons.account_balance_wallet,
                   ),
-                  WalletCard(
+                  const WalletCard(
                     title: "Total Service",
                     amount: "1589",
                     icon: Icons.receipt,
                   ),
-                  WalletCard(
+                  const WalletCard(
                     title: "Upcoming Services",
-                    amount: "02",
+                    amount: "15",
                     icon: Icons.event,
                   ),
-                  WalletCard(
+                  const WalletCard(
                     title: "Today's Service",
                     amount: "05",
                     icon: Icons.today,
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
-      // bottomNavigationBar: BottomNavBar(
-      //   currentIndex: 0, // Set the appropriate index for the selected tab
-      //   onTap: (index) {
-      //     if (index == 0) {
-      //       Navigator.pushReplacement(
-      //         context,
-      //         MaterialPageRoute(builder: (context) => const HomePage()),
-      //       );
-      //     } else if (index == 2) {
-      //       Navigator.pushReplacement(
-      //         context,
-      //         MaterialPageRoute(builder: (context) => const NotificationScreen()),
-      //       );
-      //     } else if (index == 3) {
-      //       Navigator.pushReplacement(
-      //         context,
-      //         MaterialPageRoute(builder: (context) => const ProfilePage()),
-      //       );
-      //     }
-      //   },
-      // ),
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: 0, // Set the appropriate index for the selected tab
+        onTap: (index) {
+          if (index == 0) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          } else if (index == 1) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => CameraApp()),
+            );
+          } else if (index == 2) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const NotificationScreen()),
+            );
+          } else if (index == 3) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const ProfilePage()),
+            );
+          }
+        },
+      ),
     );
   }
 }
 
-// Custom Wallet Card Widget
+// Custom Widget for Wallet Cards
 class WalletCard extends StatelessWidget {
   final String title;
   final String amount;
   final IconData icon;
 
-  const WalletCard({super.key, 
+  const WalletCard({
+    super.key,
     required this.title,
     required this.amount,
     required this.icon,
@@ -121,6 +129,8 @@ class WalletCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Padding(
@@ -130,16 +140,21 @@ class WalletCard extends StatelessWidget {
           children: [
             Text(
               amount,
-              style: const TextStyle(
-                fontSize: 18,
+              style: TextStyle(
+                fontSize: screenWidth < 600 ? 18 : 20, // Responsive font size
                 fontWeight: FontWeight.bold,
                 color: Colors.blueAccent,
               ),
             ),
             const SizedBox(height: 4),
-            Text(
-              title,
-              style: const TextStyle(fontSize: 12, color: Colors.grey),
+            Flexible(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: screenWidth < 600 ? 12 : 14, // Adjusted for readability
+                  color: Colors.grey,
+                ),
+              ),
             ),
             Align(
               alignment: Alignment.centerRight,
