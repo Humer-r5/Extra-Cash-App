@@ -10,6 +10,8 @@ class YourWalletScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -47,36 +49,37 @@ class YourWalletScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Wallet Information Cards (Earnings, Services, etc.)
-            GridView.count(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              childAspectRatio: 1.8, // Adjusted for better proportions
-              children: [
-                WalletCard(
-                  title: "Total Earning",
-                  amount: "₹1259",
-                  icon: Icons.account_balance_wallet,
-                ),
-                WalletCard(
-                  title: "Total Service",
-                  amount: "1589",
-                  icon: Icons.receipt,
-                ),
-                WalletCard(
-                  title: "Upcoming Services",
-                  amount: "15",
-                  icon: Icons.event,
-                ),
-                WalletCard(
-                  title: "Today's Service",
-                  amount: "05",
-                  icon: Icons.today,
-                ),
-              ],
+            // Expanded to prevent overflow issues
+            Expanded(
+              child: GridView.count(
+                shrinkWrap: true,
+                crossAxisCount: screenWidth < 600 ? 2 : 3, // Adaptive layout
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+                childAspectRatio: screenWidth < 600 ? 1.8 : 2.2, // Adjusted for responsiveness
+                children: [
+                  const WalletCard(
+                    title: "Total Earning",
+                    amount: "₹1259",
+                    icon: Icons.account_balance_wallet,
+                  ),
+                  const WalletCard(
+                    title: "Total Service",
+                    amount: "1589",
+                    icon: Icons.receipt,
+                  ),
+                  const WalletCard(
+                    title: "Upcoming Services",
+                    amount: "15",
+                    icon: Icons.event,
+                  ),
+                  const WalletCard(
+                    title: "Today's Service",
+                    amount: "05",
+                    icon: Icons.today,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -84,29 +87,22 @@ class YourWalletScreen extends StatelessWidget {
       bottomNavigationBar: BottomNavBar(
         currentIndex: 0, // Set the appropriate index for the selected tab
         onTap: (index) {
-          // Handle navigation for the bottom nav bar
-          // Example: Use Navigator to push/pop screens as needed
           if (index == 0) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => const HomePage()),
             );
-          }
-          else if (index == 1) {
-        // Navigate to ProfilePage
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => CameraApp()),
-        );
-      }
-       else if (index == 2) {
-        // Navigate to ProfilePage
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const NotificationScreen()),
-        );
-      }
-      else if (index == 3) {
+          } else if (index == 1) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => CameraApp()),
+            );
+          } else if (index == 2) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const NotificationScreen()),
+            );
+          } else if (index == 3) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => const ProfilePage()),
@@ -133,6 +129,8 @@ class WalletCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Padding(
@@ -142,16 +140,21 @@ class WalletCard extends StatelessWidget {
           children: [
             Text(
               amount,
-              style: const TextStyle(
-                fontSize: 18,
+              style: TextStyle(
+                fontSize: screenWidth < 600 ? 18 : 20, // Responsive font size
                 fontWeight: FontWeight.bold,
                 color: Colors.blueAccent,
               ),
             ),
             const SizedBox(height: 4),
-            Text(
-              title,
-              style: const TextStyle(fontSize: 12, color: Colors.grey),
+            Flexible(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: screenWidth < 600 ? 12 : 14, // Adjusted for readability
+                  color: Colors.grey,
+                ),
+              ),
             ),
             Align(
               alignment: Alignment.centerRight,
