@@ -26,7 +26,7 @@ class _CameraAppState extends State<CameraApp> with WidgetsBindingObserver {
   // Form-related variables
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _skillsController = TextEditingController();
-  final List<String> _selectedSkills = [];
+  // final List<String> _selectedSkills = [];
   bool _isSkillsFieldTouched = false;
   bool _showSkillError = false;
 

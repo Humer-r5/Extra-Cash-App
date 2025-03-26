@@ -328,7 +328,7 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
               _isMobileFieldTouched,
             ),
             const SizedBox(height: 10), // Add space
-            _buildInputField(
+            _buildInputFieldNIN(
               'Enter Your NIN',
               _ninController,
               _isNinFieldTouched,
@@ -640,6 +640,73 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
             padding: EdgeInsets.only(top: 5, left: 10),
             child: Text(
               'This field is required / Only Numbers are allowed',
+              style: TextStyle(color: Colors.red, fontSize: 12),
+            ),
+          ),
+      ],
+    );
+  }
+
+
+  Widget _buildInputFieldNIN(
+    String hintText,
+    TextEditingController controller,
+    bool isFieldTouched,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: double.infinity,
+          margin: const EdgeInsets.only(bottom: 3),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          decoration: BoxDecoration(
+            color: const Color(0xFFE7E7E7),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: TextFormField(
+            controller: controller,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: hintText,
+              hintStyle: const TextStyle(
+                color: Color(0xFFA0A0A0),
+                fontFamily: 'Montserrat',
+                fontSize: 17,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            onChanged: (value) {
+              // Mark the field as touched when the user starts typing
+              setState(() {
+                if (controller == _ninController) _isNinFieldTouched = true;
+              });
+            },
+            inputFormatters:
+                controller == _ninController
+                    ? [
+                      FilteringTextInputFormatter.allow(
+                        RegExp(
+                          r'^[0-9 ]+$',
+                        ), // Allow only letters and spaces
+                      ),
+                    ]
+                    : null,
+            //     validator: (value) {
+            //        final RegExp alphabeticRegex = RegExp(r'^[a-zA-Z ]+$');
+            // if (!alphabeticRegex.hasMatch(value!)) {
+            //   return 'Only alphabetic characters and spaces are allowed';
+            // }
+            //       return null;
+            //     },
+          ),
+        ),
+        // Display error message below the input field
+        if (controller.text.isEmpty && isFieldTouched)
+          const Padding(
+            padding: EdgeInsets.only(top: 5, left: 10),
+            child: Text(
+              'This field is required / Only numbers are allowed',
               style: TextStyle(color: Colors.red, fontSize: 12),
             ),
           ),
