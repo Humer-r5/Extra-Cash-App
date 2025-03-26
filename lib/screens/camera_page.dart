@@ -133,9 +133,9 @@ class _CameraAppState extends State<CameraApp> with WidgetsBindingObserver {
 Future<void> _setupCameraController() async {
     try {
       cameras = await availableCameras();
-      if (cameras!.isNotEmpty) {
+      if (cameras.isNotEmpty) {
         cameraController = CameraController(
-          cameras!.first,
+          cameras.first,
           ResolutionPreset.high,
         );
         await cameraController!.initialize();

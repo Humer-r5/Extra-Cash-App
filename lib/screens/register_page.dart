@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login_page.dart'; // Import Login Screen
 import 'home_page.dart'; // Import Home Page (Full Access)
-import 'package:google_sign_in/google_sign_in.dart';
 
 class RegisterScreen extends StatefulWidget {
   final bool fromGuestMode; // Detect if user came from Guest Mode
@@ -34,12 +33,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     '@yandex.com',
     '@yandex.ru',
   ];
-
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: [
-      'email', // Request access to the user's email address
-    ],
-  );
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
@@ -271,35 +264,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     backgroundColor: Colors.red,
                     minimumSize: const Size(double.infinity, 50),
                   ),
-                  onPressed: () async {
-                    try {
-                      // Trigger Google Sign-In
-                      final GoogleSignInAccount? googleUser =
-                          await _googleSignIn.signIn();
-                      if (googleUser != null) {
-                        // Retrieve user details
-                        final String userEmail = googleUser.email;
-                        debugPrint(
-                          "User signed in with Google Email: $userEmail",
-                        );
-
-                        // Navigate to Home Page after successful sign-in
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomePage(),
-                          ),
-                        );
-                      }
-                    } catch (error) {
-                      debugPrint("Error during Google Sign-In: $error");
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("Google Sign-In Failed: $error"),
-                        ),
-                      );
-                    }
-                  },
+                  onPressed: () {}, // TODO: Implement Google Sign-In
                   child: const Text(
                     "Continue With Google",
                     style: TextStyle(color: Colors.white),

@@ -5,7 +5,6 @@ import 'package:image_picker/image_picker.dart';
 import './technician_home_page.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
-import 'technician_home_page.dart';
 
 class InputDesignScreen extends StatefulWidget {
   const InputDesignScreen({super.key});
