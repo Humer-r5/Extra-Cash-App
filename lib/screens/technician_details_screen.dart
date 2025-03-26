@@ -19,8 +19,7 @@ class TechnicianDetailsScreen extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
         );
-      }
-      else if (index == 2) {
+      } else if (index == 2) {
         // Navigate to notification page
         Navigator.pushReplacement(
           context,
