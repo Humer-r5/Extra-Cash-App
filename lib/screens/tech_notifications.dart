@@ -45,7 +45,9 @@ class TechNotifications extends StatelessWidget {
           onPressed: () {
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => const TechnicianHomePage()),
+              MaterialPageRoute(
+                builder: (context) => const TechnicianHomePage(),
+              ),
               (route) => false,
             );
           },
@@ -90,10 +92,11 @@ class TechNotifications extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => NotificationDetailScreen(
-                        name: item["name"],
-                        message: item["message"],
-                      ),
+                      builder:
+                          (context) => NotificationDetailScreen(
+                            name: item["name"],
+                            message: item["message"],
+                          ),
                     ),
                   );
                 },

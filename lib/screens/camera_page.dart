@@ -1,211 +1,375 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-// import 'package:torch_controller/torch_controller.dart';
+import 'package:gal/gal.dart';
 
 class CameraApp extends StatefulWidget {
   const CameraApp({super.key});
 
   @override
-  _CameraAppState createState() => _CameraAppState();
+  State<CameraApp> createState() => _CameraAppState();
 }
 
 class _CameraAppState extends State<CameraApp> with WidgetsBindingObserver {
-  CameraController? _controller;
-  late Future<void> _initializeControllerFuture;
-  late List<CameraDescription> _cameras;
-  File? _image;
+  // Camera-related variables
+  List<CameraDescription> cameras = [];
+  CameraController? cameraController;
+
+  // Image-related variables
+  File? _selectedImage;
+   File? _image;
   final picker = ImagePicker();
-  bool _isVideoMode = false;
-  // bool _isTorchOn = false; // Track flashlight state
+
+  // Form-related variables
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _skillsController = TextEditingController();
+  final List<String> _selectedSkills = [];
+  bool _isSkillsFieldTouched = false;
+  bool _showSkillError = false;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (cameraController == null || cameraController?.value.isInitialized == false) {
+      return;
+    }
+    if (state == AppLifecycleState.inactive) {
+      cameraController?.dispose();
+    } else if (state == AppLifecycleState.resumed) {
+      _setupCameraController();
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    _setupCamera();
-    WidgetsBinding.instance.addObserver(this);
+    _setupCameraController();
   }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    _controller?.dispose();
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    final CameraController? cameraController = _controller;
-    if (cameraController == null || !cameraController.value.isInitialized) {
-      return;
-    }
-    if (state == AppLifecycleState.inactive) {
-      cameraController.dispose();
-    } else if (state == AppLifecycleState.resumed) {
-      _setupCamera();
-    }
-  }
-
-  Future<void> _setupCamera() async {
-    _cameras = await availableCameras();
-    final firstCamera = _cameras.first;
-    _controller = CameraController(
-      firstCamera,
-      ResolutionPreset.medium,
-    );
-    _initializeControllerFuture = _controller!.initialize();
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
-  Future<void> _takePicture() async {
-    try {
-      await _initializeControllerFuture;
-      final image = await _controller!.takePicture();
-// Get the app's documents directory
-    final appDir = await getApplicationDocumentsDirectory(); // Or getExternalStorageDirectory()
-    final fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg'; // Unique filename
-    final savedImage = File('${appDir.path}/$fileName');
-
-    // Copy the image to the desired location
-    await File(image.path).copy(savedImage.path);
-
-      setState(() {
-        _image = savedImage;
-      });
-
-      print('Image saved to: ${savedImage.path}'); // Optional: Print the path
-    } catch (e) {
-      print('Error taking or saving picture: $e');
-    }
-  }
-
-  Future<void> _pickImageFromGallery() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      } else {
-        print('No image selected from gallery.');
-      }
-    });
-  }
-
-  void _confirmImage() {
-    if (_image != null) {
-      print("Image confirmed: ${_image!.path}");
-      setState(() {
-        _image = null;
-      });
-    }
-  }
-
-// void _toggleFlashlight() async {
-//   try {
-//     await TorchController().toggle(); // Use toggle()
-//     setState(() {
-//       _isTorchOn = !_isTorchOn;
-//     });
-//   } catch (e) {
-//     print('Error toggling flashlight: $e');
-//   }
-// }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: FutureBuilder<void>(
-          future: _initializeControllerFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return Stack(
-                children: [
-                  Positioned.fill(child: CameraPreview(_controller!)),
-                  if (_image != null) Positioned.fill(child: Image.file(_image!, fit: BoxFit.cover)),
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: _buildBottomBar(),
-                  ),
-                ],
-              );
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          },
+    return Scaffold(body: _buildUI());
+  }
+
+  Widget _buildUI() {
+    if (cameraController == null || cameraController?.value.isInitialized == false) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Camera Preview or Selected Image
+            SizedBox(
+              height: MediaQuery.sizeOf(context).height * 0.30,
+              width: MediaQuery.sizeOf(context).width * 0.80,
+              child: _selectedImage == null
+                  ? CameraPreview(cameraController!)
+                  : Image.file(_selectedImage!, fit: BoxFit.cover),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                 // Gallery Button
+                IconButton(
+                  onPressed: _pickImageFromGallery,
+                  iconSize: 30,
+                  icon: const Icon(Icons.image, color: Colors.blue),
+                ),
+                // Camera Button
+                IconButton(
+                  onPressed: () async {
+                    XFile picture = await cameraController!.takePicture();
+                    Gal.putImage(picture.path);
+                    setState(() {
+                      _selectedImage = File(picture.path); // Store the captured image
+                    });
+                  },
+                  iconSize: 30,
+                  icon: const Icon(Icons.camera, color: Colors.red),
+                ),
+               
+              ],
+            ),
+            const SizedBox(height: 16),
+            // Skills Input Field
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: _buildSkillsInputField(),
+            ),
+            const SizedBox(height: 16),
+            // Description Input Field
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TextField(
+                controller: _descriptionController,
+                decoration: const InputDecoration(
+                  labelText: 'Write more about the issue.......',
+                  border: OutlineInputBorder(),
+                ),
+                maxLines: 3,
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Submit Button
+            ElevatedButton(
+              onPressed: _submitForm,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 22, 22, 22),
+                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+              ),
+              child: const Text('Submit', style: TextStyle(color: Colors.white,fontSize: 18)),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildBottomBar() {
-    return Container(
-      color: Colors.black,
-      padding: EdgeInsets.symmetric(vertical: 20.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(
-                icon: Icon(Icons.image, color: Colors.white, size: 30),
-                onPressed: _pickImageFromGallery,
-              ),
-              GestureDetector(
-                onTap: _takePicture,
-                child: Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              IconButton(
-                icon: Icon(Icons.flash_on, color: Colors.white, size: 30),
-                onPressed: () {},
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    _isVideoMode = true;
-                  });
-                },
-                child: Text('Video', style: TextStyle(color: _isVideoMode ? Colors.white : Colors.grey, fontSize: 18)),
-              ),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    _isVideoMode = false;
-                  });
-                },
-                child: Text('Photo', style: TextStyle(color: _isVideoMode ? Colors.grey : Colors.white, fontSize: 18)),
-              ),
-              IconButton(
-                icon: Icon(Icons.check, color: Colors.white, size: 30),
-                onPressed: _confirmImage,
-              ),
-            ],
-          ),
-        ],
-      ),
+Future<void> _setupCameraController() async {
+    try {
+      cameras = await availableCameras();
+      if (cameras.isNotEmpty) {
+        cameraController = CameraController(
+          cameras.first,
+          ResolutionPreset.high,
+        );
+        await cameraController!.initialize();
+        setState(() {});
+      }
+    } catch (e) {
+      print('Error initializing camera: $e');
+    }
+  }
+
+
+  Future<void> _pickImageFromGallery() async {
+  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    } else {
+      print('No image selected from gallery.');
+    }
+  }
+
+  void _submitForm() {
+    if (_selectedImage == null ||
+        _skillsController.text.isEmpty ||
+        _descriptionController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill all fields and select an image.')),
+      );
+      return;
+    }
+
+    // Handle the submission logic here
+    print('Image Path: ${_selectedImage!.path}');
+    print('Skills: ${_skillsController.text}');
+    print('Description: ${_descriptionController.text}');
+
+    // Clear the form after submission
+    setState(() {
+      _selectedImage = null;
+      _skillsController.clear();
+      _descriptionController.clear();
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Form submitted successfully!')),
     );
   }
-}
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(MaterialApp(home: CameraApp()));
+  Widget _buildInputField(
+    String hintText,
+    TextEditingController controller,
+    bool isFieldTouched,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: double.infinity,
+          margin: const EdgeInsets.only(bottom: 3),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+          decoration: BoxDecoration(
+            color: const Color(0xFFE7E7E7),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: TextFormField(
+            controller: controller,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: hintText,
+              hintStyle: const TextStyle(
+                color: Color(0xFFA0A0A0),
+                fontFamily: 'Montserrat',
+                fontSize: 17,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            onChanged: (value) {
+              setState(() {
+              });
+            },
+          ),
+        ),
+        // Display error message below the input field
+        if (controller.text.isEmpty && isFieldTouched)
+          const Padding(
+            padding: EdgeInsets.only(top: 5, left: 10),
+            child: Text(
+              'This field is required',
+              style: TextStyle(color: Colors.red, fontSize: 12),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildSkillsInputField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              _isSkillsFieldTouched = true; // Mark the field as touched
+              _showSkillError = false; // Reset error when dialog opens
+            });
+            showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (context) => StatefulBuilder(
+                builder: (context, setDialogState) {
+                  return Dialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(16),
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text(
+                              'Select the Issue',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const Divider(),
+                            _buildSkillCheckbox('Plumbing', setDialogState),
+                            _buildSkillCheckbox('Electrician', setDialogState),
+                            _buildSkillCheckbox('Carpenter', setDialogState),
+                            _buildSkillCheckbox('Packers & Movers', setDialogState),
+                            _buildSkillCheckbox('AC Mechanic', setDialogState),
+                            const SizedBox(height: 10),
+                            // Display error message if no skill is selected
+                            if (_showSkillError && _selectedSkills.isEmpty)
+                              const Text(
+                                'Please select at least one skill',
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ElevatedButton(
+                              onPressed: () {
+                                if (_selectedSkills.isEmpty) {
+                                  // Show error if no skill is selected
+                                  setDialogState(() {
+                                    _showSkillError = true;
+                                  });
+                                } else {
+                                  setState(() {
+                                    _skillsController.text = _selectedSkills.join(', ');
+                                    _showSkillError = false; // Clear error on success
+                                  });
+                                  Navigator.pop(context);
+                                }
+                              },
+                              child: const Text('Confirm'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+          child: Container(
+            width: double.infinity,
+            margin: const EdgeInsets.only(bottom: 3),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              color: const Color(0xFFE7E7E7),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              child: Text(
+                _skillsController.text.isEmpty ? 'Select the Issue' : _skillsController.text,
+                style: const TextStyle(
+                  color: Color(0xFFA0A0A0),
+                  fontFamily: 'Montserrat',
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ),
+        ),
+        // Display error message below the input field
+        if (_skillsController.text.isEmpty && _isSkillsFieldTouched)
+          const Padding(
+            padding: EdgeInsets.only(top: 5, left: 10),
+            child: Text(
+              'This field is required',
+              style: TextStyle(color: Colors.red, fontSize: 12),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildSkillCheckbox(String skill, Function setDialogState) {
+    return CheckboxListTile(
+      title: Text(skill),
+      value: _selectedSkills.contains(skill),
+      onChanged: (isSelected) {
+        setDialogState(() {
+          if (isSelected == true) {
+            _selectedSkills.add(skill);
+          } else {
+            _selectedSkills.remove(skill);
+          }
+        });
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    cameraController?.dispose();
+    _skillsController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
 }

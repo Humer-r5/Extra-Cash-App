@@ -1,4 +1,3 @@
-// home_page_content.dart
 import 'package:flutter/material.dart';
 import 'service_card.dart'; // Import the ServiceCard widget
 import 'service_detail_page.dart'; // Import the ServiceDetailPage widget

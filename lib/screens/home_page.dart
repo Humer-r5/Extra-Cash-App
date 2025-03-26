@@ -5,6 +5,7 @@ import 'profile_page.dart'; // Import the ProfilePage
 import 'notifications_screen.dart';
 import 'camera_page.dart';
 
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
