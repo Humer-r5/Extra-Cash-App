@@ -33,7 +33,8 @@ class _CameraAppState extends State<CameraApp> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    if (cameraController == null || cameraController?.value.isInitialized == false) {
+    if (cameraController == null ||
+        cameraController?.value.isInitialized == false) {
       return;
     }
     if (state == AppLifecycleState.inactive) {
@@ -55,10 +56,11 @@ class _CameraAppState extends State<CameraApp> with WidgetsBindingObserver {
   }
 
   Widget _buildUI() {
-    if (cameraController == null || cameraController?.value.isInitialized == false) {
+    if (cameraController == null ||
+        cameraController?.value.isInitialized == false) {
       return const Center(child: CircularProgressIndicator());
     }
-  return SafeArea(
+    return SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -87,7 +89,7 @@ class _CameraAppState extends State<CameraApp> with WidgetsBindingObserver {
               elevation: 0,
             ),
             const SizedBox(height: 16),
-              // Camera Preview or Selected Image
+            // Camera Preview or Selected Image
             SizedBox(
               height: MediaQuery.sizeOf(context).height * 0.40,
               width: MediaQuery.sizeOf(context).width * 0.80,
@@ -96,7 +98,7 @@ class _CameraAppState extends State<CameraApp> with WidgetsBindingObserver {
                       ? CameraPreview(cameraController!)
                       : Image.file(_selectedImage!, fit: BoxFit.cover),
             ),
-              Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 // Gallery Button with "Upload" Text
@@ -170,9 +172,15 @@ class _CameraAppState extends State<CameraApp> with WidgetsBindingObserver {
               onPressed: _submitForm,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color.fromARGB(255, 22, 22, 22),
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 40,
+                  vertical: 15,
+                ),
               ),
-              child: const Text('Submit', style: TextStyle(color: Colors.white,fontSize: 18)),
+              child: const Text(
+                'Submit',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
             ),
           ],
         ),
@@ -181,7 +189,7 @@ class _CameraAppState extends State<CameraApp> with WidgetsBindingObserver {
   }
 
   Future<void> _setupCameraController() async {
-   try {
+    try {
       cameras = await availableCameras();
       if (cameras.isNotEmpty) {
         cameraController = CameraController(
@@ -211,7 +219,9 @@ class _CameraAppState extends State<CameraApp> with WidgetsBindingObserver {
         _skillsController.text.isEmpty ||
         _descriptionController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields and select an image.')),
+        const SnackBar(
+          content: Text('Please fill all fields and select an image.'),
+        ),
       );
       return;
     }
@@ -227,144 +237,150 @@ class _CameraAppState extends State<CameraApp> with WidgetsBindingObserver {
       _skillsController.clear();
       _descriptionController.clear();
     });
-  // If form is valid, navigate to success screen
+    // If form is valid, navigate to success screen
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const CameraSuccessScreen()),
     );
   }
 
-
- Widget _buildSkillsInputField() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      GestureDetector(
-        onTap: () {
-          setState(() {
-            _isSkillsFieldTouched = true; // Mark the field as touched
-            _showSkillError = false; // Reset error when dialog opens
-          });
-          showDialog(
-            context: context,
-            barrierDismissible: true,
-            builder: (context) => StatefulBuilder(
-              builder: (context, setDialogState) {
-                return Dialog(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.3,
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(16),
+  Widget _buildSkillsInputField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              _isSkillsFieldTouched = true; // Mark the field as touched
+              _showSkillError = false; // Reset error when dialog opens
+            });
+            showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder:
+                  (context) => StatefulBuilder(
+                    builder: (context, setDialogState) {
+                      return Dialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
                         ),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Text(
-                            'Select Your Technician',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const Divider(),
-                          _buildSkillRadio('Plumber', setDialogState),
-                          _buildSkillRadio('Electrician', setDialogState),
-                          _buildSkillRadio('Carpenter', setDialogState),
-                          _buildSkillRadio('Packers & Movers', setDialogState),
-                          _buildSkillRadio('AC Mechanic', setDialogState),
-                          const SizedBox(height: 10),
-                          // Display error message if no skill is selected
-                          if (_showSkillError && _selectedSkill == null)
-                            const Text(
-                              'Please select a skill',
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 14,
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(16),
                               ),
                             ),
-                          ElevatedButton(
-                            onPressed: () {
-                              if (_selectedSkill == null) {
-                                // Show error if no skill is selected
-                                setDialogState(() {
-                                  _showSkillError = true;
-                                });
-                              } else {
-                                setState(() {
-                                  _skillsController.text = _selectedSkill!;
-                                  _showSkillError = false; // Clear error on success
-                                });
-                                Navigator.pop(context);
-                              }
-                            },
-                            child: const Text('Confirm'),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text(
+                                  'Select Your Technician',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const Divider(),
+                                _buildSkillRadio('Plumber', setDialogState),
+                                _buildSkillRadio('Electrician', setDialogState),
+                                _buildSkillRadio('Carpenter', setDialogState),
+                                _buildSkillRadio(
+                                  'Packers & Movers',
+                                  setDialogState,
+                                ),
+                                _buildSkillRadio('AC Mechanic', setDialogState),
+                                const SizedBox(height: 10),
+                                // Display error message if no skill is selected
+                                if (_showSkillError && _selectedSkill == null)
+                                  const Text(
+                                    'Please select a skill',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    if (_selectedSkill == null) {
+                                      // Show error if no skill is selected
+                                      setDialogState(() {
+                                        _showSkillError = true;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        _skillsController.text =
+                                            _selectedSkill!;
+                                        _showSkillError =
+                                            false; // Clear error on success
+                                      });
+                                      Navigator.pop(context);
+                                    }
+                                  },
+                                  child: const Text('Confirm'),
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
+            );
+          },
+          child: Container(
+            width: double.infinity,
+            margin: const EdgeInsets.only(bottom: 3),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              color: const Color(0xFFE7E7E7),
+              borderRadius: BorderRadius.circular(6),
             ),
-          );
-        },
-        child: Container(
-          width: double.infinity,
-          margin: const EdgeInsets.only(bottom: 3),
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          decoration: BoxDecoration(
-            color: const Color(0xFFE7E7E7),
-            borderRadius: BorderRadius.circular(6),
-          ),
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15),
-            child: Text(
-              _skillsController.text.isEmpty ? 'Select the Issue' : _skillsController.text,
-              style: const TextStyle(
-                color: Color(0xFFA0A0A0),
-                fontFamily: 'Montserrat',
-                fontSize: 17,
-                fontWeight: FontWeight.w700,
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              child: Text(
+                _skillsController.text.isEmpty
+                    ? 'Select the Issue'
+                    : _skillsController.text,
+                style: const TextStyle(
+                  color: Color(0xFFA0A0A0),
+                  fontFamily: 'Montserrat',
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           ),
         ),
-      ),
-      // Display error message below the input field
-      if (_skillsController.text.isEmpty && _isSkillsFieldTouched)
-        const Padding(
-          padding: EdgeInsets.only(top: 5, left: 10),
-          child: Text(
-            'This field is required',
-            style: TextStyle(color: Colors.red, fontSize: 12),
+        // Display error message below the input field
+        if (_skillsController.text.isEmpty && _isSkillsFieldTouched)
+          const Padding(
+            padding: EdgeInsets.only(top: 5, left: 10),
+            child: Text(
+              'This field is required',
+              style: TextStyle(color: Colors.red, fontSize: 12),
+            ),
           ),
-        ),
-    ],
-  );
-}
+      ],
+    );
+  }
 
-// Method to build RadioListTile for each skill
-Widget _buildSkillRadio(String skill, Function setDialogState) {
-  return RadioListTile<String>(
-    title: Text(skill),
-    value: skill,
-    groupValue: _selectedSkill,
-    onChanged: (value) {
-      setDialogState(() {
-        _selectedSkill = value; // Update the selected skill
-      });
-    },
-  );
-
+  // Method to build RadioListTile for each skill
+  Widget _buildSkillRadio(String skill, Function setDialogState) {
+    return RadioListTile<String>(
+      title: Text(skill),
+      value: skill,
+      groupValue: _selectedSkill,
+      onChanged: (value) {
+        setDialogState(() {
+          _selectedSkill = value; // Update the selected skill
+        });
+      },
+    );
   }
 
   @override

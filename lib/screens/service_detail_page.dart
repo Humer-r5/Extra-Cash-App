@@ -82,7 +82,10 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
                 children: [
                   Text(
                     "Get Expert ${widget.title} Services",
-                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -100,36 +103,49 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
                   // Dynamically Render Technicians
                   if (technicians.isNotEmpty)
                     Column(
-                      children: technicians.map((tech) {
-                        return TechnicianCard(
-                          name: tech["name"] ?? "Unknown",
-                          email: tech["email"] ?? "No Email Available",
-                          location: tech["location"] ?? "No Location Available",
-                          bio: tech["bio"] ?? "No Bio Available",
-                          onViewTap: () {
-                            if (widget.showAuthDialog != null) {
-                              // Show authentication prompt for guests
-                              widget.showAuthDialog!(context, "Booking");
-                            } else {
-                              // Navigate to Technician Details for logged-in users
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => TechnicianDetailsScreen(
-                                    name: tech["name"] ?? "Unknown",
-                                    email: tech["email"] ?? "No Email Available",
-                                    location: tech["location"] ?? "No Location Available",
-                                    bio: tech["bio"] ?? "No Bio Available",
-                                    price: tech["price"] ?? 0.0,
-                                    appointmentDate: tech["appointmentDate"] ?? "N/A",
-                                    appointmentTime: tech["appointmentTime"] ?? "N/A",
-                                  ),
-                                ),
-                              );
-                            }
-                          },
-                        );
-                      }).toList(),
+                      children:
+                          technicians.map((tech) {
+                            return TechnicianCard(
+                              name: tech["name"] ?? "Unknown",
+                              email: tech["email"] ?? "No Email Available",
+                              location:
+                                  tech["location"] ?? "No Location Available",
+                              bio: tech["bio"] ?? "No Bio Available",
+                              onViewTap: () {
+                                if (widget.showAuthDialog != null) {
+                                  // Show authentication prompt for guests
+                                  widget.showAuthDialog!(context, "Booking");
+                                } else {
+                                  // Navigate to Technician Details for logged-in users
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) => TechnicianDetailsScreen(
+                                            name: tech["name"] ?? "Unknown",
+                                            email:
+                                                tech["email"] ??
+                                                "No Email Available",
+                                            location:
+                                                tech["location"] ??
+                                                "No Location Available",
+                                            bio:
+                                                tech["bio"] ??
+                                                "No Bio Available",
+                                            price: tech["price"] ?? 0.0,
+                                            appointmentDate:
+                                                tech["appointmentDate"] ??
+                                                "N/A",
+                                            appointmentTime:
+                                                tech["appointmentTime"] ??
+                                                "N/A",
+                                          ),
+                                    ),
+                                  );
+                                }
+                              },
+                            );
+                          }).toList(),
                     )
                   else
                     const Center(
@@ -147,7 +163,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
           ],
         ),
       ),
-       bottomNavigationBar: BottomNavBar(
+      bottomNavigationBar: BottomNavBar(
         currentIndex: 0, // Set the appropriate index for the selected tab
         onTap: (index) {
           // Handle navigation for the bottom nav bar
@@ -157,20 +173,19 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
               context,
               MaterialPageRoute(builder: (context) => const HomePage()),
             );
-          }  
-          else if (index == 1) {
+          } else if (index == 1) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => CameraApp()),
             );
-          } 
-          else if (index == 2) {
+          } else if (index == 2) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const NotificationScreen()),
+              MaterialPageRoute(
+                builder: (context) => const NotificationScreen(),
+              ),
             );
-          }
-          else if (index == 3) {
+          } else if (index == 3) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => const ProfilePage()),
