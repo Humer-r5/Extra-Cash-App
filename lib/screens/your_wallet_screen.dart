@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'home_page.dart';
 import '../widgets/bottom_navbar.dart';
 import 'profile_page.dart';
+import 'notifications_screen.dart';
+import 'camera_page.dart';
 
 class YourWalletScreen extends StatelessWidget {
   const YourWalletScreen({super.key});
@@ -89,7 +91,22 @@ class YourWalletScreen extends StatelessWidget {
               context,
               MaterialPageRoute(builder: (context) => const HomePage()),
             );
-          } else if (index == 3) {
+          }
+          else if (index == 1) {
+        // Navigate to ProfilePage
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => CameraApp()),
+        );
+      }
+       else if (index == 2) {
+        // Navigate to ProfilePage
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const NotificationScreen()),
+        );
+      }
+      else if (index == 3) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => const ProfilePage()),

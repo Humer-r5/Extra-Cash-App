@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'technician_details_screen.dart';
 import '../widgets/technician_card.dart';
 import '../data/technician_dummy_data.dart';
-import '../widgets/technician_card.dart'; // Import the TechnicianCard widget
-import 'technician_details_screen.dart'; // Import the TechnicianDetailsScreen
-import '../widgets/bottom_navbar.dart'; // Import the BottomNavBar widget
 import 'home_page.dart'; // Import the HomePage
 import 'profile_page.dart'; // Import the ProfilePage
+import 'notifications_screen.dart';
+import '../widgets/bottom_navbar.dart';
+import 'camera_page.dart';
 
 class ServiceDetailPage extends StatelessWidget {
   final String title, image;
@@ -33,7 +33,22 @@ class ServiceDetailPage extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
         );
-      } else if (index == 3) {
+      } 
+       else if (index == 1) {
+        // Navigate to ProfilePage
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => CameraApp()),
+        );
+      }
+       else if (index == 2) {
+        // Navigate to ProfilePage
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const NotificationScreen()),
+        );
+      }
+      else if (index == 3) {
         // Navigate to ProfilePage
         Navigator.pushReplacement(
           context,
@@ -132,6 +147,37 @@ class ServiceDetailPage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+       bottomNavigationBar: BottomNavBar(
+        currentIndex: 0, // Set the appropriate index for the selected tab
+        onTap: (index) {
+          // Handle navigation for the bottom nav bar
+          // Example: Use Navigator to push/pop screens as needed
+          if (index == 0) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          }  
+          else if (index == 1) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => CameraApp()),
+            );
+          } 
+          else if (index == 2) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const NotificationScreen()),
+            );
+          }
+          else if (index == 3) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const ProfilePage()),
+            );
+          }
+        },
       ),
     );
   }

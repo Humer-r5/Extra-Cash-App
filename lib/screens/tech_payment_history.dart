@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
- 
 
-class PaymentHistoryScreen extends StatelessWidget {
+
+class TechPaymentHistory extends StatelessWidget {
   final String service, technician, date, paymentMethod, description;
   final double amount;
 
-  const PaymentHistoryScreen({
+  const TechPaymentHistory({
     super.key,
     required this.service,
     required this.technician,

@@ -18,7 +18,7 @@ class _CameraAppState extends State<CameraApp> with WidgetsBindingObserver {
 
   // Image-related variables
   File? _selectedImage;
-   File? _image;
+   File? image;
   final picker = ImagePicker();
 
   // Form-related variables
@@ -151,7 +151,7 @@ Future<void> _setupCameraController() async {
   final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        _image = File(pickedFile.path);
+        image = File(pickedFile.path);
       });
     } else {
       print('No image selected from gallery.');
@@ -185,7 +185,7 @@ Future<void> _setupCameraController() async {
     );
   }
 
-  Widget _buildInputField(
+  Widget buildInputField(
     String hintText,
     TextEditingController controller,
     bool isFieldTouched,

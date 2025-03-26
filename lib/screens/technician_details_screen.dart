@@ -1,3 +1,4 @@
+import 'package:extra_cash_app/screens/camera_page.dart';
 import 'package:flutter/material.dart';
 import 'book_success_screen.dart';
 import 'home_page.dart';
@@ -33,7 +34,11 @@ class _TechnicianDetailsScreenState extends State<TechnicianDetailsScreen> {
     Widget nextScreen = const HomePage();
     if (index == 2) {
       nextScreen = const NotificationScreen();
-    } else if (index == 3) {
+    } 
+    else if (index == 1) {
+      nextScreen = CameraApp();
+    }
+    else if (index == 3) {
       nextScreen = const ProfilePage();
     }
     Navigator.pushReplacement(
