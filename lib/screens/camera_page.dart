@@ -3,6 +3,8 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:gal/gal.dart';
+import 'camera_success.dart';
+import 'home_page.dart';
 
 class CameraApp extends StatefulWidget {
   const CameraApp({super.key});
@@ -18,7 +20,7 @@ class _CameraAppState extends State<CameraApp> with WidgetsBindingObserver {
 
   // Image-related variables
   File? _selectedImage;
-   File? _image;
+  //  File? _image;
   final picker = ImagePicker();
 
   // Form-related variables
@@ -31,7 +33,8 @@ class _CameraAppState extends State<CameraApp> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    if (cameraController == null || cameraController?.value.isInitialized == false) {
+    if (cameraController == null ||
+        cameraController?.value.isInitialized == false) {
       return;
     }
     if (state == AppLifecycleState.inactive) {
@@ -53,7 +56,8 @@ class _CameraAppState extends State<CameraApp> with WidgetsBindingObserver {
   }
 
   Widget _buildUI() {
-    if (cameraController == null || cameraController?.value.isInitialized == false) {
+    if (cameraController == null ||
+        cameraController?.value.isInitialized == false) {
       return const Center(child: CircularProgressIndicator());
     }
     return SafeArea(
@@ -63,36 +67,84 @@ class _CameraAppState extends State<CameraApp> with WidgetsBindingObserver {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            AppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.black),
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomePage()),
+                    (route) => false,
+                  );
+                },
+              ),
+              title: const Text(
+                "Post your Issue",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              backgroundColor: Colors.white,
+              elevation: 0,
+            ),
+            const SizedBox(height: 16),
             // Camera Preview or Selected Image
             SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.30,
+              height: MediaQuery.sizeOf(context).height * 0.40,
               width: MediaQuery.sizeOf(context).width * 0.80,
-              child: _selectedImage == null
-                  ? CameraPreview(cameraController!)
-                  : Image.file(_selectedImage!, fit: BoxFit.cover),
+              child:
+                  _selectedImage == null
+                      ? CameraPreview(cameraController!)
+                      : Image.file(_selectedImage!, fit: BoxFit.cover),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                 // Gallery Button
-                IconButton(
-                  onPressed: _pickImageFromGallery,
-                  iconSize: 30,
-                  icon: const Icon(Icons.image, color: Colors.blue),
+                // Gallery Button with "Upload" Text
+                Column(
+                  children: [
+                    IconButton(
+                      onPressed: _pickImageFromGallery,
+                      iconSize: 35,
+                      icon: const Icon(Icons.image, color: Colors.blue),
+                    ),
+                    const Text(
+                      'Upload',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
-                // Camera Button
-                IconButton(
-                  onPressed: () async {
-                    XFile picture = await cameraController!.takePicture();
-                    Gal.putImage(picture.path);
-                    setState(() {
-                      _selectedImage = File(picture.path); // Store the captured image
-                    });
-                  },
-                  iconSize: 30,
-                  icon: const Icon(Icons.camera, color: Colors.red),
+                // Camera Button with "Capture" Text
+                Column(
+                  children: [
+                    IconButton(
+                      onPressed: () async {
+                        XFile picture = await cameraController!.takePicture();
+                        Gal.putImage(picture.path);
+                        setState(() {
+                          _selectedImage = File(
+                            picture.path,
+                          ); // Store the captured image
+                        });
+                      },
+                      iconSize: 35,
+                      icon: const Icon(Icons.camera, color: Colors.red),
+                    ),
+                    const Text(
+                      'Capture',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
-               
               ],
             ),
             const SizedBox(height: 16),
@@ -120,9 +172,15 @@ class _CameraAppState extends State<CameraApp> with WidgetsBindingObserver {
               onPressed: _submitForm,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 22, 22, 22),
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 40,
+                  vertical: 15,
+                ),
               ),
-              child: const Text('Submit', style: TextStyle(color: Colors.white,fontSize: 18)),
+              child: const Text(
+                'Submit',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
             ),
           ],
         ),
@@ -130,12 +188,12 @@ class _CameraAppState extends State<CameraApp> with WidgetsBindingObserver {
     );
   }
 
-Future<void> _setupCameraController() async {
+  Future<void> _setupCameraController() async {
     try {
       cameras = await availableCameras();
-      if (cameras!.isNotEmpty) {
+      if (cameras.isNotEmpty) {
         cameraController = CameraController(
-          cameras!.first,
+          cameras.first,
           ResolutionPreset.high,
         );
         await cameraController!.initialize();
@@ -146,15 +204,15 @@ Future<void> _setupCameraController() async {
     }
   }
 
-
   Future<void> _pickImageFromGallery() async {
-  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(
+      source: ImageSource.gallery,
+    ); // Access the gallery
+    if (image != null) {
       setState(() {
-        _image = File(pickedFile.path);
+        _selectedImage = File(image.path); // Store the selected image
       });
-    } else {
-      print('No image selected from gallery.');
     }
   }
 
@@ -163,7 +221,9 @@ Future<void> _setupCameraController() async {
         _skillsController.text.isEmpty ||
         _descriptionController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields and select an image.')),
+        const SnackBar(
+          content: Text('Please fill all fields and select an image.'),
+        ),
       );
       return;
     }
@@ -174,63 +234,67 @@ Future<void> _setupCameraController() async {
     print('Description: ${_descriptionController.text}');
 
     // Clear the form after submission
-    setState(() {
-      _selectedImage = null;
-      _skillsController.clear();
-      _descriptionController.clear();
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Form submitted successfully!')),
+    // setState(() {
+    //   _selectedImage = null;
+    //   _skillsController.clear();
+    //   _descriptionController.clear();
+    // });
+    // If form is valid, navigate to success screen
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const CameraSuccessScreen()),
     );
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   const SnackBar(content: Text('Form submitted successfully!')),
+    // );
   }
 
-  Widget _buildInputField(
-    String hintText,
-    TextEditingController controller,
-    bool isFieldTouched,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: double.infinity,
-          margin: const EdgeInsets.only(bottom: 3),
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-          decoration: BoxDecoration(
-            color: const Color(0xFFE7E7E7),
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: TextFormField(
-            controller: controller,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: hintText,
-              hintStyle: const TextStyle(
-                color: Color(0xFFA0A0A0),
-                fontFamily: 'Montserrat',
-                fontSize: 17,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            onChanged: (value) {
-              setState(() {
-              });
-            },
-          ),
-        ),
-        // Display error message below the input field
-        if (controller.text.isEmpty && isFieldTouched)
-          const Padding(
-            padding: EdgeInsets.only(top: 5, left: 10),
-            child: Text(
-              'This field is required',
-              style: TextStyle(color: Colors.red, fontSize: 12),
-            ),
-          ),
-      ],
-    );
-  }
+  // Widget _buildInputField(
+  //   String hintText,
+  //   TextEditingController controller,
+  //   bool isFieldTouched,
+  // ) {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       Container(
+  //         width: double.infinity,
+  //         margin: const EdgeInsets.only(bottom: 3),
+  //             padding: const EdgeInsets.symmetric(horizontal: 20),
+  //         decoration: BoxDecoration(
+  //           color: const Color(0xFFE7E7E7),
+  //           borderRadius: BorderRadius.circular(6),
+  //         ),
+  //         child: TextFormField(
+  //           controller: controller,
+  //           decoration: InputDecoration(
+  //             border: InputBorder.none,
+  //             hintText: hintText,
+  //             hintStyle: const TextStyle(
+  //               color: Color(0xFFA0A0A0),
+  //               fontFamily: 'Montserrat',
+  //               fontSize: 17,
+  //               fontWeight: FontWeight.w700,
+  //             ),
+  //           ),
+  //           onChanged: (value) {
+  //             setState(() {
+  //             });
+  //           },
+  //         ),
+  //       ),
+  //       // Display error message below the input field
+  //       if (controller.text.isEmpty && isFieldTouched)
+  //         const Padding(
+  //           padding: EdgeInsets.only(top: 5, left: 10),
+  //           child: Text(
+  //             'This field is required',
+  //             style: TextStyle(color: Colors.red, fontSize: 12),
+  //           ),
+  //         ),
+  //     ],
+  //   );
+  // }
 
   Widget _buildSkillsInputField() {
     return Column(
@@ -245,72 +309,87 @@ Future<void> _setupCameraController() async {
             showDialog(
               context: context,
               barrierDismissible: true,
-              builder: (context) => StatefulBuilder(
-                builder: (context, setDialogState) {
-                  return Dialog(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      child: Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(16),
+              builder:
+                  (context) => StatefulBuilder(
+                    builder: (context, setDialogState) {
+                      return Dialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(16),
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text(
+                                  'Select the Issue',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const Divider(),
+                                _buildSkillCheckbox('Plumbing', setDialogState),
+                                _buildSkillCheckbox(
+                                  'Electrician',
+                                  setDialogState,
+                                ),
+                                _buildSkillCheckbox(
+                                  'Carpenter',
+                                  setDialogState,
+                                ),
+                                _buildSkillCheckbox(
+                                  'Packers & Movers',
+                                  setDialogState,
+                                ),
+                                _buildSkillCheckbox(
+                                  'AC Mechanic',
+                                  setDialogState,
+                                ),
+                                const SizedBox(height: 10),
+                                // Display error message if no skill is selected
+                                if (_showSkillError && _selectedSkills.isEmpty)
+                                  const Text(
+                                    'Please select at least one skill',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    if (_selectedSkills.isEmpty) {
+                                      // Show error if no skill is selected
+                                      setDialogState(() {
+                                        _showSkillError = true;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        _skillsController.text = _selectedSkills
+                                            .join(', ');
+                                        _showSkillError =
+                                            false; // Clear error on success
+                                      });
+                                      Navigator.pop(context);
+                                    }
+                                  },
+                                  child: const Text('Confirm'),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text(
-                              'Select the Issue',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const Divider(),
-                            _buildSkillCheckbox('Plumbing', setDialogState),
-                            _buildSkillCheckbox('Electrician', setDialogState),
-                            _buildSkillCheckbox('Carpenter', setDialogState),
-                            _buildSkillCheckbox('Packers & Movers', setDialogState),
-                            _buildSkillCheckbox('AC Mechanic', setDialogState),
-                            const SizedBox(height: 10),
-                            // Display error message if no skill is selected
-                            if (_showSkillError && _selectedSkills.isEmpty)
-                              const Text(
-                                'Please select at least one skill',
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ElevatedButton(
-                              onPressed: () {
-                                if (_selectedSkills.isEmpty) {
-                                  // Show error if no skill is selected
-                                  setDialogState(() {
-                                    _showSkillError = true;
-                                  });
-                                } else {
-                                  setState(() {
-                                    _skillsController.text = _selectedSkills.join(', ');
-                                    _showSkillError = false; // Clear error on success
-                                  });
-                                  Navigator.pop(context);
-                                }
-                              },
-                              child: const Text('Confirm'),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
+                      );
+                    },
+                  ),
             );
           },
           child: Container(
@@ -325,7 +404,9 @@ Future<void> _setupCameraController() async {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 15),
               child: Text(
-                _skillsController.text.isEmpty ? 'Select the Issue' : _skillsController.text,
+                _skillsController.text.isEmpty
+                    ? 'Select the Issue'
+                    : _skillsController.text,
                 style: const TextStyle(
                   color: Color(0xFFA0A0A0),
                   fontFamily: 'Montserrat',
