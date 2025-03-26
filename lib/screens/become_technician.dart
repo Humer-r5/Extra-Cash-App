@@ -898,7 +898,7 @@ class _InputDesignScreenState extends State<InputDesignScreen> {
     );
   }
 
-  @override
+     @override
   void dispose() {
     _nameController.dispose();
     _genderController.dispose();

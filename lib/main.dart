@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'screens/tech_need_service.dart';
-import 'package:extra_cash_app/screens/landing_page.dart';
-import 'screens/home_page.dart';
+import './screens/landing_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +18,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
 
-      home: HomePage(), // Show Splash Screen First
+      home: SplashScreen(), // Show Splash Screen First
     );
   }
 }

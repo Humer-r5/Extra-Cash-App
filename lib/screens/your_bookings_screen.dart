@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'home_page.dart';
 import '../widgets/bottom_navbar.dart';
 import 'profile_page.dart';
+import 'camera_page.dart';
 import 'notifications_screen.dart';
 import 'payment_history_screen.dart';
 
@@ -10,39 +11,37 @@ class YourBookingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, String>> bookings = [
+    // Dummy booking data
+    final List<Map<String, dynamic>> bookings = [
       {
+        "service": "AC Repair",
+        "technician": "John Doe",
+        "date": "March 28, 2025",
+        "amount": 1258.0,
         "paymentMethod": "Cash",
-        "description": "Home AC repair service, including gas refill and general servicing.",
-        "amount": "₦15,000",
-        "date": "12 Mar, 2025",
+        "description": "AC cooling issue fixed with gas refill.",
       },
       {
-        "paymentMethod": "Card",
-        "description": "Plumbing service - Bathroom leakage fixing and pipe replacement.",
-        "amount": "₦8,500",
-        "date": "08 Mar, 2025",
+        "service": "Plumbing",
+        "technician": "Alice Smith",
+        "date": "April 1, 2025",
+        "amount": 1850.0,
+        "paymentMethod": "Credit Card",
+        "description": "Fixed leaking pipe and replaced tap.",
       },
       {
-        "paymentMethod": "UPI",
-        "description": "Electrical wiring installation and troubleshooting service.",
-        "amount": "₦12,300",
-        "date": "04 Mar, 2025",
-      },
-      {
+        "service": "Electrical Repair",
+        "technician": "Michael Brown",
+        "date": "April 5, 2025",
+        "amount": 2100.0,
         "paymentMethod": "Bank Transfer",
-        "description": "CCTV installation and maintenance service.",
-        "amount": "₦18,200",
-        "date": "01 Mar, 2025",
+        "description": "Replaced faulty wiring in living room.",
       },
     ];
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Your Bookings",
-          style: TextStyle(color: Colors.black),
-        ),
+        title: const Text("Your Bookings", style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 1,
@@ -53,12 +52,21 @@ class YourBookingsScreen extends StatelessWidget {
         itemCount: bookings.length,
         itemBuilder: (context, index) {
           final booking = bookings[index];
+
           return GestureDetector(
             onTap: () {
+              // Navigate to PaymentHistoryScreen with respective details
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => PaymentHistoryScreen(booking: booking),
+                  builder: (context) => PaymentHistoryScreen(
+                    service: booking["service"],
+                    technician: booking["technician"],
+                    date: booking["date"],
+                    amount: booking["amount"],
+                    paymentMethod: booking["paymentMethod"],
+                    description: booking["description"],
+                  ),
                 ),
               );
             },
@@ -83,17 +91,10 @@ class YourBookingsScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        "Payment Method :",
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
-                      ),
+                      const Text("Payment Method:", style: TextStyle(color: Colors.grey, fontSize: 14)),
                       Text(
-                        booking["paymentMethod"]!,
-                        style: const TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
+                        booking["paymentMethod"],
+                        style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 14),
                       ),
                     ],
                   ),
@@ -101,7 +102,7 @@ class YourBookingsScreen extends StatelessWidget {
 
                   // Description
                   Text(
-                    booking["description"]!,
+                    booking["description"],
                     style: const TextStyle(color: Colors.black87, fontSize: 12),
                   ),
                   const SizedBox(height: 12),
@@ -120,18 +121,11 @@ class YourBookingsScreen extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "Amount",
-                              style: TextStyle(color: Colors.grey, fontSize: 12),
-                            ),
+                            const Text("Amount", style: TextStyle(color: Colors.grey, fontSize: 12)),
                             const SizedBox(height: 4),
                             Text(
-                              booking["amount"]!,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              "₦${booking["amount"].toStringAsFixed(2)}",
+                              style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
@@ -139,18 +133,9 @@ class YourBookingsScreen extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            const Text(
-                              "Date",
-                              style: TextStyle(color: Colors.grey, fontSize: 12),
-                            ),
+                            const Text("Date", style: TextStyle(color: Colors.grey, fontSize: 12)),
                             const SizedBox(height: 4),
-                            Text(
-                              booking["date"]!,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 14,
-                              ),
-                            ),
+                            Text(booking["date"], style: const TextStyle(color: Colors.black, fontSize: 14)),
                           ],
                         ),
                       ],
@@ -166,20 +151,13 @@ class YourBookingsScreen extends StatelessWidget {
         currentIndex: 0, // Set the appropriate index for the selected tab
         onTap: (index) {
           if (index == 0) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const HomePage()),
-            );
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
+          } else if (index == 1) {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CameraApp()));
           } else if (index == 2) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const NotificationScreen()),
-            );
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const NotificationScreen()));
           } else if (index == 3) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const ProfilePage()),
-            );
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ProfilePage()));
           }
         },
       ),
